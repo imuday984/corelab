@@ -1,6 +1,8 @@
 import { ipAddress } from "@vercel/functions"; // Read the client IP.
-import { handleApi } from "../server/api"; // Load CoreLab's API.
-import { getLocalEnv } from "../server/local"; // Load database access.
+import { // Import both functions from the generated backend module.
+    handleApi, // Handle CoreLab API requests.
+    getLocalEnv, // Initialize database access.
+} from "../server/vercel-runtime.mjs"; // Use an explicit module filename.
 
 export default { // Expose the entry point to Vercel.
     async fetch(request: Request): Promise<Response> { // Handle a request.
