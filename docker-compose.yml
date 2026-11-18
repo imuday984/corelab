@@ -1,0 +1,20 @@
+name: corelab # Keep development resources under one recognizable project name.
+services: # Declare infrastructure required by the preferred conventional local stack.
+  db: # Run PostgreSQL separately from the application process.
+    image: postgres:17-alpine # Use a maintained PostgreSQL release with a compact development image.
+    restart: unless-stopped # Resume the development database after a Docker restart.
+    environment: # Read database initialization values from the local environment or safe development defaults.
+      POSTGRES_USER: ${POSTGRES_USER:-corelab} # Create the application role during the first initialization.
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-corelab_dev_password} # Use this default only for local development.
+      POSTGRES_DB: ${POSTGRES_DB:-corelab} # Create the database targeted by DATABASE_URL.
+    ports: # Make the database available only on the development machine's loopback interface.
+      - "127.0.0.1:5432:5432" # Avoid exposing the development database to the local network.
+    volumes: # Preserve database files across container restarts and ordinary compose down commands.
+      - corelab_postgres:/var/lib/postgresql/data # Store persistent PostgreSQL data in a named Docker volume.
+    healthcheck: # Let Docker report whether PostgreSQL can accept connections.
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"] # Expand credentials inside the container rather than during Compose parsing.
+      interval: 5s # Check readiness periodically without aggressive polling.
+      timeout: 3s # Bound an individual readiness attempt.
+      retries: 10 # Allow enough startup time for first-run database initialization.
+volumes: # Declare the persistent development volume explicitly.
+  corelab_postgres: {} # Retain data until the user explicitly removes this volume.

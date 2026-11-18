@@ -1,0 +1,2190 @@
+@import "tailwindcss"; /* Compile Tailwind utilities before the readable component styles. */
+:root { /* Apply these declarations to the selected interface elements. */
+    color-scheme: dark; /* Match native controls to the active light or dark theme. */
+    --bg: #101114; /* Define the shared bg design token. */
+    --sidebar: #131418; /* Define the shared sidebar design token. */
+    --surface: #191a20; /* Define the shared surface design token. */
+    --surface-hover: #202129; /* Define the shared surface hover design token. */
+    --surface-raised: #1e1f26; /* Define the shared surface raised design token. */
+    --line: #2b2c35; /* Define the shared line design token. */
+    --text: #eeedf4; /* Define the shared text design token. */
+    --muted: #8f909f; /* Define the shared muted design token. */
+    --subtle: #626472; /* Define the shared subtle design token. */
+    --primary: #afa1ff; /* Define the shared primary design token. */
+    --primary-text: #19132b; /* Define the shared primary text design token. */
+    --green: #76d4aa; /* Define the shared green design token. */
+    font-family: /* Select the interface or code typeface. */
+        "Inter", /* Include this selector or value in the declaration below. */
+        -apple-system, /* Include this selector or value in the declaration below. */
+        BlinkMacSystemFont, /* Include this selector or value in the declaration below. */
+        "Segoe UI", /* Include this selector or value in the declaration below. */
+        sans-serif; /* Continue the preceding multi-line style declaration. */
+    font-synthesis: none; /* Keep browser-generated font variants predictable. */
+} /* Define the dark-first design tokens in one place. */
+:root[data-theme="light"] { /* Apply these declarations to the selected interface elements. */
+    color-scheme: light; /* Match native controls to the active light or dark theme. */
+    --bg: #f6f6fa; /* Define the shared bg design token. */
+    --sidebar: #fff; /* Define the shared sidebar design token. */
+    --surface: #fff; /* Define the shared surface design token. */
+    --surface-hover: #f0eff7; /* Define the shared surface hover design token. */
+    --surface-raised: #f1f0f7; /* Define the shared surface raised design token. */
+    --line: #e1dfeb; /* Define the shared line design token. */
+    --text: #25232e; /* Define the shared text design token. */
+    --muted: #686574; /* Define the shared muted design token. */
+    --subtle: #76717f; /* Define the shared subtle design token. */
+    --primary: #7156d4; /* Define the shared primary design token. */
+    --primary-text: #fff; /* Define the shared primary text design token. */
+    --green: #247b58; /* Define the shared green design token. */
+} /* Keep all screens usable in light mode. */
+* { /* Apply these declarations to the selected interface elements. */
+    box-sizing: border-box; /* Include padding and borders in declared dimensions. */
+} /* Include borders and padding in layout dimensions. */
+body { /* Apply these declarations to the selected interface elements. */
+    margin: 0; /* Control outer spacing around this element. */
+    background: var(--bg); /* Set this element’s surface or state color. */
+    color: var(--text); /* Use the theme text color or the appropriate accent. */
+    font-size: 14px; /* Set the readable text size for this element. */
+    -webkit-font-smoothing: antialiased; /* Apply the -webkit-font-smoothing presentation setting to this element. */
+} /* Set a crisp, quiet base for the application. */
+a { /* Apply these declarations to the selected interface elements. */
+    color: inherit; /* Use the theme text color or the appropriate accent. */
+    text-decoration: none; /* Control the visual treatment of linked text. */
+} /* Let component styles control links deliberately. */
+button, /* Include this selector or value in the declaration below. */
+input, /* Include this selector or value in the declaration below. */
+select, /* Include this selector or value in the declaration below. */
+textarea { /* Apply these declarations to the selected interface elements. */
+    font: inherit; /* Inherit readable interface typography. */
+} /* Keep form controls consistent with surrounding text. */
+button, /* Include this selector or value in the declaration below. */
+a, /* Include this selector or value in the declaration below. */
+input, /* Include this selector or value in the declaration below. */
+select, /* Include this selector or value in the declaration below. */
+textarea { /* Apply these declarations to the selected interface elements. */
+    -webkit-tap-highlight-color: transparent; /* Apply the -webkit-tap-highlight-color presentation setting to this element. */
+} /* Avoid distracting touch highlights. */
+button { /* Apply these declarations to the selected interface elements. */
+    cursor: pointer; /* Show the correct interaction affordance. */
+} /* Identify interactive native buttons. */
+button:disabled { /* Apply these declarations to the selected interface elements. */
+    cursor: wait; /* Show the correct interaction affordance. */
+    opacity: 0.55; /* Adjust the visual emphasis of this element. */
+} /* Make pending actions visibly unavailable. */
+button, /* Include this selector or value in the declaration below. */
+input, /* Include this selector or value in the declaration below. */
+select, /* Include this selector or value in the declaration below. */
+textarea { /* Apply these declarations to the selected interface elements. */
+    color: inherit; /* Use the theme text color or the appropriate accent. */
+} /* Inherit the current theme in native controls. */
+button { /* Apply these declarations to the selected interface elements. */
+    border: 0; /* Separate this element from the surrounding surface. */
+} /* Define borders through component classes. */
+:focus-visible { /* Apply these declarations to the selected interface elements. */
+    outline: 2px solid var(--primary); /* Make keyboard focus clearly visible. */
+    outline-offset: 4px; /* Separate the focus ring from the element border. */
+} /* Keep keyboard focus visible throughout the app. */
+h1, /* Include this selector or value in the declaration below. */
+h2, /* Include this selector or value in the declaration below. */
+h3, /* Include this selector or value in the declaration below. */
+p { /* Apply these declarations to the selected interface elements. */
+    margin: 0; /* Control outer spacing around this element. */
+} /* Establish deliberate spacing inside components. */
+h1 { /* Apply these declarations to the selected interface elements. */
+    font-size: 30px; /* Set the readable text size for this element. */
+    font-weight: 620; /* Apply the intended emphasis to this text. */
+    letter-spacing: -1.1px; /* Tune spacing between characters in this label. */
+    line-height: 1.3; /* Keep wrapped lines comfortably readable. */
+} /* Use a clear page-level heading. */
+h2 { /* Apply these declarations to the selected interface elements. */
+    font-size: 16px; /* Set the readable text size for this element. */
+    font-weight: 610; /* Apply the intended emphasis to this text. */
+    letter-spacing: -0.3px; /* Tune spacing between characters in this label. */
+} /* Keep section headings compact. */
+h3 { /* Apply these declarations to the selected interface elements. */
+    font-size: 15px; /* Set the readable text size for this element. */
+    font-weight: 600; /* Apply the intended emphasis to this text. */
+} /* Use consistent card headings. */
+p { /* Apply these declarations to the selected interface elements. */
+    line-height: 1.7; /* Keep wrapped lines comfortably readable. */
+} /* Give learning text comfortable line spacing. */
+svg { /* Apply these declarations to the selected interface elements. */
+    flex-shrink: 0; /* Preserve the shape of essential controls and icons. */
+} /* Preserve readable icons in flex layouts. */
+.sr-only { /* Apply these declarations to the selected interface elements. */
+    position: absolute; /* Choose how this element is positioned within its container. */
+    width: 1px; /* Set the element’s available horizontal space. */
+    height: 1px; /* Set the element’s vertical size. */
+    padding: 0; /* Create inner space around the visible content. */
+    margin: -1px; /* Control outer spacing around this element. */
+    overflow: hidden; /* Contain content inside its visual boundary. */
+    clip: rect(0, 0, 0, 0); /* Hide assistive text visually while keeping it available to screen readers. */
+    white-space: nowrap; /* Preserve the intended text wrapping behavior. */
+    border-width: 0; /* Control the visible border thickness. */
+} /* Hide accessibility text visually while keeping it available to screen readers. */
+.muted { /* Apply these declarations to the selected interface elements. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+} /* Apply the secondary text color consistently. */
+.text-violet { /* Apply these declarations to the selected interface elements. */
+    color: #b4a1ff; /* Use the theme text color or the appropriate accent. */
+} /* Highlight the completion statistic. */
+.text-green { /* Apply these declarations to the selected interface elements. */
+    color: #78d8b2; /* Use the theme text color or the appropriate accent. */
+} /* Highlight correct practice. */
+.text-amber { /* Apply these declarations to the selected interface elements. */
+    color: #edb76f; /* Use the theme text color or the appropriate accent. */
+} /* Highlight learning streaks. */
+.text-blue { /* Apply these declarations to the selected interface elements. */
+    color: #89aeff; /* Use the theme text color or the appropriate accent. */
+} /* Highlight readiness. */
+.app-shell { /* Apply these declarations to the selected interface elements. */
+    min-height: 100vh; /* Reserve a useful minimum content height. */
+} /* Fill the viewport even on short screens. */
+.sidebar { /* Apply these declarations to the selected interface elements. */
+    position: fixed; /* Choose how this element is positioned within its container. */
+    inset: 0 auto 0 0; /* Anchor this positioned element to the specified edges. */
+    width: 236px; /* Set the element’s available horizontal space. */
+    background: var(--sidebar); /* Set this element’s surface or state color. */
+    border-right: 1px solid var(--line); /* Separate neighboring layout regions. */
+    z-index: 40; /* Keep this layer above or below related interface regions. */
+    padding: 27px 17px 13px; /* Create inner space around the visible content. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    overflow-y: auto; /* Keep long content vertically accessible. */
+} /* Keep desktop navigation persistent. */
+.brand { /* Apply these declarations to the selected interface elements. */
+    display: inline-flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 10px; /* Keep consistent spacing between neighboring items. */
+    font-size: 26px; /* Set the readable text size for this element. */
+    font-weight: 720; /* Apply the intended emphasis to this text. */
+    letter-spacing: -1.2px; /* Tune spacing between characters in this label. */
+    padding-left: 6px; /* Align the left edge with the intended spacing. */
+} /* Establish the compact CoreLab wordmark. */
+.brand-mark { /* Apply these declarations to the selected interface elements. */
+    width: 34px; /* Set the element’s available horizontal space. */
+    height: 34px; /* Set the element’s vertical size. */
+    display: grid; /* Choose the layout model for this element and its children. */
+    place-items: center; /* Center or align content along both layout axes. */
+    border-radius: 9px; /* Apply the shared rounded visual treatment. */
+    background: #b4a5ff; /* Set this element’s surface or state color. */
+    color: #211a34; /* Use the theme text color or the appropriate accent. */
+} /* Draw the geometric developer mark. */
+.brand-dot { /* Apply these declarations to the selected interface elements. */
+    color: var(--primary); /* Use the theme text color or the appropriate accent. */
+} /* Add a small branded accent. */
+.brand-beta { /* Apply these declarations to the selected interface elements. */
+    font-size: 8px; /* Set the readable text size for this element. */
+    font-weight: 650; /* Apply the intended emphasis to this text. */
+    border: 1px solid #3e354e; /* Separate this element from the surrounding surface. */
+    color: #b4a1dd; /* Use the theme text color or the appropriate accent. */
+    border-radius: 4px; /* Apply the shared rounded visual treatment. */
+    letter-spacing: 0.7px; /* Tune spacing between characters in this label. */
+    padding: 3px 4px; /* Create inner space around the visible content. */
+    margin-left: 1px; /* Leave room before this inline item. */
+} /* Mark the product's initial release discreetly. */
+.workspace-selector { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 9px; /* Keep consistent spacing between neighboring items. */
+    border: 1px solid var(--line); /* Separate this element from the surrounding surface. */
+    background: var(--surface); /* Set this element’s surface or state color. */
+    padding: 12px 9px; /* Create inner space around the visible content. */
+    border-radius: 8px; /* Apply the shared rounded visual treatment. */
+    margin: 31px 1px 28px; /* Control outer spacing around this element. */
+} /* Explain the active workspace in a compact card. */
+.workspace-symbol { /* Apply these declarations to the selected interface elements. */
+    width: 29px; /* Set the element’s available horizontal space. */
+    height: 31px; /* Set the element’s vertical size. */
+    display: grid; /* Choose the layout model for this element and its children. */
+    place-items: center; /* Center or align content along both layout axes. */
+    background: #afa1ff13; /* Set this element’s surface or state color. */
+    color: var(--primary); /* Use the theme text color or the appropriate accent. */
+    border-radius: 6px; /* Apply the shared rounded visual treatment. */
+} /* Support the workspace label with a recognizable symbol. */
+.workspace-selector strong { /* Apply these declarations to the selected interface elements. */
+    display: block; /* Choose the layout model for this element and its children. */
+    font-size: 11px; /* Set the readable text size for this element. */
+    font-weight: 550; /* Apply the intended emphasis to this text. */
+    margin-bottom: 4px; /* Separate this element from following content. */
+} /* Keep the workspace title readable. */
+.workspace-selector span:not(.workspace-symbol) { /* Apply these declarations to the selected interface elements. */
+    display: block; /* Choose the layout model for this element and its children. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-size: 10px; /* Set the readable text size for this element. */
+} /* Deemphasize supporting workspace text. */
+.workspace-selector > svg { /* Apply these declarations to the selected interface elements. */
+    margin-left: auto; /* Leave room before this inline item. */
+    color: var(--subtle); /* Use the theme text color or the appropriate accent. */
+} /* Give the workspace card a subtle directional cue. */
+.nav-section-label { /* Apply these declarations to the selected interface elements. */
+    font-size: 9px; /* Set the readable text size for this element. */
+    color: var(--subtle); /* Use the theme text color or the appropriate accent. */
+    font-weight: 650; /* Apply the intended emphasis to this text. */
+    letter-spacing: 1.3px; /* Tune spacing between characters in this label. */
+    margin: 0 12px 12px; /* Control outer spacing around this element. */
+} /* Group navigation without large headings. */
+.nav-item { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 12px; /* Keep consistent spacing between neighboring items. */
+    padding: 11px 12px; /* Create inner space around the visible content. */
+    margin: 3px 0; /* Control outer spacing around this element. */
+    border-radius: 7px; /* Apply the shared rounded visual treatment. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-size: 12px; /* Set the readable text size for this element. */
+    font-weight: 480; /* Apply the intended emphasis to this text. */
+    transition: /* Animate only these subtle visual state changes. */
+        background 0.16s, /* Include this selector or value in the declaration below. */
+        color 0.16s; /* Continue the preceding multi-line style declaration. */
+} /* Give sidebar links generous click targets. */
+.nav-item:hover { /* Apply these declarations to the selected interface elements. */
+    background: var(--surface); /* Set this element’s surface or state color. */
+    color: var(--text); /* Use the theme text color or the appropriate accent. */
+} /* Provide a quiet hover indication. */
+.nav-item.active { /* Apply these declarations to the selected interface elements. */
+    background: #a694ff16; /* Set this element’s surface or state color. */
+    color: #bdadff; /* Use the theme text color or the appropriate accent. */
+} /* Clearly identify the selected route. */
+:root[data-theme="light"] .nav-item.active { /* Apply these declarations to the selected interface elements. */
+    color: #6b4bc6; /* Use the theme text color or the appropriate accent. */
+} /* Preserve active-link contrast in light mode. */
+.nav-item.active::before { /* Apply these declarations to the selected interface elements. */
+    content: ""; /* Supply the visual marker used by this pseudo-element. */
+    position: absolute; /* Choose how this element is positioned within its container. */
+    left: 0; /* Anchor the element to its intended horizontal position. */
+    width: 3px; /* Set the element’s available horizontal space. */
+    height: 21px; /* Set the element’s vertical size. */
+    background: var(--primary); /* Set this element’s surface or state color. */
+    border-radius: 0 3px 3px 0; /* Apply the shared rounded visual treatment. */
+} /* Add a shape cue beyond color for the current screen. */
+.new-badge { /* Apply these declarations to the selected interface elements. */
+    margin-left: auto; /* Leave room before this inline item. */
+    font-size: 7px; /* Set the readable text size for this element. */
+    color: #b9a6f5; /* Use the theme text color or the appropriate accent. */
+    letter-spacing: 0.7px; /* Tune spacing between characters in this label. */
+    padding: 3px 4px; /* Create inner space around the visible content. */
+    border-radius: 3px; /* Apply the shared rounded visual treatment. */
+    border: 1px solid #66558050; /* Separate this element from the surrounding surface. */
+} /* Make new assessment tools discoverable. */
+.nav-count { /* Apply these declarations to the selected interface elements. */
+    margin-left: auto; /* Leave room before this inline item. */
+    font-size: 9px; /* Set the readable text size for this element. */
+    color: var(--primary); /* Use the theme text color or the appropriate accent. */
+    background: #a694ff20; /* Set this element’s surface or state color. */
+    padding: 2px 5px; /* Create inner space around the visible content. */
+    border-radius: 4px; /* Apply the shared rounded visual treatment. */
+} /* Show a real revision count. */
+.library-label { /* Apply these declarations to the selected interface elements. */
+    margin-top: 25px; /* Separate this element from preceding content. */
+} /* Separate personal tools from core study actions. */
+.sidebar-bottom { /* Apply these declarations to the selected interface elements. */
+    margin-top: auto; /* Separate this element from preceding content. */
+    padding-top: 35px; /* Leave extra room above this content. */
+} /* Anchor settings and account access near the lower edge. */
+.learning-loop-card { /* Apply these declarations to the selected interface elements. */
+    position: relative; /* Choose how this element is positioned within its container. */
+    border: 1px solid #51436850; /* Separate this element from the surrounding surface. */
+    background: linear-gradient(120deg, #30213f35, #25203020); /* Set this element’s surface or state color. */
+    border-radius: 8px; /* Apply the shared rounded visual treatment. */
+    padding: 15px 12px 14px; /* Create inner space around the visible content. */
+    margin: 0 1px 17px; /* Control outer spacing around this element. */
+} /* Add a restrained motivational card. */
+.learning-loop-card > svg { /* Apply these declarations to the selected interface elements. */
+    color: var(--primary); /* Use the theme text color or the appropriate accent. */
+    margin-bottom: 9px; /* Separate this element from following content. */
+} /* Connect encouragement to the primary accent. */
+.learning-loop-card strong { /* Apply these declarations to the selected interface elements. */
+    display: block; /* Choose the layout model for this element and its children. */
+    font-size: 11px; /* Set the readable text size for this element. */
+    font-weight: 540; /* Apply the intended emphasis to this text. */
+    margin-bottom: 6px; /* Separate this element from following content. */
+} /* Keep the message brief and readable. */
+.learning-loop-card p { /* Apply these declarations to the selected interface elements. */
+    font-size: 10px; /* Set the readable text size for this element. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    line-height: 1.65; /* Keep wrapped lines comfortably readable. */
+} /* Give secondary encouragement a quiet tone. */
+.learning-loop-card a { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 5px; /* Keep consistent spacing between neighboring items. */
+    color: var(--primary); /* Use the theme text color or the appropriate accent. */
+    font-size: 10px; /* Set the readable text size for this element. */
+    margin-top: 12px; /* Separate this element from preceding content. */
+} /* Link the introduction to an actual page. */
+.sidebar-profile { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    gap: 10px; /* Keep consistent spacing between neighboring items. */
+    align-items: center; /* Align child items across the layout axis. */
+    padding: 16px 5px 0; /* Create inner space around the visible content. */
+    margin-top: 13px; /* Separate this element from preceding content. */
+    border-top: 1px solid var(--line); /* Separate this element from content above it. */
+} /* Separate account access from settings. */
+.avatar { /* Apply these declarations to the selected interface elements. */
+    display: inline-grid; /* Choose the layout model for this element and its children. */
+    place-items: center; /* Center or align content along both layout axes. */
+    height: 33px; /* Set the element’s vertical size. */
+    width: 33px; /* Set the element’s available horizontal space. */
+    flex-shrink: 0; /* Preserve the shape of essential controls and icons. */
+    border-radius: 50%; /* Apply the shared rounded visual treatment. */
+    background: #383146; /* Set this element’s surface or state color. */
+    border: 1px solid #5f4f74; /* Separate this element from the surrounding surface. */
+    color: #d7c4ef; /* Use the theme text color or the appropriate accent. */
+    font-size: 12px; /* Set the readable text size for this element. */
+    font-weight: 550; /* Apply the intended emphasis to this text. */
+} /* Render initials without external profile images. */
+.avatar-small { /* Apply these declarations to the selected interface elements. */
+    width: 29px; /* Set the element’s available horizontal space. */
+    height: 29px; /* Set the element’s vertical size. */
+    font-size: 10px; /* Set the readable text size for this element. */
+} /* Fit the avatar into the toolbar. */
+.sidebar-profile strong { /* Apply these declarations to the selected interface elements. */
+    display: block; /* Choose the layout model for this element and its children. */
+    font-size: 11px; /* Set the readable text size for this element. */
+    font-weight: 550; /* Apply the intended emphasis to this text. */
+    margin-bottom: 4px; /* Separate this element from following content. */
+} /* Identify the current account state. */
+.sidebar-profile div > span { /* Apply these declarations to the selected interface elements. */
+    font-size: 9px; /* Set the readable text size for this element. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+} /* Explain whether progress is account-backed. */
+.sidebar-profile > svg { /* Apply these declarations to the selected interface elements. */
+    margin-left: auto; /* Leave room before this inline item. */
+    color: var(--subtle); /* Use the theme text color or the appropriate accent. */
+} /* Indicate that the profile is navigable. */
+.main-shell { /* Apply these declarations to the selected interface elements. */
+    margin-left: 236px; /* Leave room before this inline item. */
+} /* Reserve room for the desktop sidebar. */
+.topbar { /* Apply these declarations to the selected interface elements. */
+    height: 73px; /* Set the element’s vertical size. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    padding: 0 35px; /* Create inner space around the visible content. */
+    border-bottom: 1px solid var(--line); /* Separate this element from content below it. */
+    background: var(--bg); /* Set this element’s surface or state color. */
+} /* Give the workspace a calm persistent toolbar. */
+.topbar-left, /* Include this selector or value in the declaration below. */
+.topbar-actions { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 15px; /* Keep consistent spacing between neighboring items. */
+} /* Align toolbar controls on one baseline. */
+.topbar-left { /* Apply these declarations to the selected interface elements. */
+    font-size: 11px; /* Set the readable text size for this element. */
+    gap: 12px; /* Keep consistent spacing between neighboring items. */
+} /* Keep breadcrumbs lightweight. */
+.breadcrumb-root, /* Include this selector or value in the declaration below. */
+.topbar-left > svg { /* Apply these declarations to the selected interface elements. */
+    color: var(--subtle); /* Use the theme text color or the appropriate accent. */
+} /* Deemphasize the parent workspace. */
+.breadcrumb-current { /* Apply these declarations to the selected interface elements. */
+    color: #cecad8; /* Use the theme text color or the appropriate accent. */
+} /* Highlight the current destination. */
+.search-trigger { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 9px; /* Keep consistent spacing between neighboring items. */
+    width: 234px; /* Set the element’s available horizontal space. */
+    height: 32px; /* Set the element’s vertical size. */
+    background: var(--surface); /* Set this element’s surface or state color. */
+    border: 1px solid var(--line); /* Separate this element from the surrounding surface. */
+    border-radius: 6px; /* Apply the shared rounded visual treatment. */
+    color: var(--subtle); /* Use the theme text color or the appropriate accent. */
+    padding: 0 10px; /* Create inner space around the visible content. */
+    font-size: 10px; /* Set the readable text size for this element. */
+    text-align: left; /* Align the text within this element. */
+} /* Offer compact global curriculum search. */
+kbd { /* Apply these declarations to the selected interface elements. */
+    margin-left: auto; /* Leave room before this inline item. */
+    border: 1px solid var(--line); /* Separate this element from the surrounding surface. */
+    border-radius: 3px; /* Apply the shared rounded visual treatment. */
+    padding: 2px 4px; /* Create inner space around the visible content. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-size: 9px; /* Set the readable text size for this element. */
+    font-family: inherit; /* Select the interface or code typeface. */
+} /* Make the search shortcut discoverable. */
+.icon-button { /* Apply these declarations to the selected interface elements. */
+    display: inline-grid; /* Choose the layout model for this element and its children. */
+    place-items: center; /* Center or align content along both layout axes. */
+    width: 30px; /* Set the element’s available horizontal space. */
+    height: 30px; /* Set the element’s vertical size. */
+    background: transparent; /* Set this element’s surface or state color. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    border-radius: 5px; /* Apply the shared rounded visual treatment. */
+} /* Provide reusable accessible icon actions. */
+.icon-button:hover { /* Apply these declarations to the selected interface elements. */
+    background: var(--surface-hover); /* Set this element’s surface or state color. */
+    color: var(--text); /* Use the theme text color or the appropriate accent. */
+} /* Show interactive feedback without heavy decoration. */
+.topbar-actions { /* Apply these declarations to the selected interface elements. */
+    gap: 12px; /* Keep consistent spacing between neighboring items. */
+} /* Give each toolbar action breathing room. */
+.topbar-divider { /* Apply these declarations to the selected interface elements. */
+    height: 22px; /* Set the element’s vertical size. */
+    width: 1px; /* Set the element’s available horizontal space. */
+    background: var(--line); /* Set this element’s surface or state color. */
+} /* Separate account controls from study tools. */
+.topbar-account { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 6px; /* Keep consistent spacing between neighboring items. */
+    font-size: 11px; /* Set the readable text size for this element. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+} /* Identify the real sign-in action explicitly. */
+.notification-button { /* Apply these declarations to the selected interface elements. */
+    position: relative; /* Choose how this element is positioned within its container. */
+} /* Position an actual revision indicator near its icon. */
+.notification-button i { /* Apply these declarations to the selected interface elements. */
+    position: absolute; /* Choose how this element is positioned within its container. */
+    top: 3px; /* Anchor the element to its intended vertical position. */
+    right: 5px; /* Anchor the element near the right edge. */
+    width: 4px; /* Set the element’s available horizontal space. */
+    height: 4px; /* Set the element’s vertical size. */
+    border-radius: 50%; /* Apply the shared rounded visual treatment. */
+    background: var(--primary); /* Set this element’s surface or state color. */
+} /* Indicate only existing revision needs. */
+.practice-banner { /* Apply these declarations to the selected interface elements. */
+    min-height: 33px; /* Reserve a useful minimum content height. */
+    padding: 8px 35px; /* Create inner space around the visible content. */
+    background: #a694ff06; /* Set this element’s surface or state color. */
+    border-bottom: 1px solid #a694ff12; /* Separate this element from content below it. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    gap: 12px; /* Keep consistent spacing between neighboring items. */
+    align-items: center; /* Align child items across the layout axis. */
+    font-size: 9px; /* Set the readable text size for this element. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+} /* Disclose local practice persistence without blocking learning. */
+.practice-banner > span, /* Include this selector or value in the declaration below. */
+.practice-banner a { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 6px; /* Keep consistent spacing between neighboring items. */
+} /* Keep disclosure and account action easy to scan. */
+.practice-banner a { /* Apply these declarations to the selected interface elements. */
+    color: #b3a5de; /* Use the theme text color or the appropriate accent. */
+} /* Make cross-device account sync discoverable. */
+.practice-dot { /* Apply these declarations to the selected interface elements. */
+    height: 4px; /* Set the element’s vertical size. */
+    width: 4px; /* Set the element’s available horizontal space. */
+    border-radius: 50%; /* Apply the shared rounded visual treatment. */
+    background: #b0a1df; /* Set this element’s surface or state color. */
+} /* Visually mark anonymous practice state. */
+.banner-separator { /* Apply these declarations to the selected interface elements. */
+    color: var(--subtle); /* Use the theme text color or the appropriate accent. */
+    margin: 0 2px; /* Control outer spacing around this element. */
+} /* Separate the status and persistence explanation. */
+.main-content { /* Apply these declarations to the selected interface elements. */
+    padding: 31px 35px 0; /* Create inner space around the visible content. */
+    max-width: 1660px; /* Keep this element within its readable width limit. */
+    margin: 0 auto; /* Control outer spacing around this element. */
+} /* Bound long pages while retaining comfortable spacing. */
+.dashboard-heading { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    gap: 15px; /* Keep consistent spacing between neighboring items. */
+    margin-bottom: 25px; /* Separate this element from following content. */
+} /* Introduce the learning workspace with a compact welcome. */
+.eyebrow { /* Apply these declarations to the selected interface elements. */
+    font-size: 8px; /* Set the readable text size for this element. */
+    letter-spacing: 1.45px; /* Tune spacing between characters in this label. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-weight: 650; /* Apply the intended emphasis to this text. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 7px; /* Keep consistent spacing between neighboring items. */
+    margin-bottom: 11px; /* Separate this element from following content. */
+} /* Create a consistent small context label. */
+.live-dot { /* Apply these declarations to the selected interface elements. */
+    width: 5px; /* Set the element’s available horizontal space. */
+    height: 5px; /* Set the element’s vertical size. */
+    background: #a99ae6; /* Set this element’s surface or state color. */
+    border-radius: 50%; /* Apply the shared rounded visual treatment. */
+    box-shadow: 0 0 0 3px #a99ae612; /* Give this surface or indicator its subtle visual emphasis. */
+} /* Add a restrained brand accent. */
+.dashboard-heading h1 { /* Apply these declarations to the selected interface elements. */
+    font-size: 27px; /* Set the readable text size for this element. */
+    font-weight: 580; /* Apply the intended emphasis to this text. */
+    letter-spacing: -0.9px; /* Tune spacing between characters in this label. */
+} /* Keep the dashboard greeting concise. */
+.dashboard-heading h1 span { /* Apply these declarations to the selected interface elements. */
+    color: #c6b7ee; /* Use the theme text color or the appropriate accent. */
+} /* Highlight the preparation objective. */
+.dashboard-heading p { /* Apply these declarations to the selected interface elements. */
+    font-size: 10px; /* Set the readable text size for this element. */
+    margin-top: 9px; /* Separate this element from preceding content. */
+} /* Add a short purposeful subtitle. */
+.date-chip { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 7px; /* Keep consistent spacing between neighboring items. */
+    border: 1px solid var(--line); /* Separate this element from the surrounding surface. */
+    border-radius: 6px; /* Apply the shared rounded visual treatment. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-size: 10px; /* Set the readable text size for this element. */
+    padding: 9px 11px; /* Create inner space around the visible content. */
+    white-space: nowrap; /* Preserve the intended text wrapping behavior. */
+} /* Show the client-local calendar date. */
+.stats-grid { /* Apply these declarations to the selected interface elements. */
+    display: grid; /* Choose the layout model for this element and its children. */
+    grid-template-columns: repeat(4, minmax(0, 1fr)); /* Allocate the available content columns. */
+    gap: 15px; /* Keep consistent spacing between neighboring items. */
+} /* Keep comparable metrics aligned. */
+.stat-card { /* Apply these declarations to the selected interface elements. */
+    padding: 17px 17px 14px; /* Create inner space around the visible content. */
+    background: var(--surface); /* Set this element’s surface or state color. */
+    border: 1px solid var(--line); /* Separate this element from the surrounding surface. */
+    border-radius: 9px; /* Apply the shared rounded visual treatment. */
+    overflow: hidden; /* Contain content inside its visual boundary. */
+    position: relative; /* Choose how this element is positioned within its container. */
+} /* Give each statistic a quiet bordered card. */
+.stat-top { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    align-items: center; /* Align child items across the layout axis. */
+    color: #acabb9; /* Use the theme text color or the appropriate accent. */
+    font-size: 10px; /* Set the readable text size for this element. */
+} /* Pair the measure name with its icon. */
+.stat-value { /* Apply these declarations to the selected interface elements. */
+    font-size: 28px; /* Set the readable text size for this element. */
+    letter-spacing: -0.8px; /* Tune spacing between characters in this label. */
+    margin: 11px 0 6px; /* Control outer spacing around this element. */
+    font-weight: 560; /* Apply the intended emphasis to this text. */
+} /* Make actual values the card's focal point. */
+.stat-value small { /* Apply these declarations to the selected interface elements. */
+    font-size: 11px; /* Set the readable text size for this element. */
+    margin-left: 6px; /* Leave room before this inline item. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-weight: 400; /* Apply the intended emphasis to this text. */
+    letter-spacing: 0; /* Tune spacing between characters in this label. */
+} /* Clarify streak units. */
+.stat-card p { /* Apply these declarations to the selected interface elements. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-size: 8px; /* Set the readable text size for this element. */
+    line-height: 1.5; /* Keep wrapped lines comfortably readable. */
+} /* Explain each statistic's denominator or meaning. */
+.stat-rule { /* Apply these declarations to the selected interface elements. */
+    position: absolute; /* Choose how this element is positioned within its container. */
+    height: 2px; /* Set the element’s vertical size. */
+    width: 36px; /* Set the element’s available horizontal space. */
+    bottom: 0; /* Anchor the element near the lower edge. */
+    left: 17px; /* Anchor the element to its intended horizontal position. */
+    border-radius: 2px 2px 0 0; /* Apply the shared rounded visual treatment. */
+} /* Connect the card's measure to a subtle accent. */
+.stat-rule.violet { /* Apply these declarations to the selected interface elements. */
+    background: #b4a1ff; /* Set this element’s surface or state color. */
+} /* Identify curriculum progress. */
+.stat-rule.green { /* Apply these declarations to the selected interface elements. */
+    background: #78d8b2; /* Set this element’s surface or state color. */
+} /* Identify checkpoint success. */
+.stat-rule.amber { /* Apply these declarations to the selected interface elements. */
+    background: #edb76f; /* Set this element’s surface or state color. */
+} /* Identify study consistency. */
+.stat-rule.blue { /* Apply these declarations to the selected interface elements. */
+    background: #89aeff; /* Set this element’s surface or state color. */
+} /* Identify readiness. */
+.dashboard-main-grid { /* Apply these declarations to the selected interface elements. */
+    display: grid; /* Choose the layout model for this element and its children. */
+    grid-template-columns: minmax(0, 1fr) 267px; /* Allocate the available content columns. */
+    gap: 22px; /* Keep consistent spacing between neighboring items. */
+    margin-top: 23px; /* Separate this element from preceding content. */
+} /* Allocate more space to learning paths than supporting insights. */
+.dashboard-primary, /* Include this selector or value in the declaration below. */
+.dashboard-rail { /* Apply these declarations to the selected interface elements. */
+    min-width: 0; /* Keep content flexible while respecting its minimum width. */
+} /* Allow cards to shrink correctly within the grid. */
+.continue-card { /* Apply these declarations to the selected interface elements. */
+    min-height: 215px; /* Reserve a useful minimum content height. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    overflow: hidden; /* Contain content inside its visual boundary. */
+    position: relative; /* Choose how this element is positioned within its container. */
+    padding: 23px; /* Create inner space around the visible content. */
+    border: 1px solid #54436c73; /* Separate this element from the surrounding surface. */
+    border-radius: 10px; /* Apply the shared rounded visual treatment. */
+    background: /* Set this element’s surface or state color. */
+        radial-gradient(ellipse at 97% 20%, #47315440, transparent 58%), /* Include this selector or value in the declaration below. */
+        linear-gradient(120deg, #211b2c, #1b1922); /* Continue the preceding multi-line style declaration. */
+} /* Emphasize the next useful learning action. */
+.continue-card .eyebrow { /* Apply these declarations to the selected interface elements. */
+    color: #b4a1d3; /* Use the theme text color or the appropriate accent. */
+    font-size: 7px; /* Set the readable text size for this element. */
+    margin-bottom: 18px; /* Separate this element from following content. */
+    letter-spacing: 1.1px; /* Tune spacing between characters in this label. */
+} /* Introduce the recommended lesson. */
+.tiny-play { /* Apply these declarations to the selected interface elements. */
+    width: 14px; /* Set the element’s available horizontal space. */
+    height: 14px; /* Set the element’s vertical size. */
+    border-radius: 4px; /* Apply the shared rounded visual treatment. */
+    background: #a995e51b; /* Set this element’s surface or state color. */
+    display: grid; /* Choose the layout model for this element and its children. */
+    place-items: center; /* Center or align content along both layout axes. */
+} /* Reinforce the start-learning action. */
+.continue-content { /* Apply these declarations to the selected interface elements. */
+    position: relative; /* Choose how this element is positioned within its container. */
+    z-index: 1; /* Keep this layer above or below related interface regions. */
+    min-width: 0; /* Keep content flexible while respecting its minimum width. */
+    flex: 1; /* Allocate this item’s share of flexible space. */
+} /* Keep essential learning content in front of decoration. */
+.continue-subject { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    gap: 6px; /* Keep consistent spacing between neighboring items. */
+    align-items: center; /* Align child items across the layout axis. */
+    font-size: 8px; /* Set the readable text size for this element. */
+    color: #a69cae; /* Use the theme text color or the appropriate accent. */
+    margin-bottom: 8px; /* Separate this element from following content. */
+} /* Show the lesson's location in the curriculum. */
+.continue-subject span { /* Apply these declarations to the selected interface elements. */
+    color: #8e829a; /* Use the theme text color or the appropriate accent. */
+} /* Deemphasize the parent module. */
+.continue-card h2 { /* Apply these declarations to the selected interface elements. */
+    font-size: 23px; /* Set the readable text size for this element. */
+    font-weight: 580; /* Apply the intended emphasis to this text. */
+    letter-spacing: -0.6px; /* Tune spacing between characters in this label. */
+    color: #ede7f5; /* Use the theme text color or the appropriate accent. */
+    max-width: 365px; /* Keep this element within its readable width limit. */
+} /* Make the lesson easy to identify. */
+.continue-card p { /* Apply these declarations to the selected interface elements. */
+    color: #9b91a8; /* Use the theme text color or the appropriate accent. */
+    font-size: 9px; /* Set the readable text size for this element. */
+    margin-top: 9px; /* Separate this element from preceding content. */
+    max-width: 300px; /* Keep this element within its readable width limit. */
+} /* Explain the learning intent in one line. */
+.continue-footer { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 12px; /* Keep consistent spacing between neighboring items. */
+    margin-top: 23px; /* Separate this element from preceding content. */
+} /* Pair the primary action with reading expectations. */
+.continue-footer > span { /* Apply these declarations to the selected interface elements. */
+    display: inline-flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 5px; /* Keep consistent spacing between neighboring items. */
+    font-size: 8px; /* Set the readable text size for this element. */
+    color: #a399b3; /* Use the theme text color or the appropriate accent. */
+    white-space: nowrap; /* Preserve the intended text wrapping behavior. */
+} /* Keep time and difficulty unobtrusive. */
+.continue-footer .button { /* Apply these declarations to the selected interface elements. */
+    font-size: 10px; /* Set the readable text size for this element. */
+    padding: 10px 13px; /* Create inner space around the visible content. */
+    border-radius: 6px; /* Apply the shared rounded visual treatment. */
+} /* Fit the call to action to the feature card. */
+.difficulty-tag { /* Apply these declarations to the selected interface elements. */
+    border: 1px solid #78948336; /* Separate this element from the surrounding surface. */
+    color: #86b89c !important; /* Use the theme text color or the appropriate accent. */
+    padding: 3px 5px; /* Create inner space around the visible content. */
+    border-radius: 3px; /* Apply the shared rounded visual treatment. */
+    background: #75ad8d09; /* Set this element’s surface or state color. */
+    font-size: 7px !important; /* Set the readable text size for this element. */
+} /* Give lesson difficulty a clear text label. */
+.code-art { /* Apply these declarations to the selected interface elements. */
+    width: 190px; /* Set the element’s available horizontal space. */
+    position: relative; /* Choose how this element is positioned within its container. */
+    flex-shrink: 0; /* Preserve the shape of essential controls and icons. */
+    align-self: center; /* Apply the align-self presentation setting to this element. */
+    margin: 6px -3px 0 0; /* Control outer spacing around this element. */
+} /* Use a small code illustration suited to CS study. */
+.art-window { /* Apply these declarations to the selected interface elements. */
+    width: 190px; /* Set the element’s available horizontal space. */
+    height: 139px; /* Set the element’s vertical size. */
+    padding: 10px; /* Create inner space around the visible content. */
+    border: 1px solid #5b4b6c66; /* Separate this element from the surrounding surface. */
+    border-radius: 7px; /* Apply the shared rounded visual treatment. */
+    background: #17131d9c; /* Set this element’s surface or state color. */
+    transform: perspective(700px) rotateY(-9deg) rotateZ(-3deg); /* Position or scale this visual state. */
+    box-shadow: 12px 14px 30px #09070d45; /* Give this surface or indicator its subtle visual emphasis. */
+} /* Give the code example a restrained dimensional treatment. */
+.art-dots { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    gap: 4px; /* Keep consistent spacing between neighboring items. */
+    margin-bottom: 12px; /* Separate this element from following content. */
+    padding-bottom: 8px; /* Leave extra room below this content. */
+    border-bottom: 1px solid #45394d40; /* Separate this element from content below it. */
+} /* Suggest a lightweight code editor. */
+.art-dots i { /* Apply these declarations to the selected interface elements. */
+    width: 4px; /* Set the element’s available horizontal space. */
+    height: 4px; /* Set the element’s vertical size. */
+    border-radius: 50%; /* Apply the shared rounded visual treatment. */
+    background: #5d4868; /* Set this element’s surface or state color. */
+} /* Keep editor chrome decorative. */
+.art-dots i:nth-child(2) { /* Apply these declarations to the selected interface elements. */
+    background: #6b5b45; /* Set this element’s surface or state color. */
+} /* Vary the decorative editor dots. */
+.art-dots i:nth-child(3) { /* Apply these declarations to the selected interface elements. */
+    background: #456258; /* Set this element’s surface or state color. */
+} /* Finish the editor chrome. */
+.art-code { /* Apply these declarations to the selected interface elements. */
+    font: /* Inherit readable interface typography. */
+        8px/1.8 "SFMono-Regular", /* Include this selector or value in the declaration below. */
+        Consolas, /* Include this selector or value in the declaration below. */
+        monospace; /* Continue the preceding multi-line style declaration. */
+    color: #c5b4d9; /* Use the theme text color or the appropriate accent. */
+} /* Use legible monospaced code in the illustration. */
+.code-muted { /* Apply these declarations to the selected interface elements. */
+    color: #63556f; /* Use the theme text color or the appropriate accent. */
+} /* Style illustrative comments. */
+.code-purple { /* Apply these declarations to the selected interface elements. */
+    color: #bc9fdb; /* Use the theme text color or the appropriate accent. */
+} /* Style illustrative language keywords. */
+.code-gold { /* Apply these declarations to the selected interface elements. */
+    color: #d5bd89; /* Use the theme text color or the appropriate accent. */
+} /* Style the example class name. */
+.code-blue { /* Apply these declarations to the selected interface elements. */
+    color: #8fa9cf; /* Use the theme text color or the appropriate accent. */
+} /* Style the return keyword. */
+.code-green { /* Apply these declarations to the selected interface elements. */
+    color: #92b7a1; /* Use the theme text color or the appropriate accent. */
+} /* Style the example result. */
+.art-badge { /* Apply these declarations to the selected interface elements. */
+    position: absolute; /* Choose how this element is positioned within its container. */
+    right: -3px; /* Anchor the element near the right edge. */
+    bottom: -9px; /* Anchor the element near the lower edge. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 5px; /* Keep consistent spacing between neighboring items. */
+    background: #2d2637; /* Set this element’s surface or state color. */
+    border: 1px solid #5a486f; /* Separate this element from the surrounding surface. */
+    color: #c8b9da; /* Use the theme text color or the appropriate accent. */
+    border-radius: 5px; /* Apply the shared rounded visual treatment. */
+    font-size: 7px; /* Set the readable text size for this element. */
+    padding: 7px 8px; /* Create inner space around the visible content. */
+    transform: rotate(-3deg); /* Position or scale this visual state. */
+} /* Reinforce incremental learning. */
+.art-badge svg { /* Apply these declarations to the selected interface elements. */
+    color: #8ec2a6; /* Use the theme text color or the appropriate accent. */
+} /* Give the learning reminder a success cue. */
+.section-heading { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 12px; /* Keep consistent spacing between neighboring items. */
+    margin: 25px 0 17px; /* Control outer spacing around this element. */
+} /* Separate the curriculum section clearly. */
+.section-heading h2 { /* Apply these declarations to the selected interface elements. */
+    font-size: 15px; /* Set the readable text size for this element. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 10px; /* Keep consistent spacing between neighboring items. */
+} /* Pair the section name with its real subject count. */
+.section-heading p { /* Apply these declarations to the selected interface elements. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-size: 9px; /* Set the readable text size for this element. */
+    margin-top: 6px; /* Separate this element from preceding content. */
+} /* Explain the learning paths briefly. */
+.count-badge { /* Apply these declarations to the selected interface elements. */
+    font-size: 8px; /* Set the readable text size for this element. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-weight: 400; /* Apply the intended emphasis to this text. */
+    border: 1px solid var(--line); /* Separate this element from the surrounding surface. */
+    border-radius: 4px; /* Apply the shared rounded visual treatment. */
+    padding: 3px 5px; /* Create inner space around the visible content. */
+    letter-spacing: 0; /* Tune spacing between characters in this label. */
+} /* Give counts a quiet chip treatment. */
+.text-link { /* Apply these declarations to the selected interface elements. */
+    color: var(--primary); /* Use the theme text color or the appropriate accent. */
+    font-size: 10px; /* Set the readable text size for this element. */
+    display: inline-flex; /* Choose the layout model for this element and its children. */
+    gap: 6px; /* Keep consistent spacing between neighboring items. */
+    align-items: center; /* Align child items across the layout axis. */
+} /* Make secondary actions consistent. */
+.text-link:hover { /* Apply these declarations to the selected interface elements. */
+    text-decoration: underline; /* Control the visual treatment of linked text. */
+    text-underline-offset: 3px; /* Apply the text-underline-offset presentation setting to this element. */
+} /* Add recognizable link hover feedback. */
+.dashboard-subject-grid { /* Apply these declarations to the selected interface elements. */
+    display: grid; /* Choose the layout model for this element and its children. */
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* Allocate the available content columns. */
+    gap: 13px; /* Keep consistent spacing between neighboring items. */
+} /* Show six curriculum paths in a compact two-row grid. */
+.subject-card { /* Apply these declarations to the selected interface elements. */
+    padding: 16px 14px 0; /* Create inner space around the visible content. */
+    border: 1px solid var(--line); /* Separate this element from the surrounding surface. */
+    border-radius: 9px; /* Apply the shared rounded visual treatment. */
+    background: var(--surface); /* Set this element’s surface or state color. */
+    transition: /* Animate only these subtle visual state changes. */
+        border-color 0.16s, /* Include this selector or value in the declaration below. */
+        transform 0.16s; /* Continue the preceding multi-line style declaration. */
+    min-width: 0; /* Keep content flexible while respecting its minimum width. */
+} /* Keep each learning path balanced and actionable. */
+.subject-card:hover { /* Apply these declarations to the selected interface elements. */
+    border-color: #69577d; /* Apply the intended border state or accent. */
+    transform: translateY(-2px); /* Position or scale this visual state. */
+} /* Provide a small responsive hover cue. */
+.subject-card-top { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    margin-bottom: 13px; /* Separate this element from following content. */
+} /* Align identity and actual topic totals. */
+.subject-icon { /* Apply these declarations to the selected interface elements. */
+    display: inline-grid; /* Choose the layout model for this element and its children. */
+    place-items: center; /* Center or align content along both layout axes. */
+    width: 37px; /* Set the element’s available horizontal space. */
+    height: 37px; /* Set the element’s vertical size. */
+    border-radius: 8px; /* Apply the shared rounded visual treatment. */
+    flex-shrink: 0; /* Preserve the shape of essential controls and icons. */
+} /* Reuse subject accents across screens. */
+.subject-topic-count { /* Apply these declarations to the selected interface elements. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-size: 8px; /* Set the readable text size for this element. */
+} /* Keep the curriculum denominator visible. */
+.subject-card h3 { /* Apply these declarations to the selected interface elements. */
+    font-size: 12px; /* Set the readable text size for this element. */
+    letter-spacing: -0.15px; /* Tune spacing between characters in this label. */
+    line-height: 1.4; /* Keep wrapped lines comfortably readable. */
+    min-height: 17px; /* Reserve a useful minimum content height. */
+} /* Keep long subject names readable. */
+.subject-card p { /* Apply these declarations to the selected interface elements. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-size: 8px; /* Set the readable text size for this element. */
+    margin-top: 5px; /* Separate this element from preceding content. */
+    white-space: nowrap; /* Preserve the intended text wrapping behavior. */
+    letter-spacing: -0.12px; /* Tune spacing between characters in this label. */
+} /* Provide a concise subject promise. */
+.subject-progress-label { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-size: 8px; /* Set the readable text size for this element. */
+    margin-top: 20px; /* Separate this element from preceding content. */
+    margin-bottom: 8px; /* Separate this element from following content. */
+} /* Label the progress bar with text and percentage. */
+.subject-progress-label strong { /* Apply these declarations to the selected interface elements. */
+    color: #b8b3c2; /* Use the theme text color or the appropriate accent. */
+    font-size: 8px; /* Set the readable text size for this element. */
+    font-weight: 500; /* Apply the intended emphasis to this text. */
+} /* Keep numeric progress legible. */
+.progress-track { /* Apply these declarations to the selected interface elements. */
+    height: 4px; /* Set the element’s vertical size. */
+    background: #2d2d38; /* Set this element’s surface or state color. */
+    border-radius: 5px; /* Apply the shared rounded visual treatment. */
+    overflow: hidden; /* Contain content inside its visual boundary. */
+} /* Show an honest zero state while reserving space for earned progress. */
+.progress-fill { /* Apply these declarations to the selected interface elements. */
+    height: 100%; /* Set the element’s vertical size. */
+    background: var(--primary); /* Set this element’s surface or state color. */
+    border-radius: inherit; /* Apply the shared rounded visual treatment. */
+    transition: width 0.25s ease; /* Animate only these subtle visual state changes. */
+} /* Animate actual saved progress changes. */
+.subject-card-bottom { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    padding: 12px 0 13px; /* Create inner space around the visible content. */
+    margin-top: 13px; /* Separate this element from preceding content. */
+    border-top: 1px solid var(--line); /* Separate this element from content above it. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+} /* Separate checkpoint evidence from reading completion. */
+.difficulty-counts { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    gap: 8px; /* Keep consistent spacing between neighboring items. */
+} /* Compare all three difficulty levels without crowding. */
+.difficulty-counts span { /* Apply these declarations to the selected interface elements. */
+    font-size: 7px; /* Set the readable text size for this element. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 4px; /* Keep consistent spacing between neighboring items. */
+} /* Keep checkpoint counts compact. */
+.difficulty-counts i { /* Apply these declarations to the selected interface elements. */
+    height: 3px; /* Set the element’s vertical size. */
+    width: 3px; /* Set the element’s available horizontal space. */
+    border-radius: 50%; /* Apply the shared rounded visual treatment. */
+} /* Pair level labels with supporting color dots. */
+.easy-dot { /* Apply these declarations to the selected interface elements. */
+    background: #71b895; /* Set this element’s surface or state color. */
+} /* Support the Easy level label. */
+.medium-dot { /* Apply these declarations to the selected interface elements. */
+    background: #d1ac6e; /* Set this element’s surface or state color. */
+} /* Support the Medium level label. */
+.hard-dot { /* Apply these declarations to the selected interface elements. */
+    background: #cb849e; /* Set this element’s surface or state color. */
+} /* Support the Hard level label. */
+.panel { /* Apply these declarations to the selected interface elements. */
+    border: 1px solid var(--line); /* Separate this element from the surrounding surface. */
+    background: var(--surface); /* Set this element’s surface or state color. */
+    border-radius: 9px; /* Apply the shared rounded visual treatment. */
+    padding: 21px; /* Create inner space around the visible content. */
+} /* Define a reusable quiet content container. */
+.panel-header { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    gap: 12px; /* Keep consistent spacing between neighboring items. */
+} /* Align section titles with related actions. */
+.panel-header h2 { /* Apply these declarations to the selected interface elements. */
+    font-size: 13px; /* Set the readable text size for this element. */
+} /* Keep dense dashboard panels readable. */
+.panel-header p { /* Apply these declarations to the selected interface elements. */
+    font-size: 9px; /* Set the readable text size for this element. */
+    margin-top: 6px; /* Separate this element from preceding content. */
+} /* Add context without competing with the heading. */
+.dashboard-rail { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    gap: 18px; /* Keep consistent spacing between neighboring items. */
+} /* Keep supporting cards evenly spaced. */
+.dashboard-rail .panel { /* Apply these declarations to the selected interface elements. */
+    padding: 19px; /* Create inner space around the visible content. */
+} /* Fit the supporting column's narrower width. */
+.daily-goal > p { /* Apply these declarations to the selected interface elements. */
+    font-size: 9px; /* Set the readable text size for this element. */
+    margin-top: 6px; /* Separate this element from preceding content. */
+} /* Explain the daily habit goal. */
+.goal-icon { /* Apply these declarations to the selected interface elements. */
+    display: grid; /* Choose the layout model for this element and its children. */
+    place-items: center; /* Center or align content along both layout axes. */
+    width: 28px; /* Set the element’s available horizontal space. */
+    height: 28px; /* Set the element’s vertical size. */
+    border-radius: 7px; /* Apply the shared rounded visual treatment. */
+    color: #d8b078; /* Use the theme text color or the appropriate accent. */
+    background: #d8b0780e; /* Set this element’s surface or state color. */
+} /* Reinforce consistency with a restrained flame icon. */
+.goal-progress { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: baseline; /* Align child items across the layout axis. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    margin-top: 20px; /* Separate this element from preceding content. */
+    margin-bottom: 10px; /* Separate this element from following content. */
+} /* Give today's earned activity a clear numerator. */
+.goal-progress strong { /* Apply these declarations to the selected interface elements. */
+    font-size: 24px; /* Set the readable text size for this element. */
+    font-weight: 540; /* Apply the intended emphasis to this text. */
+} /* Emphasize today's progress. */
+.goal-progress strong span { /* Apply these declarations to the selected interface elements. */
+    font-size: 13px; /* Set the readable text size for this element. */
+    color: var(--subtle); /* Use the theme text color or the appropriate accent. */
+    font-weight: 400; /* Apply the intended emphasis to this text. */
+} /* Show the chosen daily target. */
+.goal-progress > span { /* Apply these declarations to the selected interface elements. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-size: 8px; /* Set the readable text size for this element. */
+} /* Clarify what the goal counts. */
+.goal-habits { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    gap: 12px; /* Keep consistent spacing between neighboring items. */
+    margin: 21px 0 18px; /* Control outer spacing around this element. */
+} /* Suggest a balanced learning loop. */
+.goal-habits > span { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 9px; /* Keep consistent spacing between neighboring items. */
+    color: #a5a1b1; /* Use the theme text color or the appropriate accent. */
+    font-size: 10px; /* Set the readable text size for this element. */
+} /* Make study suggestions easy to scan. */
+.habit-check { /* Apply these declarations to the selected interface elements. */
+    display: grid; /* Choose the layout model for this element and its children. */
+    place-items: center; /* Center or align content along both layout axes. */
+    width: 13px; /* Set the element’s available horizontal space. */
+    height: 13px; /* Set the element’s vertical size. */
+    border: 1px solid #44414e; /* Separate this element from the surrounding surface. */
+    border-radius: 50%; /* Apply the shared rounded visual treatment. */
+} /* Show unearned progress without fake checkmarks. */
+.habit-check.checked { /* Apply these declarations to the selected interface elements. */
+    background: #9a87d530; /* Set this element’s surface or state color. */
+    border-color: #9a87d5; /* Apply the intended border state or accent. */
+    color: #c0acef; /* Use the theme text color or the appropriate accent. */
+} /* Reflect completed daily actions. */
+.daily-goal > .text-link { /* Apply these declarations to the selected interface elements. */
+    font-size: 8px; /* Set the readable text size for this element. */
+    color: #a99bbc; /* Use the theme text color or the appropriate accent. */
+} /* Keep goal personalization accessible. */
+.revision-preview > p { /* Apply these declarations to the selected interface elements. */
+    font-size: 9px; /* Set the readable text size for this element. */
+    margin-top: 7px; /* Separate this element from preceding content. */
+} /* Introduce the spaced-revision card. */
+.revision-zero { /* Apply these declarations to the selected interface elements. */
+    padding: 25px 0 21px; /* Create inner space around the visible content. */
+    text-align: center; /* Align the text within this element. */
+} /* Use a purposeful honest empty state. */
+.revision-illustration { /* Apply these declarations to the selected interface elements. */
+    width: 43px; /* Set the element’s available horizontal space. */
+    height: 43px; /* Set the element’s vertical size. */
+    display: grid; /* Choose the layout model for this element and its children. */
+    place-items: center; /* Center or align content along both layout axes. */
+    border: 1px dashed #63517475; /* Separate this element from the surrounding surface. */
+    background: #ac8ecf08; /* Set this element’s surface or state color. */
+    color: #a58abf; /* Use the theme text color or the appropriate accent. */
+    border-radius: 50%; /* Apply the shared rounded visual treatment. */
+    margin: 0 auto 14px; /* Control outer spacing around this element. */
+} /* Visualize revision without adding stock imagery. */
+.revision-zero strong { /* Apply these declarations to the selected interface elements. */
+    font-size: 10px; /* Set the readable text size for this element. */
+    font-weight: 500; /* Apply the intended emphasis to this text. */
+    color: #c3b8ce; /* Use the theme text color or the appropriate accent. */
+} /* Encourage starting a real revision habit. */
+.revision-zero p { /* Apply these declarations to the selected interface elements. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-size: 8px; /* Set the readable text size for this element. */
+    margin-top: 6px; /* Separate this element from preceding content. */
+} /* Explain what will populate the panel. */
+.button { /* Apply these declarations to the selected interface elements. */
+    display: inline-flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    justify-content: center; /* Distribute child items along the layout axis. */
+    gap: 9px; /* Keep consistent spacing between neighboring items. */
+    padding: 11px 15px; /* Create inner space around the visible content. */
+    border: 1px solid transparent; /* Separate this element from the surrounding surface. */
+    border-radius: 6px; /* Apply the shared rounded visual treatment. */
+    font-size: 11px; /* Set the readable text size for this element. */
+    font-weight: 550; /* Apply the intended emphasis to this text. */
+    line-height: 1.3; /* Keep wrapped lines comfortably readable. */
+    transition: /* Animate only these subtle visual state changes. */
+        background 0.16s, /* Include this selector or value in the declaration below. */
+        border-color 0.16s; /* Continue the preceding multi-line style declaration. */
+} /* Share reliable native button and link-button styling. */
+.button.primary { /* Apply these declarations to the selected interface elements. */
+    background: var(--primary); /* Set this element’s surface or state color. */
+    color: var(--primary-text); /* Use the theme text color or the appropriate accent. */
+} /* Reserve the primary accent for useful next steps. */
+.button.primary:hover { /* Apply these declarations to the selected interface elements. */
+    background: #c1b3ff; /* Set this element’s surface or state color. */
+} /* Make the primary action visibly responsive. */
+.button.secondary { /* Apply these declarations to the selected interface elements. */
+    background: var(--surface-raised); /* Set this element’s surface or state color. */
+    color: #bab4c6; /* Use the theme text color or the appropriate accent. */
+    border-color: #393440; /* Apply the intended border state or accent. */
+} /* Style supporting actions with subtle borders. */
+.button.secondary:hover { /* Apply these declarations to the selected interface elements. */
+    background: var(--surface-hover); /* Set this element’s surface or state color. */
+    border-color: #6c5b7e; /* Apply the intended border state or accent. */
+} /* Keep secondary actions discoverable on hover. */
+.button.ghost { /* Apply these declarations to the selected interface elements. */
+    background: transparent; /* Set this element’s surface or state color. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    border-color: var(--line); /* Apply the intended border state or accent. */
+} /* Support low-emphasis actions. */
+.full-width { /* Apply these declarations to the selected interface elements. */
+    width: 100%; /* Set the element’s available horizontal space. */
+} /* Expand forms and narrow-column actions to their container width. */
+.revision-preview .button { /* Apply these declarations to the selected interface elements. */
+    font-size: 9px; /* Set the readable text size for this element. */
+    padding: 10px; /* Create inner space around the visible content. */
+} /* Fit the revision action within the right rail. */
+.revision-mini { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 8px; /* Keep consistent spacing between neighboring items. */
+    padding: 16px 0; /* Create inner space around the visible content. */
+    border-bottom: 1px solid var(--line); /* Separate this element from content below it. */
+} /* Show actual due revision items. */
+.revision-mini strong { /* Apply these declarations to the selected interface elements. */
+    display: block; /* Choose the layout model for this element and its children. */
+    font-size: 10px; /* Set the readable text size for this element. */
+} /* Identify the due lesson. */
+.revision-mini small { /* Apply these declarations to the selected interface elements. */
+    display: block; /* Choose the layout model for this element and its children. */
+    font-size: 8px; /* Set the readable text size for this element. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    margin-top: 5px; /* Separate this element from preceding content. */
+} /* Explain why the lesson appears. */
+.revision-mini > svg { /* Apply these declarations to the selected interface elements. */
+    margin-left: auto; /* Leave room before this inline item. */
+} /* Signal the lesson's reader destination. */
+.revision-dot { /* Apply these declarations to the selected interface elements. */
+    width: 5px; /* Set the element’s available horizontal space. */
+    height: 5px; /* Set the element’s vertical size. */
+    background: #cbaa77; /* Set this element’s surface or state color. */
+    border-radius: 50%; /* Apply the shared rounded visual treatment. */
+} /* Support the revision text status with a small cue. */
+.readiness-card { /* Apply these declarations to the selected interface elements. */
+    position: relative; /* Choose how this element is positioned within its container. */
+    overflow: hidden; /* Contain content inside its visual boundary. */
+    border: 1px solid #414348; /* Separate this element from the surrounding surface. */
+    border-radius: 9px; /* Apply the shared rounded visual treatment. */
+    padding: 20px 18px; /* Create inner space around the visible content. */
+    background: linear-gradient(135deg, #242a2820, #22232790); /* Set this element’s surface or state color. */
+} /* Offer a calm call to practice. */
+.readiness-title { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 7px; /* Keep consistent spacing between neighboring items. */
+    color: #a5b4a9; /* Use the theme text color or the appropriate accent. */
+    font-size: 7px; /* Set the readable text size for this element. */
+    letter-spacing: 1px; /* Tune spacing between characters in this label. */
+    margin-bottom: 15px; /* Separate this element from following content. */
+} /* Identify the purpose of the encouragement card. */
+.readiness-card h3 { /* Apply these declarations to the selected interface elements. */
+    font-size: 16px; /* Set the readable text size for this element. */
+    line-height: 1.5; /* Keep wrapped lines comfortably readable. */
+    font-weight: 530; /* Apply the intended emphasis to this text. */
+    color: #dedee2; /* Use the theme text color or the appropriate accent. */
+} /* Focus on durable understanding. */
+.readiness-card p { /* Apply these declarations to the selected interface elements. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-size: 9px; /* Set the readable text size for this element. */
+    margin-top: 10px; /* Separate this element from preceding content. */
+} /* Explain the suggested learning habit. */
+.readiness-card a { /* Apply these declarations to the selected interface elements. */
+    font-size: 8px; /* Set the readable text size for this element. */
+    color: #b4c1b7; /* Use the theme text color or the appropriate accent. */
+    margin-top: 20px; /* Separate this element from preceding content. */
+    position: relative; /* Choose how this element is positioned within its container. */
+    z-index: 1; /* Keep this layer above or below related interface regions. */
+} /* Connect encouragement to an actual assessment. */
+.readiness-watermark { /* Apply these declarations to the selected interface elements. */
+    position: absolute; /* Choose how this element is positioned within its container. */
+    right: 12px; /* Anchor the element near the right edge. */
+    bottom: 9px; /* Anchor the element near the lower edge. */
+    font: /* Inherit readable interface typography. */
+        70px/1 Georgia, /* Include this selector or value in the declaration below. */
+        serif; /* Continue the preceding multi-line style declaration. */
+    color: #56665a13; /* Use the theme text color or the appropriate accent. */
+    transform: rotate(-12deg); /* Position or scale this visual state. */
+} /* Add a subtle code motif. */
+.rail-footnote { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    gap: 7px; /* Keep consistent spacing between neighboring items. */
+    padding: 0 4px; /* Create inner space around the visible content. */
+    color: var(--subtle); /* Use the theme text color or the appropriate accent. */
+    font-size: 8px; /* Set the readable text size for this element. */
+    line-height: 1.7; /* Keep wrapped lines comfortably readable. */
+} /* Clarify readiness without interrupting the main flow. */
+.rail-footnote a { /* Apply these declarations to the selected interface elements. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    text-decoration: underline; /* Control the visual treatment of linked text. */
+    text-underline-offset: 3px; /* Apply the text-underline-offset presentation setting to this element. */
+} /* Make the calculation explanation reachable. */
+.activity-panel { /* Apply these declarations to the selected interface elements. */
+    margin-top: 20px; /* Separate this element from preceding content. */
+    padding: 19px; /* Create inner space around the visible content. */
+} /* Place long-term activity below the learning paths. */
+.activity-body { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    gap: 10px; /* Keep consistent spacing between neighboring items. */
+    margin-top: 20px; /* Separate this element from preceding content. */
+} /* Align calendar cells with weekday labels. */
+.activity-labels { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    color: var(--subtle); /* Use the theme text color or the appropriate accent. */
+    font-size: 7px; /* Set the readable text size for this element. */
+    padding: 13px 0; /* Create inner space around the visible content. */
+    width: 18px; /* Set the element’s available horizontal space. */
+} /* Label the calendar compactly. */
+.activity-cells { /* Apply these declarations to the selected interface elements. */
+    display: grid; /* Choose the layout model for this element and its children. */
+    grid-template-rows: repeat(7, 1fr); /* Apply the grid-template-rows presentation setting to this element. */
+    grid-auto-flow: column; /* Apply the grid-auto-flow presentation setting to this element. */
+    grid-auto-columns: minmax(0, 1fr); /* Apply the grid-auto-columns presentation setting to this element. */
+    gap: 4px; /* Keep consistent spacing between neighboring items. */
+    flex: 1; /* Allocate this item’s share of flexible space. */
+} /* Show fourteen weeks in a familiar contribution calendar. */
+.activity-cell { /* Apply these declarations to the selected interface elements. */
+    height: 10px; /* Set the element’s vertical size. */
+    border-radius: 2px; /* Apply the shared rounded visual treatment. */
+    background: #292832; /* Set this element’s surface or state color. */
+    border: 1px solid #33313b; /* Separate this element from the surrounding surface. */
+} /* Represent a day with no learning actions honestly. */
+.activity-cell.level-1 { /* Apply these declarations to the selected interface elements. */
+    background: #53486a; /* Set this element’s surface or state color. */
+} /* Show one action. */
+.activity-cell.level-2 { /* Apply these declarations to the selected interface elements. */
+    background: #766091; /* Set this element’s surface or state color. */
+} /* Show two actions. */
+.activity-cell.level-3 { /* Apply these declarations to the selected interface elements. */
+    background: #9a7bc0; /* Set this element’s surface or state color. */
+} /* Show three actions. */
+.activity-cell.level-4 { /* Apply these declarations to the selected interface elements. */
+    background: #b69bdd; /* Set this element’s surface or state color. */
+} /* Show four or more actions. */
+.activity-legend { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    color: var(--subtle); /* Use the theme text color or the appropriate accent. */
+    font-size: 7px; /* Set the readable text size for this element. */
+    margin-top: 13px; /* Separate this element from preceding content. */
+} /* Explain activity intensity and total events. */
+.activity-legend > div { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 4px; /* Keep consistent spacing between neighboring items. */
+} /* Align the intensity legend. */
+.activity-legend i { /* Apply these declarations to the selected interface elements. */
+    width: 7px; /* Set the element’s available horizontal space. */
+    height: 7px; /* Set the element’s vertical size. */
+    background: #3a3349; /* Set this element’s surface or state color. */
+    border-radius: 1px; /* Apply the shared rounded visual treatment. */
+} /* Begin the legend at low activity. */
+.activity-legend i:nth-child(2) { /* Apply these declarations to the selected interface elements. */
+    background: #655275; /* Set this element’s surface or state color. */
+} /* Show moderate legend intensity. */
+.activity-legend i:nth-child(3) { /* Apply these declarations to the selected interface elements. */
+    background: #8d6fb0; /* Set this element’s surface or state color. */
+} /* Show higher legend intensity. */
+.activity-legend i:nth-child(4) { /* Apply these declarations to the selected interface elements. */
+    background: #b69bdd; /* Set this element’s surface or state color. */
+} /* Show the highest legend intensity. */
+.workspace-footer { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    gap: 15px; /* Keep consistent spacing between neighboring items. */
+    color: var(--subtle); /* Use the theme text color or the appropriate accent. */
+    font-size: 8px; /* Set the readable text size for this element. */
+    padding: 26px 0 21px; /* Create inner space around the visible content. */
+    margin-top: 4px; /* Separate this element from preceding content. */
+} /* End the workspace with a light learning reminder. */
+.page-heading { /* Apply these declarations to the selected interface elements. */
+    margin: 7px 0 27px; /* Control outer spacing around this element. */
+} /* Give secondary screens a consistent introduction. */
+.page-heading p { /* Apply these declarations to the selected interface elements. */
+    margin-top: 10px; /* Separate this element from preceding content. */
+    font-size: 12px; /* Set the readable text size for this element. */
+} /* Keep secondary screen descriptions readable. */
+.empty-state { /* Apply these declarations to the selected interface elements. */
+    text-align: center; /* Align the text within this element. */
+    padding: 55px 25px; /* Create inner space around the visible content. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+} /* Handle new accounts and missing records intentionally. */
+.empty-state svg { /* Apply these declarations to the selected interface elements. */
+    margin: 0 auto 18px; /* Control outer spacing around this element. */
+    color: var(--primary); /* Use the theme text color or the appropriate accent. */
+} /* Tie empty states to the CoreLab identity. */
+.empty-state h1, /* Include this selector or value in the declaration below. */
+.empty-state h2 { /* Apply these declarations to the selected interface elements. */
+    color: var(--text); /* Use the theme text color or the appropriate accent. */
+    margin-bottom: 12px; /* Separate this element from following content. */
+} /* Give empty states a useful headline. */
+.empty-state p { /* Apply these declarations to the selected interface elements. */
+    margin: 0 auto 22px; /* Control outer spacing around this element. */
+    max-width: 430px; /* Keep this element within its readable width limit. */
+} /* Explain the next useful action without filling space. */
+.input, /* Include this selector or value in the declaration below. */
+.textarea, /* Include this selector or value in the declaration below. */
+.select { /* Apply these declarations to the selected interface elements. */
+    width: 100%; /* Set the element’s available horizontal space. */
+    background: var(--bg); /* Set this element’s surface or state color. */
+    border: 1px solid var(--line); /* Separate this element from the surrounding surface. */
+    border-radius: 6px; /* Apply the shared rounded visual treatment. */
+    padding: 12px; /* Create inner space around the visible content. */
+    color: var(--text); /* Use the theme text color or the appropriate accent. */
+    outline: none; /* Make keyboard focus clearly visible. */
+} /* Style labeled form fields consistently. */
+.input:focus, /* Apply the .input presentation setting to this element. */
+.textarea:focus, /* Apply the .textarea presentation setting to this element. */
+.select:focus { /* Apply these declarations to the selected interface elements. */
+    border-color: var(--primary); /* Apply the intended border state or accent. */
+    box-shadow: 0 0 0 2px #a694ff12; /* Give this surface or indicator its subtle visual emphasis. */
+} /* Preserve visible form focus. */
+.textarea { /* Apply these declarations to the selected interface elements. */
+    min-height: 130px; /* Reserve a useful minimum content height. */
+    resize: vertical; /* Apply the resize presentation setting to this element. */
+    line-height: 1.7; /* Keep wrapped lines comfortably readable. */
+} /* Make personal notes comfortable to write and resize. */
+.form-field { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    gap: 9px; /* Keep consistent spacing between neighboring items. */
+    margin: 20px 0; /* Control outer spacing around this element. */
+    font-size: 12px; /* Set the readable text size for this element. */
+    font-weight: 500; /* Apply the intended emphasis to this text. */
+} /* Keep labels connected to their inputs. */
+.form-error, /* Include this selector or value in the declaration below. */
+.form-success { /* Apply these declarations to the selected interface elements. */
+    padding: 12px; /* Create inner space around the visible content. */
+    border-radius: 6px; /* Apply the shared rounded visual treatment. */
+    font-size: 12px; /* Set the readable text size for this element. */
+    line-height: 1.6; /* Keep wrapped lines comfortably readable. */
+    margin: 15px 0; /* Control outer spacing around this element. */
+} /* Reserve clear space for form outcomes. */
+.form-error { /* Apply these declarations to the selected interface elements. */
+    background: #c5646f10; /* Set this element’s surface or state color. */
+    color: #f1a4ab; /* Use the theme text color or the appropriate accent. */
+    border: 1px solid #c5646f40; /* Separate this element from the surrounding surface. */
+} /* Present validation failures with text and color. */
+.form-success { /* Apply these declarations to the selected interface elements. */
+    background: #6ac59810; /* Set this element’s surface or state color. */
+    color: var(--green); /* Use the theme text color or the appropriate accent. */
+    border: 1px solid #6ac59840; /* Separate this element from the surrounding surface. */
+} /* Present successful requests with text and color. */
+.badge { /* Apply these declarations to the selected interface elements. */
+    display: inline-flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 5px; /* Keep consistent spacing between neighboring items. */
+    font-size: 10px; /* Set the readable text size for this element. */
+    border: 1px solid var(--line); /* Separate this element from the surrounding surface. */
+    border-radius: 4px; /* Apply the shared rounded visual treatment. */
+    padding: 5px 7px; /* Create inner space around the visible content. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+} /* Support semantic text statuses on learning screens. */
+.tabs { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    flex-wrap: wrap; /* Let controls wrap when available width becomes narrow. */
+    gap: 6px; /* Keep consistent spacing between neighboring items. */
+    margin: 18px 0; /* Control outer spacing around this element. */
+} /* Keep difficulty levels equally accessible. */
+.tab { /* Apply these declarations to the selected interface elements. */
+    background: transparent; /* Set this element’s surface or state color. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    padding: 9px 13px; /* Create inner space around the visible content. */
+    border-radius: 5px; /* Apply the shared rounded visual treatment. */
+    font-size: 12px; /* Set the readable text size for this element. */
+    border: 1px solid var(--line); /* Separate this element from the surrounding surface. */
+} /* Render keyboard-accessible tab buttons. */
+.tab.active { /* Apply these declarations to the selected interface elements. */
+    background: #a694ff18; /* Set this element’s surface or state color. */
+    color: var(--primary); /* Use the theme text color or the appropriate accent. */
+    border-color: #a694ff55; /* Apply the intended border state or accent. */
+} /* Mark the selected difficulty with text, border, and fill. */
+.split-grid { /* Apply these declarations to the selected interface elements. */
+    display: grid; /* Choose the layout model for this element and its children. */
+    grid-template-columns: 1.6fr 1fr; /* Allocate the available content columns. */
+    gap: 22px; /* Keep consistent spacing between neighboring items. */
+} /* Support main-content and context layouts on secondary pages. */
+.topic-row { /* Apply these declarations to the selected interface elements. */
+    padding: 16px; /* Create inner space around the visible content. */
+    border-bottom: 1px solid var(--line); /* Separate this element from content below it. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 12px; /* Keep consistent spacing between neighboring items. */
+} /* Keep lesson lists spacious and scannable. */
+.toast { /* Apply these declarations to the selected interface elements. */
+    position: fixed; /* Choose how this element is positioned within its container. */
+    bottom: 24px; /* Anchor the element near the lower edge. */
+    left: 50%; /* Anchor the element to its intended horizontal position. */
+    transform: translateX(-50%); /* Position or scale this visual state. */
+    z-index: 150; /* Keep this layer above or below related interface regions. */
+    max-width: min(90vw, 550px); /* Keep this element within its readable width limit. */
+    padding: 13px 21px; /* Create inner space around the visible content. */
+    border: 1px solid #75638e; /* Separate this element from the surrounding surface. */
+    background: #292231; /* Set this element’s surface or state color. */
+    color: #e4d9ed; /* Use the theme text color or the appropriate accent. */
+    border-radius: 8px; /* Apply the shared rounded visual treatment. */
+    box-shadow: 0 8px 30px #0003; /* Give this surface or indicator its subtle visual emphasis. */
+    font-size: 12px; /* Set the readable text size for this element. */
+} /* Announce actions accessibly without stealing focus. */
+.dialog-overlay { /* Apply these declarations to the selected interface elements. */
+    position: fixed; /* Choose how this element is positioned within its container. */
+    inset: 0; /* Anchor this positioned element to the specified edges. */
+    background: #08070cbb; /* Set this element’s surface or state color. */
+    backdrop-filter: blur(5px); /* Apply the backdrop-filter presentation setting to this element. */
+    z-index: 100; /* Keep this layer above or below related interface regions. */
+} /* Focus attention on curriculum search. */
+.search-dialog { /* Apply these declarations to the selected interface elements. */
+    position: fixed; /* Choose how this element is positioned within its container. */
+    top: 16%; /* Anchor the element to its intended vertical position. */
+    left: 50%; /* Anchor the element to its intended horizontal position. */
+    transform: translateX(-50%); /* Position or scale this visual state. */
+    width: min(620px, 92vw); /* Set the element’s available horizontal space. */
+    max-height: 72vh; /* Bound tall content while retaining access through scrolling. */
+    border: 1px solid #51465f; /* Separate this element from the surrounding surface. */
+    border-radius: 12px; /* Apply the shared rounded visual treatment. */
+    background: var(--surface); /* Set this element’s surface or state color. */
+    z-index: 101; /* Keep this layer above or below related interface regions. */
+    box-shadow: 0 20px 70px #0007; /* Give this surface or indicator its subtle visual emphasis. */
+    overflow: hidden; /* Contain content inside its visual boundary. */
+} /* Provide an accessible bounded search surface. */
+.search-dialog-input { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    gap: 14px; /* Keep consistent spacing between neighboring items. */
+    align-items: center; /* Align child items across the layout axis. */
+    padding: 17px 19px; /* Create inner space around the visible content. */
+    border-bottom: 1px solid var(--line); /* Separate this element from content below it. */
+    color: var(--primary); /* Use the theme text color or the appropriate accent. */
+} /* Make the query the modal's primary focus. */
+.search-dialog-input input { /* Apply these declarations to the selected interface elements. */
+    background: transparent; /* Set this element’s surface or state color. */
+    border: none; /* Separate this element from the surrounding surface. */
+    outline: none; /* Make keyboard focus clearly visible. */
+    flex: 1; /* Allocate this item’s share of flexible space. */
+    width: 0; /* Set the element’s available horizontal space. */
+    color: var(--text); /* Use the theme text color or the appropriate accent. */
+    font-size: 14px; /* Set the readable text size for this element. */
+} /* Keep search input visually quiet but usable. */
+.search-results { /* Apply these declarations to the selected interface elements. */
+    max-height: 48vh; /* Bound tall content while retaining access through scrolling. */
+    overflow-y: auto; /* Keep long content vertically accessible. */
+    padding: 7px; /* Create inner space around the visible content. */
+} /* Keep long result sets scrollable inside the modal. */
+.search-results button { /* Apply these declarations to the selected interface elements. */
+    width: 100%; /* Set the element’s available horizontal space. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    gap: 12px; /* Keep consistent spacing between neighboring items. */
+    align-items: center; /* Align child items across the layout axis. */
+    text-align: left; /* Align the text within this element. */
+    background: transparent; /* Set this element’s surface or state color. */
+    border-radius: 6px; /* Apply the shared rounded visual treatment. */
+    padding: 13px; /* Create inner space around the visible content. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+} /* Make each result a full-width accessible action. */
+.search-results button:hover { /* Apply these declarations to the selected interface elements. */
+    background: var(--surface-hover); /* Set this element’s surface or state color. */
+} /* Indicate the hovered search destination. */
+.search-results strong { /* Apply these declarations to the selected interface elements. */
+    display: block; /* Choose the layout model for this element and its children. */
+    color: var(--text); /* Use the theme text color or the appropriate accent. */
+    font-size: 12px; /* Set the readable text size for this element. */
+    font-weight: 500; /* Apply the intended emphasis to this text. */
+} /* Emphasize the actual matching lesson. */
+.search-results span { /* Apply these declarations to the selected interface elements. */
+    display: block; /* Choose the layout model for this element and its children. */
+    font-size: 10px; /* Set the readable text size for this element. */
+    margin-top: 5px; /* Separate this element from preceding content. */
+} /* Show each lesson's curriculum location. */
+.search-results button > svg:last-child { /* Apply these declarations to the selected interface elements. */
+    margin-left: auto; /* Leave room before this inline item. */
+} /* Align result navigation cues. */
+.search-dialog-footer { /* Apply these declarations to the selected interface elements. */
+    padding: 12px 20px; /* Create inner space around the visible content. */
+    border-top: 1px solid var(--line); /* Separate this element from content above it. */
+    color: var(--subtle); /* Use the theme text color or the appropriate accent. */
+    font-size: 10px; /* Set the readable text size for this element. */
+} /* Give search a useful curriculum count. */
+.auth-layout { /* Apply these declarations to the selected interface elements. */
+    min-height: 100vh; /* Reserve a useful minimum content height. */
+    display: grid; /* Choose the layout model for this element and its children. */
+    grid-template-columns: 1fr 1fr; /* Allocate the available content columns. */
+} /* Split the account screen between motivation and a focused form. */
+.auth-story { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    padding: 40px 50px; /* Create inner space around the visible content. */
+    background: radial-gradient(ellipse at 25% 45%, #3b29485c, transparent 70%), #15131b; /* Set this element’s surface or state color. */
+    border-right: 1px solid #342a40; /* Separate neighboring layout regions. */
+} /* Create a quiet branded account introduction. */
+.auth-story-body { /* Apply these declarations to the selected interface elements. */
+    margin: auto 0; /* Control outer spacing around this element. */
+    padding: 60px 0; /* Create inner space around the visible content. */
+} /* Vertically center the core learning message. */
+.auth-story h1 { /* Apply these declarations to the selected interface elements. */
+    font-size: 41px; /* Set the readable text size for this element. */
+    line-height: 1.25; /* Keep wrapped lines comfortably readable. */
+    color: #e3d8ef; /* Use the theme text color or the appropriate accent. */
+    margin-bottom: 20px; /* Separate this element from following content. */
+} /* Give the account page a clear purpose. */
+.auth-story-body > p { /* Apply these declarations to the selected interface elements. */
+    font-size: 13px; /* Set the readable text size for this element. */
+    color: #a798b4; /* Use the theme text color or the appropriate accent. */
+    max-width: 380px; /* Keep this element within its readable width limit. */
+} /* Explain the learning benefit briefly. */
+.auth-benefits { /* Apply these declarations to the selected interface elements. */
+    display: grid; /* Choose the layout model for this element and its children. */
+    gap: 20px; /* Keep consistent spacing between neighboring items. */
+    margin-top: 35px; /* Separate this element from preceding content. */
+    font-size: 12px; /* Set the readable text size for this element. */
+    color: #c3b4d0; /* Use the theme text color or the appropriate accent. */
+} /* Summarize the three practical benefits. */
+.auth-benefits span { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    gap: 12px; /* Keep consistent spacing between neighboring items. */
+    align-items: center; /* Align child items across the layout axis. */
+} /* Pair each benefit with its icon. */
+.auth-benefits svg { /* Apply these declarations to the selected interface elements. */
+    color: #b29ad3; /* Use the theme text color or the appropriate accent. */
+} /* Connect the benefits to the primary accent. */
+.auth-code { /* Apply these declarations to the selected interface elements. */
+    margin-top: 40px; /* Separate this element from preceding content. */
+    color: #9f8eb2; /* Use the theme text color or the appropriate accent. */
+    font-size: 13px; /* Set the readable text size for this element. */
+    line-height: 1.8; /* Keep wrapped lines comfortably readable. */
+} /* Reinforce the developer learning theme. */
+.auth-story > p { /* Apply these declarations to the selected interface elements. */
+    font-size: 10px; /* Set the readable text size for this element. */
+    color: #71637d; /* Use the theme text color or the appropriate accent. */
+} /* Keep the learning cycle as a quiet footer. */
+.auth-form-side { /* Apply these declarations to the selected interface elements. */
+    padding: 40px 50px; /* Create inner space around the visible content. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+} /* Give forms comfortable outer spacing. */
+.auth-form-wrap { /* Apply these declarations to the selected interface elements. */
+    width: 100%; /* Set the element’s available horizontal space. */
+    max-width: 370px; /* Keep this element within its readable width limit. */
+    margin: auto; /* Control outer spacing around this element. */
+    padding: 40px 0; /* Create inner space around the visible content. */
+} /* Keep form fields at a readable length. */
+.auth-form-icon { /* Apply these declarations to the selected interface elements. */
+    width: 48px; /* Set the element’s available horizontal space. */
+    height: 48px; /* Set the element’s vertical size. */
+    display: grid; /* Choose the layout model for this element and its children. */
+    place-items: center; /* Center or align content along both layout axes. */
+    background: #a694ff12; /* Set this element’s surface or state color. */
+    color: var(--primary); /* Use the theme text color or the appropriate accent. */
+    border: 1px solid #a694ff33; /* Separate this element from the surrounding surface. */
+    border-radius: 12px; /* Apply the shared rounded visual treatment. */
+    margin-bottom: 26px; /* Separate this element from following content. */
+} /* Make secure account access visually recognizable. */
+.auth-form-wrap h1 { /* Apply these declarations to the selected interface elements. */
+    margin-bottom: 12px; /* Separate this element from following content. */
+} /* Separate the form title from its description. */
+.auth-form-wrap > p { /* Apply these declarations to the selected interface elements. */
+    font-size: 12px; /* Set the readable text size for this element. */
+} /* Keep account instructions readable. */
+.auth-form-wrap form { /* Apply these declarations to the selected interface elements. */
+    margin-top: 30px; /* Separate this element from preceding content. */
+} /* Give the primary form a clear starting point. */
+.auth-form-wrap .button { /* Apply these declarations to the selected interface elements. */
+    margin-top: 18px; /* Separate this element from preceding content. */
+    min-height: 43px; /* Reserve a useful minimum content height. */
+} /* Make the submit control easy to activate. */
+.forgot-link { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    justify-content: flex-end; /* Distribute child items along the layout axis. */
+    margin-top: -8px; /* Separate this element from preceding content. */
+} /* Keep password recovery near the password field. */
+.auth-switch { /* Apply these declarations to the selected interface elements. */
+    text-align: center; /* Align the text within this element. */
+    margin-top: 25px; /* Separate this element from preceding content. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+} /* Link directly between login and registration. */
+.auth-switch a { /* Apply these declarations to the selected interface elements. */
+    color: var(--primary); /* Use the theme text color or the appropriate accent. */
+} /* Make alternative account flows visible. */
+.auth-privacy { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    justify-content: center; /* Distribute child items along the layout axis. */
+    gap: 6px; /* Keep consistent spacing between neighboring items. */
+    color: var(--subtle); /* Use the theme text color or the appropriate accent. */
+    font-size: 10px !important; /* Set the readable text size for this element. */
+    margin-top: 40px; /* Separate this element from preceding content. */
+} /* Reassure the learner about account-specific records. */
+.account-panel { /* Apply these declarations to the selected interface elements. */
+    max-width: 640px; /* Keep this element within its readable width limit. */
+    padding: 30px; /* Create inner space around the visible content. */
+    margin-bottom: 35px; /* Separate this element from following content. */
+} /* Keep profile and preference forms comfortably narrow. */
+.account-panel > p { /* Apply these declarations to the selected interface elements. */
+    margin-top: 10px; /* Separate this element from preceding content. */
+    font-size: 12px; /* Set the readable text size for this element. */
+} /* Explain preferences before presenting controls. */
+.profile-header { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    gap: 18px; /* Keep consistent spacing between neighboring items. */
+    align-items: center; /* Align child items across the layout axis. */
+    padding-bottom: 25px; /* Leave extra room below this content. */
+    border-bottom: 1px solid var(--line); /* Separate this element from content below it. */
+} /* Group the profile identity above editable fields. */
+.profile-header p { /* Apply these declarations to the selected interface elements. */
+    margin-top: 7px; /* Separate this element from preceding content. */
+    font-size: 12px; /* Set the readable text size for this element. */
+} /* Show the current account email as supporting detail. */
+.avatar-large { /* Apply these declarations to the selected interface elements. */
+    height: 55px; /* Set the element’s vertical size. */
+    width: 55px; /* Set the element’s available horizontal space. */
+    font-size: 20px; /* Set the readable text size for this element. */
+} /* Give the profile page a larger initials avatar. */
+.account-panel > .button { /* Apply these declarations to the selected interface elements. */
+    margin-top: 30px; /* Separate this element from preceding content. */
+} /* Separate sign-out from saving profile details. */
+.account-panel form > h3 { /* Apply these declarations to the selected interface elements. */
+    margin-top: 35px; /* Separate this element from preceding content. */
+} /* Group configurable mastery thresholds. */
+.account-panel form > p { /* Apply these declarations to the selected interface elements. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-size: 12px; /* Set the readable text size for this element. */
+    margin-top: 9px; /* Separate this element from preceding content. */
+} /* Explain how thresholds affect mastery. */
+.threshold-field { /* Apply these declarations to the selected interface elements. */
+    flex-direction: row; /* Set the direction of this flexible content stack. */
+    align-items: center; /* Align child items across the layout axis. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    gap: 20px; /* Keep consistent spacing between neighboring items. */
+} /* Align percentage settings for easy comparison. */
+.threshold-field > span:last-child { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 9px; /* Keep consistent spacing between neighboring items. */
+    width: 100px; /* Set the element’s available horizontal space. */
+} /* Keep numeric threshold fields compact. */
+.settings-info { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    gap: 13px; /* Keep consistent spacing between neighboring items. */
+    margin-top: 35px; /* Separate this element from preceding content. */
+    padding-top: 24px; /* Leave extra room above this content. */
+    border-top: 1px solid var(--line); /* Separate this element from content above it. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+} /* Explain the built-in revision schedule. */
+.settings-info strong { /* Apply these declarations to the selected interface elements. */
+    font-size: 12px; /* Set the readable text size for this element. */
+    color: var(--text); /* Use the theme text color or the appropriate accent. */
+} /* Label the revision behavior clearly. */
+.settings-info p { /* Apply these declarations to the selected interface elements. */
+    font-size: 11px; /* Set the readable text size for this element. */
+    margin-top: 7px; /* Separate this element from preceding content. */
+} /* Show the actual review intervals. */
+.landing { /* Apply these declarations to the selected interface elements. */
+    min-height: 100vh; /* Reserve a useful minimum content height. */
+    background: radial-gradient(ellipse at 50% 30%, #39274435, transparent 65%); /* Set this element’s surface or state color. */
+} /* Give the public introduction a restrained atmosphere. */
+.landing > header { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    padding: 28px 7vw; /* Create inner space around the visible content. */
+    border-bottom: 1px solid var(--line); /* Separate this element from content below it. */
+} /* Keep account entry points visible. */
+.landing > header > div { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 24px; /* Keep consistent spacing between neighboring items. */
+} /* Separate the two authentication actions. */
+.landing > main { /* Apply these declarations to the selected interface elements. */
+    text-align: center; /* Align the text within this element. */
+    padding: 90px 7vw 60px; /* Create inner space around the visible content. */
+} /* Center the product proposition. */
+.landing .eyebrow { /* Apply these declarations to the selected interface elements. */
+    justify-content: center; /* Distribute child items along the layout axis. */
+    margin-bottom: 25px; /* Separate this element from following content. */
+} /* Introduce the learning workspace. */
+.landing h1 { /* Apply these declarations to the selected interface elements. */
+    font-size: clamp(36px, 5vw, 67px); /* Set the readable text size for this element. */
+    font-weight: 620; /* Apply the intended emphasis to this text. */
+    letter-spacing: -2.2px; /* Tune spacing between characters in this label. */
+} /* Give the introduction a clear typographic focal point. */
+.landing h1 span { /* Apply these declarations to the selected interface elements. */
+    color: #bdadf3; /* Use the theme text color or the appropriate accent. */
+} /* Highlight interview confidence. */
+.landing main > p { /* Apply these declarations to the selected interface elements. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    margin-top: 25px; /* Separate this element from preceding content. */
+    font-size: 15px; /* Set the readable text size for this element. */
+} /* Explain the platform without technical implementation details. */
+.landing-actions { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    gap: 13px; /* Keep consistent spacing between neighboring items. */
+    justify-content: center; /* Distribute child items along the layout axis. */
+    margin-top: 35px; /* Separate this element from preceding content. */
+} /* Offer both account creation and immediate exploration. */
+.landing-features { /* Apply these declarations to the selected interface elements. */
+    display: grid; /* Choose the layout model for this element and its children. */
+    grid-template-columns: repeat(3, 1fr); /* Allocate the available content columns. */
+    gap: 22px; /* Keep consistent spacing between neighboring items. */
+    text-align: left; /* Align the text within this element. */
+    max-width: 1080px; /* Keep this element within its readable width limit. */
+    margin: 75px auto 0; /* Control outer spacing around this element. */
+} /* Introduce three parallel learning benefits. */
+.landing-features .panel { /* Apply these declarations to the selected interface elements. */
+    padding: 28px; /* Create inner space around the visible content. */
+} /* Give each benefit a readable amount of space. */
+.landing-features svg { /* Apply these declarations to the selected interface elements. */
+    color: var(--primary); /* Use the theme text color or the appropriate accent. */
+    margin-bottom: 20px; /* Separate this element from following content. */
+} /* Use subject-relevant icons instead of stock imagery. */
+.landing-features p { /* Apply these declarations to the selected interface elements. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-size: 12px; /* Set the readable text size for this element. */
+    margin-top: 13px; /* Separate this element from preceding content. */
+} /* Keep feature descriptions concise. */
+.landing-cycle { /* Apply these declarations to the selected interface elements. */
+    display: flex; /* Choose the layout model for this element and its children. */
+    flex-wrap: wrap; /* Let controls wrap when available width becomes narrow. */
+    justify-content: center; /* Distribute child items along the layout axis. */
+    gap: 15px; /* Keep consistent spacing between neighboring items. */
+    margin-top: 55px; /* Separate this element from preceding content. */
+    color: var(--muted); /* Use the theme text color or the appropriate accent. */
+    font-size: 12px; /* Set the readable text size for this element. */
+} /* Explain the intended learning loop. */
+.landing-cycle span { /* Apply these declarations to the selected interface elements. */
+    color: #6d577f; /* Use the theme text color or the appropriate accent. */
+} /* Separate cycle stages subtly. */
+.landing > footer { /* Apply these declarations to the selected interface elements. */
+    text-align: center; /* Align the text within this element. */
+    padding: 25px; /* Create inner space around the visible content. */
+    color: var(--subtle); /* Use the theme text color or the appropriate accent. */
+    font-size: 10px; /* Set the readable text size for this element. */
+} /* End the introduction quietly. */
+.mobile-menu { /* Apply these declarations to the selected interface elements. */
+    display: none; /* Choose the layout model for this element and its children. */
+} /* Hide drawer controls on full-width screens. */
+.drawer-backdrop { /* Apply these declarations to the selected interface elements. */
+    display: none; /* Choose the layout model for this element and its children. */
+} /* Reserve the backdrop for narrow-screen navigation. */
+.spinning { /* Apply these declarations to the selected interface elements. */
+    animation: spin 1s linear infinite; /* Apply the animation presentation setting to this element. */
+} /* Indicate a real pending network action. */
+@keyframes spin { /* Apply these declarations to the selected interface elements. */
+    to { /* Apply these declarations to the selected interface elements. */
+        transform: rotate(360deg); /* Position or scale this visual state. */
+    } /* Finish this style rule. */
+} /* Define the loading indicator rotation. */
+@media (min-width: 1600px) { /* Adapt this layout to the viewport or accessibility preference. */
+    .main-content { /* Apply these declarations to the selected interface elements. */
+        padding-top: 40px; /* Leave extra room above this content. */
+    } /* Finish this style rule. */
+    .dashboard-heading h1 { /* Apply these declarations to the selected interface elements. */
+        font-size: 32px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .dashboard-main-grid { /* Apply these declarations to the selected interface elements. */
+        grid-template-columns: minmax(0, 1fr) 310px; /* Allocate the available content columns. */
+        gap: 27px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .subject-card { /* Apply these declarations to the selected interface elements. */
+        padding: 22px 20px 0; /* Create inner space around the visible content. */
+    } /* Finish this style rule. */
+    .subject-card h3 { /* Apply these declarations to the selected interface elements. */
+        font-size: 14px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .subject-card p { /* Apply these declarations to the selected interface elements. */
+        font-size: 10px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .subject-card-top { /* Apply these declarations to the selected interface elements. */
+        margin-bottom: 18px; /* Separate this element from following content. */
+    } /* Finish this style rule. */
+    .continue-card { /* Apply these declarations to the selected interface elements. */
+        min-height: 230px; /* Reserve a useful minimum content height. */
+    } /* Finish this style rule. */
+    .continue-card h2 { /* Apply these declarations to the selected interface elements. */
+        font-size: 28px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .code-art { /* Apply these declarations to the selected interface elements. */
+        margin-right: 28px; /* Leave room after this inline item. */
+    } /* Finish this style rule. */
+} /* Use extra screen width for comfortable learning cards. */
+@media (max-width: 1250px) { /* Adapt this layout to the viewport or accessibility preference. */
+    .sidebar { /* Apply these declarations to the selected interface elements. */
+        width: 212px; /* Set the element’s available horizontal space. */
+        padding-left: 12px; /* Align the left edge with the intended spacing. */
+        padding-right: 12px; /* Align the right edge with the intended spacing. */
+    } /* Finish this style rule. */
+    .main-shell { /* Apply these declarations to the selected interface elements. */
+        margin-left: 212px; /* Leave room before this inline item. */
+    } /* Finish this style rule. */
+    .topbar { /* Apply these declarations to the selected interface elements. */
+        padding: 0 24px; /* Create inner space around the visible content. */
+    } /* Finish this style rule. */
+    .main-content { /* Apply these declarations to the selected interface elements. */
+        padding-left: 24px; /* Align the left edge with the intended spacing. */
+        padding-right: 24px; /* Align the right edge with the intended spacing. */
+    } /* Finish this style rule. */
+    .practice-banner { /* Apply these declarations to the selected interface elements. */
+        padding-left: 24px; /* Align the left edge with the intended spacing. */
+        padding-right: 24px; /* Align the right edge with the intended spacing. */
+    } /* Finish this style rule. */
+    .dashboard-main-grid { /* Apply these declarations to the selected interface elements. */
+        grid-template-columns: minmax(0, 1fr) 235px; /* Allocate the available content columns. */
+        gap: 17px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .dashboard-heading h1 { /* Apply these declarations to the selected interface elements. */
+        font-size: 23px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .date-chip { /* Apply these declarations to the selected interface elements. */
+        font-size: 9px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .continue-card { /* Apply these declarations to the selected interface elements. */
+        padding: 21px; /* Create inner space around the visible content. */
+    } /* Finish this style rule. */
+    .code-art { /* Apply these declarations to the selected interface elements. */
+        display: none; /* Choose the layout model for this element and its children. */
+    } /* Finish this style rule. */
+    .dashboard-subject-grid { /* Apply these declarations to the selected interface elements. */
+        grid-template-columns: repeat(2, minmax(0, 1fr)); /* Allocate the available content columns. */
+    } /* Finish this style rule. */
+    .subject-card p { /* Apply these declarations to the selected interface elements. */
+        font-size: 9px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .subject-card h3 { /* Apply these declarations to the selected interface elements. */
+        font-size: 13px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .subject-topic-count { /* Apply these declarations to the selected interface elements. */
+        font-size: 9px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .difficulty-counts span { /* Apply these declarations to the selected interface elements. */
+        font-size: 8px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .stat-card { /* Apply these declarations to the selected interface elements. */
+        padding: 15px 13px; /* Create inner space around the visible content. */
+    } /* Finish this style rule. */
+    .stat-top { /* Apply these declarations to the selected interface elements. */
+        font-size: 9px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .search-trigger { /* Apply these declarations to the selected interface elements. */
+        width: 195px; /* Set the element’s available horizontal space. */
+    } /* Finish this style rule. */
+} /* Adapt the workspace to medium desktop widths. */
+@media (max-width: 1000px) { /* Adapt this layout to the viewport or accessibility preference. */
+    .dashboard-main-grid { /* Apply these declarations to the selected interface elements. */
+        grid-template-columns: minmax(0, 1fr); /* Allocate the available content columns. */
+    } /* Finish this style rule. */
+    .dashboard-rail { /* Apply these declarations to the selected interface elements. */
+        display: grid; /* Choose the layout model for this element and its children. */
+        grid-template-columns: 1fr 1fr; /* Allocate the available content columns. */
+    } /* Finish this style rule. */
+    .readiness-card, /* Include this selector or value in the declaration below. */
+    .rail-footnote { /* Apply these declarations to the selected interface elements. */
+        display: none; /* Choose the layout model for this element and its children. */
+    } /* Finish this style rule. */
+    .dashboard-subject-grid { /* Apply these declarations to the selected interface elements. */
+        grid-template-columns: repeat(3, minmax(0, 1fr)); /* Allocate the available content columns. */
+    } /* Finish this style rule. */
+    .subject-card p { /* Apply these declarations to the selected interface elements. */
+        font-size: 8px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .subject-card h3 { /* Apply these declarations to the selected interface elements. */
+        font-size: 11px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .code-art { /* Apply these declarations to the selected interface elements. */
+        display: block; /* Choose the layout model for this element and its children. */
+        margin-right: 15px; /* Leave room after this inline item. */
+    } /* Finish this style rule. */
+    .dashboard-heading { /* Apply these declarations to the selected interface elements. */
+        align-items: flex-start; /* Align child items across the layout axis. */
+    } /* Finish this style rule. */
+    .date-chip { /* Apply these declarations to the selected interface elements. */
+        display: none; /* Choose the layout model for this element and its children. */
+    } /* Finish this style rule. */
+    .search-trigger { /* Apply these declarations to the selected interface elements. */
+        width: 170px; /* Set the element’s available horizontal space. */
+    } /* Finish this style rule. */
+    .search-trigger kbd { /* Apply these declarations to the selected interface elements. */
+        display: none; /* Choose the layout model for this element and its children. */
+    } /* Finish this style rule. */
+    .topbar-actions { /* Apply these declarations to the selected interface elements. */
+        gap: 8px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .stats-grid { /* Apply these declarations to the selected interface elements. */
+        grid-template-columns: repeat(2, minmax(0, 1fr)); /* Allocate the available content columns. */
+    } /* Finish this style rule. */
+    .split-grid { /* Apply these declarations to the selected interface elements. */
+        grid-template-columns: 1fr; /* Allocate the available content columns. */
+    } /* Finish this style rule. */
+} /* Prioritize the curriculum on tablets and smaller desktops. */
+@media (max-width: 760px) { /* Adapt this layout to the viewport or accessibility preference. */
+    .sidebar { /* Apply these declarations to the selected interface elements. */
+        width: 236px; /* Set the element’s available horizontal space. */
+        transform: translateX(-100%); /* Position or scale this visual state. */
+        transition: transform 0.2s ease; /* Animate only these subtle visual state changes. */
+        box-shadow: 15px 0 45px #0005; /* Give this surface or indicator its subtle visual emphasis. */
+    } /* Finish this style rule. */
+    .sidebar.mobile-open { /* Apply these declarations to the selected interface elements. */
+        transform: translateX(0); /* Position or scale this visual state. */
+    } /* Finish this style rule. */
+    .drawer-backdrop { /* Apply these declarations to the selected interface elements. */
+        display: block; /* Choose the layout model for this element and its children. */
+        position: fixed; /* Choose how this element is positioned within its container. */
+        inset: 0; /* Anchor this positioned element to the specified edges. */
+        background: #0009; /* Set this element’s surface or state color. */
+        z-index: 35; /* Keep this layer above or below related interface regions. */
+    } /* Finish this style rule. */
+    .main-shell { /* Apply these declarations to the selected interface elements. */
+        margin-left: 0; /* Leave room before this inline item. */
+    } /* Finish this style rule. */
+    .mobile-menu { /* Apply these declarations to the selected interface elements. */
+        display: grid; /* Choose the layout model for this element and its children. */
+    } /* Finish this style rule. */
+    .topbar { /* Apply these declarations to the selected interface elements. */
+        height: 61px; /* Set the element’s vertical size. */
+        padding: 0 18px; /* Create inner space around the visible content. */
+    } /* Finish this style rule. */
+    .topbar-left { /* Apply these declarations to the selected interface elements. */
+        gap: 8px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .topbar-actions { /* Apply these declarations to the selected interface elements. */
+        gap: 7px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .topbar-divider, /* Include this selector or value in the declaration below. */
+    .theme-toggle, /* Include this selector or value in the declaration below. */
+    .topbar-account { /* Apply these declarations to the selected interface elements. */
+        display: none; /* Choose the layout model for this element and its children. */
+    } /* Finish this style rule. */
+    .search-trigger { /* Apply these declarations to the selected interface elements. */
+        width: 31px; /* Set the element’s available horizontal space. */
+        background: transparent; /* Set this element’s surface or state color. */
+        border: 0; /* Separate this element from the surrounding surface. */
+        padding: 0; /* Create inner space around the visible content. */
+        justify-content: center; /* Distribute child items along the layout axis. */
+    } /* Finish this style rule. */
+    .search-trigger span { /* Apply these declarations to the selected interface elements. */
+        display: none; /* Choose the layout model for this element and its children. */
+    } /* Finish this style rule. */
+    .practice-banner { /* Apply these declarations to the selected interface elements. */
+        padding: 8px 20px; /* Create inner space around the visible content. */
+        font-size: 8px; /* Set the readable text size for this element. */
+        gap: 8px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .practice-banner > span { /* Apply these declarations to the selected interface elements. */
+        max-width: 60%; /* Keep this element within its readable width limit. */
+        flex-wrap: wrap; /* Let controls wrap when available width becomes narrow. */
+        row-gap: 3px; /* Apply the row-gap presentation setting to this element. */
+    } /* Finish this style rule. */
+    .banner-separator { /* Apply these declarations to the selected interface elements. */
+        display: none; /* Choose the layout model for this element and its children. */
+    } /* Finish this style rule. */
+    .practice-banner a { /* Apply these declarations to the selected interface elements. */
+        max-width: 42%; /* Keep this element within its readable width limit. */
+        text-align: right; /* Align the text within this element. */
+    } /* Finish this style rule. */
+    .main-content { /* Apply these declarations to the selected interface elements. */
+        padding: 25px 20px 0; /* Create inner space around the visible content. */
+    } /* Finish this style rule. */
+    .dashboard-heading { /* Apply these declarations to the selected interface elements. */
+        margin-bottom: 22px; /* Separate this element from following content. */
+    } /* Finish this style rule. */
+    .dashboard-heading h1 { /* Apply these declarations to the selected interface elements. */
+        font-size: 26px; /* Set the readable text size for this element. */
+        max-width: 360px; /* Keep this element within its readable width limit. */
+    } /* Finish this style rule. */
+    .dashboard-heading h1 span { /* Apply these declarations to the selected interface elements. */
+        display: block; /* Choose the layout model for this element and its children. */
+    } /* Finish this style rule. */
+    .dashboard-heading p { /* Apply these declarations to the selected interface elements. */
+        font-size: 10px; /* Set the readable text size for this element. */
+        max-width: 330px; /* Keep this element within its readable width limit. */
+        line-height: 1.8; /* Keep wrapped lines comfortably readable. */
+    } /* Finish this style rule. */
+    .stats-grid { /* Apply these declarations to the selected interface elements. */
+        gap: 11px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .stat-card { /* Apply these declarations to the selected interface elements. */
+        padding: 15px; /* Create inner space around the visible content. */
+    } /* Finish this style rule. */
+    .stat-top { /* Apply these declarations to the selected interface elements. */
+        font-size: 9px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .stat-card p { /* Apply these declarations to the selected interface elements. */
+        font-size: 7px; /* Set the readable text size for this element. */
+        min-height: 23px; /* Reserve a useful minimum content height. */
+    } /* Finish this style rule. */
+    .stat-value { /* Apply these declarations to the selected interface elements. */
+        font-size: 27px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .dashboard-main-grid { /* Apply these declarations to the selected interface elements. */
+        margin-top: 18px; /* Separate this element from preceding content. */
+    } /* Finish this style rule. */
+    .continue-card { /* Apply these declarations to the selected interface elements. */
+        padding: 22px 19px; /* Create inner space around the visible content. */
+        min-height: 215px; /* Reserve a useful minimum content height. */
+    } /* Finish this style rule. */
+    .code-art { /* Apply these declarations to the selected interface elements. */
+        display: none; /* Choose the layout model for this element and its children. */
+    } /* Finish this style rule. */
+    .continue-card h2 { /* Apply these declarations to the selected interface elements. */
+        font-size: 25px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .continue-card .eyebrow { /* Apply these declarations to the selected interface elements. */
+        font-size: 7px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .continue-card p { /* Apply these declarations to the selected interface elements. */
+        font-size: 9px; /* Set the readable text size for this element. */
+        max-width: 270px; /* Keep this element within its readable width limit. */
+    } /* Finish this style rule. */
+    .continue-footer { /* Apply these declarations to the selected interface elements. */
+        gap: 11px; /* Keep consistent spacing between neighboring items. */
+        flex-wrap: wrap; /* Let controls wrap when available width becomes narrow. */
+    } /* Finish this style rule. */
+    .continue-footer .button { /* Apply these declarations to the selected interface elements. */
+        font-size: 10px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .continue-footer > span { /* Apply these declarations to the selected interface elements. */
+        font-size: 8px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .dashboard-subject-grid { /* Apply these declarations to the selected interface elements. */
+        grid-template-columns: repeat(2, minmax(0, 1fr)); /* Allocate the available content columns. */
+        gap: 11px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .subject-card { /* Apply these declarations to the selected interface elements. */
+        padding: 15px 12px 0; /* Create inner space around the visible content. */
+    } /* Finish this style rule. */
+    .subject-card h3 { /* Apply these declarations to the selected interface elements. */
+        font-size: 11px; /* Set the readable text size for this element. */
+        min-height: 30px; /* Reserve a useful minimum content height. */
+    } /* Finish this style rule. */
+    .subject-card p { /* Apply these declarations to the selected interface elements. */
+        white-space: normal; /* Preserve the intended text wrapping behavior. */
+        min-height: 28px; /* Reserve a useful minimum content height. */
+        font-size: 8px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .subject-topic-count { /* Apply these declarations to the selected interface elements. */
+        font-size: 7px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .subject-progress-label { /* Apply these declarations to the selected interface elements. */
+        margin-top: 12px; /* Separate this element from preceding content. */
+        font-size: 7px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .subject-card-bottom { /* Apply these declarations to the selected interface elements. */
+        padding-bottom: 13px; /* Leave extra room below this content. */
+    } /* Finish this style rule. */
+    .difficulty-counts { /* Apply these declarations to the selected interface elements. */
+        gap: 5px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .difficulty-counts span { /* Apply these declarations to the selected interface elements. */
+        font-size: 6px; /* Set the readable text size for this element. */
+        gap: 3px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .subject-card-bottom > svg { /* Apply these declarations to the selected interface elements. */
+        width: 11px; /* Set the element’s available horizontal space. */
+    } /* Finish this style rule. */
+    .section-heading h2 { /* Apply these declarations to the selected interface elements. */
+        font-size: 14px; /* Set the readable text size for this element. */
+        gap: 7px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .section-heading .text-link { /* Apply these declarations to the selected interface elements. */
+        font-size: 8px; /* Set the readable text size for this element. */
+        gap: 3px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .count-badge { /* Apply these declarations to the selected interface elements. */
+        font-size: 6px; /* Set the readable text size for this element. */
+        padding: 3px; /* Create inner space around the visible content. */
+    } /* Finish this style rule. */
+    .dashboard-rail { /* Apply these declarations to the selected interface elements. */
+        grid-template-columns: 1fr 1fr; /* Allocate the available content columns. */
+        gap: 11px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .dashboard-rail .panel { /* Apply these declarations to the selected interface elements. */
+        padding: 15px; /* Create inner space around the visible content. */
+    } /* Finish this style rule. */
+    .daily-goal .panel-header h2, /* Include this selector or value in the declaration below. */
+    .revision-preview .panel-header h2 { /* Apply these declarations to the selected interface elements. */
+        font-size: 11px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .goal-icon { /* Apply these declarations to the selected interface elements. */
+        display: none; /* Choose the layout model for this element and its children. */
+    } /* Finish this style rule. */
+    .goal-progress { /* Apply these declarations to the selected interface elements. */
+        flex-wrap: wrap; /* Let controls wrap when available width becomes narrow. */
+        gap: 4px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .goal-progress > span { /* Apply these declarations to the selected interface elements. */
+        font-size: 7px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .goal-habits > span { /* Apply these declarations to the selected interface elements. */
+        font-size: 8px; /* Set the readable text size for this element. */
+        gap: 5px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .daily-goal > .text-link { /* Apply these declarations to the selected interface elements. */
+        font-size: 7px; /* Set the readable text size for this element. */
+        gap: 2px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .revision-zero strong { /* Apply these declarations to the selected interface elements. */
+        font-size: 8px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .revision-zero p { /* Apply these declarations to the selected interface elements. */
+        font-size: 7px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .revision-preview .button { /* Apply these declarations to the selected interface elements. */
+        font-size: 7px; /* Set the readable text size for this element. */
+        padding: 9px 3px; /* Create inner space around the visible content. */
+        gap: 4px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .activity-panel { /* Apply these declarations to the selected interface elements. */
+        padding: 16px 13px; /* Create inner space around the visible content. */
+    } /* Finish this style rule. */
+    .activity-panel h2 { /* Apply these declarations to the selected interface elements. */
+        font-size: 12px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .activity-panel .text-link { /* Apply these declarations to the selected interface elements. */
+        font-size: 8px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .activity-panel p { /* Apply these declarations to the selected interface elements. */
+        font-size: 8px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .activity-cells { /* Apply these declarations to the selected interface elements. */
+        gap: 3px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .activity-cell { /* Apply these declarations to the selected interface elements. */
+        height: 9px; /* Set the element’s vertical size. */
+    } /* Finish this style rule. */
+    .activity-legend { /* Apply these declarations to the selected interface elements. */
+        font-size: 6px; /* Set the readable text size for this element. */
+        gap: 10px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .activity-legend i { /* Apply these declarations to the selected interface elements. */
+        width: 5px; /* Set the element’s available horizontal space. */
+        height: 5px; /* Set the element’s vertical size. */
+    } /* Finish this style rule. */
+    .workspace-footer { /* Apply these declarations to the selected interface elements. */
+        flex-direction: column; /* Set the direction of this flexible content stack. */
+        font-size: 7px; /* Set the readable text size for this element. */
+        gap: 8px; /* Keep consistent spacing between neighboring items. */
+        text-align: center; /* Align the text within this element. */
+    } /* Finish this style rule. */
+    .page-heading h1 { /* Apply these declarations to the selected interface elements. */
+        font-size: 28px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .auth-layout { /* Apply these declarations to the selected interface elements. */
+        grid-template-columns: 1fr; /* Allocate the available content columns. */
+    } /* Finish this style rule. */
+    .auth-story { /* Apply these declarations to the selected interface elements. */
+        display: none; /* Choose the layout model for this element and its children. */
+    } /* Finish this style rule. */
+    .auth-form-side { /* Apply these declarations to the selected interface elements. */
+        min-height: 100vh; /* Reserve a useful minimum content height. */
+        padding: 26px; /* Create inner space around the visible content. */
+    } /* Finish this style rule. */
+    .auth-form-wrap { /* Apply these declarations to the selected interface elements. */
+        max-width: 390px; /* Keep this element within its readable width limit. */
+    } /* Finish this style rule. */
+    .account-panel { /* Apply these declarations to the selected interface elements. */
+        padding: 22px; /* Create inner space around the visible content. */
+    } /* Finish this style rule. */
+    .landing > header { /* Apply these declarations to the selected interface elements. */
+        padding: 20px; /* Create inner space around the visible content. */
+    } /* Finish this style rule. */
+    .landing > header > div { /* Apply these declarations to the selected interface elements. */
+        gap: 15px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+    .landing .brand { /* Apply these declarations to the selected interface elements. */
+        font-size: 22px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .landing > header .button { /* Apply these declarations to the selected interface elements. */
+        font-size: 9px; /* Set the readable text size for this element. */
+        padding: 9px; /* Create inner space around the visible content. */
+    } /* Finish this style rule. */
+    .landing > main { /* Apply these declarations to the selected interface elements. */
+        padding: 65px 23px 40px; /* Create inner space around the visible content. */
+    } /* Finish this style rule. */
+    .landing h1 { /* Apply these declarations to the selected interface elements. */
+        font-size: 37px; /* Set the readable text size for this element. */
+        letter-spacing: -1.3px; /* Tune spacing between characters in this label. */
+    } /* Finish this style rule. */
+    .landing main > p { /* Apply these declarations to the selected interface elements. */
+        font-size: 12px; /* Set the readable text size for this element. */
+    } /* Finish this style rule. */
+    .landing-features { /* Apply these declarations to the selected interface elements. */
+        grid-template-columns: 1fr; /* Allocate the available content columns. */
+        margin-top: 50px; /* Separate this element from preceding content. */
+    } /* Finish this style rule. */
+    .landing-features .panel { /* Apply these declarations to the selected interface elements. */
+        padding: 25px; /* Create inner space around the visible content. */
+    } /* Finish this style rule. */
+    .landing-cycle { /* Apply these declarations to the selected interface elements. */
+        font-size: 9px; /* Set the readable text size for this element. */
+        gap: 8px; /* Keep consistent spacing between neighboring items. */
+    } /* Finish this style rule. */
+} /* Preserve full functionality on mobile without horizontal overflow. */
+@media (prefers-reduced-motion: reduce) { /* Adapt this layout to the viewport or accessibility preference. */
+    *, /* Include this selector or value in the declaration below. */
+    *::before, /* Apply the * presentation setting to this element. */
+    *::after { /* Apply these declarations to the selected interface elements. */
+        animation: none !important; /* Apply the animation presentation setting to this element. */
+        transition: none !important; /* Animate only these subtle visual state changes. */
+        scroll-behavior: auto !important; /* Apply the scroll-behavior presentation setting to this element. */
+    } /* Finish this style rule. */
+} /* Respect the learner's motion preferences. */
+:root[data-theme="light"] .breadcrumb-current, /* Apply the  presentation setting to this element. */
+:root[data-theme="light"] .stat-top, /* Apply the  presentation setting to this element. */
+:root[data-theme="light"] .subject-progress-label strong, /* Apply the  presentation setting to this element. */
+:root[data-theme="light"] .goal-habits > span, /* Apply the  presentation setting to this element. */
+:root[data-theme="light"] .button.secondary { /* Apply these declarations to the selected interface elements. */
+    color: #5b5267; /* Use the theme text color or the appropriate accent. */
+} /* Preserve supporting-text contrast in light mode. */
+:root[data-theme="light"] .dashboard-heading h1 span { /* Apply these declarations to the selected interface elements. */
+    color: #765bac; /* Use the theme text color or the appropriate accent. */
+} /* Keep the welcome accent readable on white. */
+:root[data-theme="light"] .continue-card { /* Apply these declarations to the selected interface elements. */
+    background: linear-gradient(120deg, #eee7fa, #e8e2f3); /* Set this element’s surface or state color. */
+    border-color: #cbbbdc; /* Apply the intended border state or accent. */
+} /* Adapt the feature card to the light palette. */
+:root[data-theme="light"] .continue-card h2 { /* Apply these declarations to the selected interface elements. */
+    color: #42334f; /* Use the theme text color or the appropriate accent. */
+} /* Preserve the feature title's contrast. */
+:root[data-theme="light"] .continue-card p, /* Apply the  presentation setting to this element. */
+:root[data-theme="light"] .continue-subject, /* Apply the  presentation setting to this element. */
+:root[data-theme="light"] .continue-footer > span { /* Apply these declarations to the selected interface elements. */
+    color: #776587; /* Use the theme text color or the appropriate accent. */
+} /* Adapt supporting lesson text in light mode. */
+:root[data-theme="light"] .readiness-card { /* Apply these declarations to the selected interface elements. */
+    background: #eef0ed; /* Set this element’s surface or state color. */
+    border-color: #d7dcd5; /* Apply the intended border state or accent. */
+} /* Keep the practice card harmonious in light mode. */
+:root[data-theme="light"] .readiness-card h3, /* Apply the  presentation setting to this element. */
+:root[data-theme="light"] .revision-zero strong { /* Apply these declarations to the selected interface elements. */
+    color: #51475c; /* Use the theme text color or the appropriate accent. */
+} /* Preserve panel heading readability. */
+:root[data-theme="light"] .progress-track, /* Apply the  presentation setting to this element. */
+:root[data-theme="light"] .activity-cell { /* Apply these declarations to the selected interface elements. */
+    background: #e5e1ed; /* Set this element’s surface or state color. */
+    border-color: #ddd5e9; /* Apply the intended border state or accent. */
+} /* Make empty progress visible without a dark fill in light mode. */

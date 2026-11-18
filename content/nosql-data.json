@@ -1,0 +1,382 @@
+[
+    {
+        "title": "SQL vs NoSQL",
+        "module": "NoSQL Foundations",
+        "summary": "SQL databases commonly emphasize relational tables and declarative joins, while NoSQL covers several nonrelational data models. Choose according to access patterns, relationships, and required guarantees.",
+        "mechanism": "Document, key-value, column-family, and graph databases organize data differently. Modern relational databases can support JSON, and many NoSQL databases support transactions or declarative queries.",
+        "tradeoff": "Avoid assuming SQL means unscalable or NoSQL means eventually consistent. Compare a specific engine, topology, transaction boundary, query model, and operational workload.",
+        "example": "Use PostgreSQL for heavily related financial records; a document model may fit a product catalog with nested variant attributes.",
+        "easy": [
+            "Which statement is accurate?",
+            "NoSQL covers several different data models",
+            "Every NoSQL database has the same consistency model",
+            "SQL databases cannot store JSON"
+        ],
+        "medium": [
+            "What should drive a SQL-versus-NoSQL choice?",
+            "Access patterns, integrity needs, and specific engine guarantees",
+            "Whether the project name contains AI",
+            "A blanket rule that joins are always slow"
+        ],
+        "hard": [
+            "Would you migrate to NoSQL solely because traffic increased?",
+            "First measure the bottleneck and evaluate indexing, caching, query plans, vertical scaling, and read replicas. A different data model helps only when its trade-offs fit the workload and migration cost."
+        ],
+        "source": "https://www.mongodb.com/resources/basics/databases/nosql-explained",
+        "hardChoice": {
+            "prompt": "An application needs atomic updates spanning several records. Which selection argument is technically sound?",
+            "options": [
+                "Compare the specific engines’ transaction boundaries and guarantees",
+                "Reject every NoSQL database because none supports transactions",
+                "Assume every SQL and NoSQL engine offers identical isolation"
+            ],
+            "answer": "Compare the specific engines’ transaction boundaries and guarantees",
+            "explanation": "Transactions are available in several NoSQL engines as well as relational systems, but their limits, isolation guarantees, costs, and topology requirements differ. Evaluate those concrete properties.",
+            "hint": "A database category does not specify the full concurrency contract."
+        }
+    },
+    {
+        "title": "Types of NoSQL Databases",
+        "module": "NoSQL Foundations",
+        "summary": "NoSQL is an umbrella for document, key-value, wide-column, and graph models. The model shapes which reads and updates are simple or expensive.",
+        "mechanism": "Document stores group nested fields, key-value stores address values by key, wide-column stores organize sparse partitioned rows, and graph stores emphasize vertices and edges.",
+        "tradeoff": "A product may implement more than one model. Names alone do not establish transaction, query, or consistency guarantees.",
+        "example": "MongoDB: documents; Redis: key-value and data structures; Cassandra: wide-column; Neo4j: property graph.",
+        "easy": [
+            "Which model represents vertices and relationships directly?",
+            "Graph",
+            "Only a flat key-value cache",
+            "A CSV file format"
+        ],
+        "medium": [
+            "Why compare an actual database rather than only its NoSQL category?",
+            "Engines in the same category can offer different guarantees",
+            "Categories determine every failure behavior",
+            "All NoSQL engines share one query language"
+        ],
+        "hard": [
+            "How can one application reasonably use several database models?",
+            "Use a relational system of record, a key-value cache for disposable acceleration, and a search or graph projection for specialized queries. Define ownership, propagation, and reconciliation so copies do not become conflicting sources of truth."
+        ],
+        "source": "https://www.mongodb.com/resources/basics/databases/nosql-explained"
+    },
+    {
+        "title": "Document Databases",
+        "module": "Data Models",
+        "summary": "A document database stores records as nested documents, often using JSON-like structures. Related fields can be read together without reconstructing them through joins.",
+        "mechanism": "A document can contain arrays and nested objects. Embedding favors bounded data accessed together; references favor independent lifecycle, large collections, or many-to-many relationships.",
+        "tradeoff": "Embedding unbounded child arrays causes growth and update pressure. Flexible shape still needs validation and intentional schema evolution.",
+        "example": "An order document can embed a bounded list of purchased items and their historical prices.",
+        "easy": [
+            "When is embedding usually useful?",
+            "Bounded related data frequently read together",
+            "Unbounded event history growing forever",
+            "Every many-to-many relationship regardless of size"
+        ],
+        "medium": [
+            "Why store the purchase-time item price inside an order?",
+            "It preserves the historical transaction even if catalog prices change",
+            "It guarantees all replicas are synchronous",
+            "It removes the need for an order id"
+        ],
+        "hard": [
+            "Should all comments be embedded inside a popular article document?",
+            "Not if the array can grow without bound. Consider separate comment documents indexed by article id, pagination, document-size limits, write contention, and whether a small summary should remain embedded."
+        ],
+        "source": "https://www.mongodb.com/docs/manual/data-modeling/",
+        "hardChoice": {
+            "prompt": "A popular article receives millions of comments. Which model avoids an indefinitely growing parent document while supporting pagination?",
+            "options": [
+                "Store comments separately with an article_id index and bounded pages",
+                "Embed every comment forever in one article array",
+                "Remove comment identifiers and concatenate all text"
+            ],
+            "answer": "Store comments separately with an article_id index and bounded pages",
+            "explanation": "An unbounded embedded array grows toward document limits and concentrates writes. Separate comment documents with an appropriate index support bounded queries; a small summary can remain embedded.",
+            "hint": "Ask whether the embedded child collection is truly bounded."
+        }
+    },
+    {
+        "title": "Key-Value Databases",
+        "module": "Data Models",
+        "summary": "A key-value database retrieves a value using an exact key. It suits lookups such as cached results, sessions, counters, and rate-limit state.",
+        "mechanism": "The application defines key naming, serialization, expiration, and grouping. Some engines provide rich data structures and atomic operations beyond a simple GET and SET interface.",
+        "tradeoff": "Key-based access is simple and fast, but arbitrary relational queries may need secondary structures or another system. Expiration and eviction make many caches unsuitable as the only durable source of truth.",
+        "example": "SET session:abc \"user-17\" EX 3600 stores a session mapping with a one-hour expiration in Redis.",
+        "easy": [
+            "What is the natural access pattern for a basic key-value store?",
+            "Look up a known key",
+            "Join arbitrary tables without extra support",
+            "Scan a B+ tree by SQL syntax in every engine"
+        ],
+        "medium": [
+            "Why should an evictable cache not be the only store for financial records?",
+            "Eviction can remove data that must be durable",
+            "Keys cannot contain numbers",
+            "Caches always reject writes"
+        ],
+        "hard": [
+            "How would you avoid a lost update for a shared Redis counter?",
+            "Use an atomic increment operation instead of GET followed by SET. For compound conditions, use an appropriate atomic script or transaction pattern and define durability requirements separately."
+        ],
+        "source": "https://redis.io/docs/latest/develop/data-types/"
+    },
+    {
+        "title": "Column-Family Databases",
+        "module": "Data Models",
+        "summary": "Wide-column databases organize partitioned rows with flexible columns and support large distributed workloads. Cassandra models tables around known query access paths.",
+        "mechanism": "A partition key determines data placement, while clustering columns order rows inside a partition. Denormalized query-specific tables avoid expensive cross-node joins.",
+        "tradeoff": "An unbounded or heavily skewed partition can become a hotspot. Choose partition bounds such as device plus time bucket and account for replication and consistency settings.",
+        "example": "sensor_readings PRIMARY KEY ((device_id, day), recorded_at) groups one device-day and orders readings by time.",
+        "easy": [
+            "In Cassandra, what primarily determines the partition owning a row?",
+            "The partition key",
+            "The visual order of SELECT columns",
+            "The name of a JSON property"
+        ],
+        "medium": [
+            "Why include a time bucket in a high-volume device partition key?",
+            "To bound partition growth",
+            "To force every device into one partition",
+            "To remove all replication"
+        ],
+        "hard": [
+            "Why is copying relational tables directly into Cassandra often ineffective?",
+            "Cassandra data models are query-driven. Start with required partition-local queries, design partition and clustering keys, duplicate data intentionally, and plan how each projection stays consistent."
+        ],
+        "source": "https://cassandra.apache.org/doc/latest/cassandra/developing/data-modeling/",
+        "hardChoice": {
+            "prompt": "A sensor emits millions of readings daily. Which Cassandra partition key most directly bounds per-partition growth while preserving device-local time queries?",
+            "options": [
+                "(device_id, day) with recorded_at as a clustering column",
+                "One constant partition key for every device",
+                "recorded_at as an unbounded clustering column under device_id forever"
+            ],
+            "answer": "(device_id, day) with recorded_at as a clustering column",
+            "explanation": "A device-and-day partition limits each partition to a bounded time window. The recorded_at clustering column preserves order inside that window; applications can query a known set of days.",
+            "hint": "Separate the partition boundary from the ordering inside it."
+        }
+    },
+    {
+        "title": "Graph Databases",
+        "module": "Data Models",
+        "summary": "A graph database stores entities as vertices and relationships as edges. It fits queries where traversing connected data is central.",
+        "mechanism": "Property graphs attach properties to nodes and relationships. Traversal languages express paths such as people connected through a friendship or dependencies within a service graph.",
+        "tradeoff": "Graph models simplify relationship-heavy queries but still need indexes, traversal limits, and careful handling of high-degree nodes. They are not automatically best for every aggregate or bulk scan.",
+        "example": "MATCH (a:Person {id: 1})-[:FOLLOWS]->(b)-[:FOLLOWS]->(c) RETURN DISTINCT c finds two-hop connections in Cypher.",
+        "easy": [
+            "What is the core relationship representation in a graph model?",
+            "An edge connecting vertices",
+            "A mandatory comma-separated string",
+            "An array index in every database"
+        ],
+        "medium": [
+            "Why limit traversal depth in an online request?",
+            "Paths can expand rapidly and consume substantial resources",
+            "Graphs cannot contain cycles",
+            "An index automatically limits all paths"
+        ],
+        "hard": [
+            "How would you query friends-of-friends while excluding current friends?",
+            "Traverse two friendship hops, exclude the starting user and existing direct relationships, deduplicate results, and bound depth or result count. Evaluate high-degree nodes and authorization along the path."
+        ],
+        "source": "https://neo4j.com/docs/getting-started/graph-database/"
+    },
+    {
+        "title": "MongoDB Fundamentals",
+        "module": "MongoDB Essentials",
+        "summary": "MongoDB stores BSON documents in collections and supports field queries, indexes, aggregation, and transactions. A useful model follows the application’s read and write patterns.",
+        "mechanism": "Documents usually have an _id field backed by a unique index. CRUD operations work with query filters and update operators; a single-document write is atomic.",
+        "tradeoff": "Multi-document transactions exist but add cost and do not replace thoughtful modeling. BSON types, validation, indexes, and deployment topology influence behavior.",
+        "example": "db.users.updateOne({ _id: userId }, { $set: { name: \"Ada\" } });",
+        "easy": [
+            "What is MongoDB’s main record format?",
+            "BSON documents",
+            "Only plain CSV rows",
+            "Only graph edges"
+        ],
+        "medium": [
+            "Which atomicity statement is correct?",
+            "A single-document write is atomic",
+            "All writes across all collections are automatically one transaction",
+            "MongoDB never supports transactions"
+        ],
+        "hard": [
+            "How would you safely decrement stock only when sufficient inventory exists?",
+            "Use a single conditional update matching both the item id and stock >= requested amount, with $inc by a negative quantity. Check matched or modified count and use a transaction if other documents must change atomically."
+        ],
+        "source": "https://www.mongodb.com/docs/manual/crud/"
+    },
+    {
+        "title": "Document Structure",
+        "module": "MongoDB Essentials",
+        "summary": "A BSON document is a set of typed fields that can include nested documents and arrays. Structure should make common operations predictable and bounded.",
+        "mechanism": "MongoDB supports explicit types such as dates, numbers, ObjectIds, arrays, and embedded objects. Dot notation addresses nested fields in many queries and updates.",
+        "tradeoff": "Flexible documents are not schema-free in an engineering sense. Validate required fields, choose consistent types, and avoid documents that grow indefinitely toward size limits.",
+        "example": "{ _id: ObjectId(...), name: \"Ada\", profile: { timezone: \"Asia/Kolkata\" }, skills: [\"SQL\", \"OS\"] }",
+        "easy": [
+            "How can a query refer to a nested timezone field?",
+            "Using a path such as profile.timezone",
+            "Only by converting the whole document to CSV",
+            "By removing _id"
+        ],
+        "medium": [
+            "Why avoid storing both strings and BSON dates for the same timestamp field?",
+            "Mixed types complicate sorting, indexing, and comparisons",
+            "BSON has no date type",
+            "Strings make all writes atomic"
+        ],
+        "hard": [
+            "What problems arise with an unbounded activity array in one user document?",
+            "The document grows toward its size limit, writes may contend on one record, and reading or updating history becomes expensive. Store separate bounded event records or time buckets and retain only a small recent summary."
+        ],
+        "source": "https://www.mongodb.com/docs/manual/core/document/"
+    },
+    {
+        "title": "Collections",
+        "module": "MongoDB Essentials",
+        "summary": "A MongoDB collection groups related documents and is broadly analogous to a table, while allowing varying document shapes unless validation restricts them.",
+        "mechanism": "Collections own indexes and can define validation rules. Most application queries operate within one collection, while aggregation may join or transform related records.",
+        "tradeoff": "Do not create one collection per user without considering namespace and index overhead. A shared collection with an indexed tenant or owner field often simplifies operations and authorization.",
+        "example": "db.createCollection(\"topics\", { validator: { $jsonSchema: { bsonType: \"object\", required: [\"title\"] } } });",
+        "easy": [
+            "What can enforce required fields in a collection?",
+            "A collection validation rule",
+            "The plural form of its name",
+            "A frontend comment"
+        ],
+        "medium": [
+            "What is an important requirement for a shared multi-tenant collection?",
+            "Every protected query must constrain authenticated tenant ownership",
+            "Trusting a tenant id from any request body",
+            "Disabling all indexes"
+        ],
+        "hard": [
+            "When might separate collections be justified?",
+            "Different lifecycle, retention, schema, access policy, or workload may warrant separation. Compare namespace overhead and cross-collection queries rather than separating every individual user by default."
+        ],
+        "source": "https://www.mongodb.com/docs/manual/core/databases-and-collections/"
+    },
+    {
+        "title": "Replication",
+        "module": "Distributed NoSQL",
+        "summary": "MongoDB replication uses a replica set to maintain copies of data and elect a primary. It improves availability and supports recovery, subject to write concern and failover behavior.",
+        "mechanism": "The primary accepts writes and secondaries replicate its operation log. Elections require a voting majority; write concern controls acknowledgment and read concern affects visible guarantees.",
+        "tradeoff": "Reading from a secondary can return stale data. Acknowledgment and read routing need to match the application’s consistency and latency requirements.",
+        "example": "A three-member replica set can elect a new primary after one member fails when a majority can still communicate.",
+        "easy": [
+            "Which replica-set member normally accepts MongoDB writes?",
+            "The primary",
+            "Every secondary independently by default",
+            "Only an arbiter"
+        ],
+        "medium": [
+            "Why can a secondary read miss a recent write?",
+            "Replication can lag",
+            "Secondaries never store documents",
+            "The document id must be a string"
+        ],
+        "hard": [
+            "Does w:majority alone guarantee every arbitrary read sees the latest write?",
+            "No. Read concern, read preference, session causal guarantees, topology, and timing also matter. Specify the end-to-end consistency contract instead of inferring it from one write setting."
+        ],
+        "source": "https://www.mongodb.com/docs/manual/replication/",
+        "hardChoice": {
+            "prompt": "A MongoDB write uses w:majority, then an unrelated client reads from a secondary. What is the safe conclusion?",
+            "options": [
+                "The read may still be stale depending on read concern, routing, and session guarantees",
+                "Every arbitrary secondary read must return that write immediately",
+                "The write was necessarily rejected by all secondaries"
+            ],
+            "answer": "The read may still be stale depending on read concern, routing, and session guarantees",
+            "explanation": "Majority write acknowledgment alone does not define every subsequent read’s visibility. Read preference, read concern, replication progress, and causal session settings must be considered together.",
+            "hint": "One write setting is not the whole end-to-end consistency contract."
+        }
+    },
+    {
+        "title": "Sharding",
+        "module": "Distributed NoSQL",
+        "summary": "MongoDB sharding distributes collection data across shards according to a shard key. Each shard can itself be a replica set.",
+        "mechanism": "mongos routes operations using metadata maintained by config servers. Range or hashed shard keys affect locality and distribution; balancing moves ranges as the cluster evolves.",
+        "tradeoff": "A monotonically increasing range key can concentrate inserts on one shard. A hashed key distributes writes better but can scatter range queries.",
+        "example": "Hash a high-cardinality customer identifier when balanced equality access matters more than contiguous range locality.",
+        "easy": [
+            "What is the role of mongos?",
+            "Route requests to relevant shards",
+            "Store every database backup",
+            "Replace all replica-set elections"
+        ],
+        "medium": [
+            "Which trade-off often follows hashing a shard key?",
+            "Better distribution but weaker range-query locality",
+            "Guaranteed single-shard execution for every query",
+            "Removal of the need for indexes"
+        ],
+        "hard": [
+            "What happens when a query omits the shard key?",
+            "The router may need a scatter-gather query across shards, increasing latency and resource usage. Design common queries and compound shard keys together, while testing skew and large-tenant behavior."
+        ],
+        "source": "https://www.mongodb.com/docs/manual/sharding/"
+    },
+    {
+        "title": "CAP Theorem in NoSQL",
+        "module": "Distributed NoSQL",
+        "summary": "CAP applies to distributed systems regardless of whether their query language is SQL. During a partition, operations cannot always preserve both linearizability and availability.",
+        "mechanism": "An available side may accept writes without coordinating with the other side and later reconcile conflicts. A consistency-preserving system may reject or delay some operations until coordination is possible.",
+        "tradeoff": "Eventual consistency describes convergence under specified conditions, not a promise that conflicts cannot happen. Session guarantees and per-operation consistency options make real behavior more nuanced.",
+        "example": "A disconnected replica accepting a profile edit may later merge or reject a conflicting edit made elsewhere.",
+        "easy": [
+            "Does CAP apply only to NoSQL products?",
+            "No, it applies to distributed read/write systems under its assumptions",
+            "Yes, SQL avoids network failures",
+            "Only key-value stores have partitions"
+        ],
+        "medium": [
+            "What must an eventually consistent application plan for?",
+            "Stale reads and possible conflicting updates",
+            "The absence of all failures",
+            "Every read being linearizable"
+        ],
+        "hard": [
+            "How should a shopping cart differ from a bank transfer during a partition?",
+            "A cart may accept available edits with a well-defined merge policy. A transfer usually requires stricter invariant preservation and may reject unavailable coordination. The business operation determines acceptable consistency trade-offs."
+        ],
+        "source": "https://www.cs.cornell.edu/courses/cs5414/2014fa/papers/Gilbert_Lynch_CAP.pdf",
+        "hardChoice": {
+            "prompt": "A partitioned shopping-cart service accepts edits on both sides and merges them later. What must the application specify?",
+            "options": [
+                "A conflict-resolution policy and acceptable stale-read behavior",
+                "That every read during the partition is linearizable",
+                "That network partitions cannot affect users"
+            ],
+            "answer": "A conflict-resolution policy and acceptable stale-read behavior",
+            "explanation": "Favoring available independent edits can create conflicting versions and stale reads. Convergence needs a defined merge or conflict-resolution rule; the word eventual does not remove that design task.",
+            "hint": "Describe what happens when the same item is edited independently."
+        }
+    },
+    {
+        "title": "Use Cases and Trade-offs",
+        "module": "Distributed NoSQL",
+        "summary": "Database selection is a workload decision. Evaluate the data model, transaction boundaries, query patterns, failure guarantees, and operational costs together.",
+        "mechanism": "Prototype representative reads and writes, measure skew and growth, verify backup and restore, and test failure behavior. Include schema evolution and observability in the design.",
+        "tradeoff": "Using several databases adds integration and reconciliation work. Prefer the smallest set of systems that meets measured requirements and that the team can operate reliably.",
+        "example": "A graph projection can serve dependency traversal while PostgreSQL remains the authoritative record, provided projection lag and rebuilding are documented.",
+        "easy": [
+            "What is a useful first step in selecting a database?",
+            "List representative access patterns and required invariants",
+            "Choose the product with the newest logo",
+            "Assume one benchmark applies to every workload"
+        ],
+        "medium": [
+            "What extra cost does polyglot persistence introduce?",
+            "Data propagation, monitoring, and reconciliation across systems",
+            "Automatic removal of all schema changes",
+            "Guaranteed lower latency for every request"
+        ],
+        "hard": [
+            "How would you validate a proposed database before migrating production data?",
+            "Build a representative workload with realistic volume and skew, test required queries and transactions, simulate node failures and restores, estimate operational cost, and rehearse a reversible migration with reconciliation checks."
+        ],
+        "source": "https://www.mongodb.com/docs/manual/data-modeling/"
+    }
+]

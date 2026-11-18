@@ -1,0 +1,1057 @@
+[
+    {
+        "title": "What is a DBMS?",
+        "module": "Database Fundamentals",
+        "summary": "A database management system stores and retrieves persistent data while coordinating concurrent users and enforcing rules. It matters whenever application state must survive process restarts.",
+        "mechanism": "A DBMS combines a query processor, storage engine, buffer manager, transaction manager, and recovery machinery. SQL describes the requested result; the optimizer chooses an execution plan.",
+        "tradeoff": "A file can store records, but a DBMS provides coordinated access, indexes, constraints, and recovery. These features add operational overhead and do not remove the need for good schema design.",
+        "example": "Two checkout requests can reserve inventory in one transaction instead of independently overwriting a shared JSON file.",
+        "easy": [
+            "Which responsibility belongs to a DBMS?",
+            "Coordinating durable concurrent access",
+            "Compiling every frontend component",
+            "Replacing all application validation"
+        ],
+        "medium": [
+            "Why use a transaction for inventory reservation?",
+            "To keep related stock updates atomic",
+            "To make all queries execute without locks",
+            "To eliminate the need for an index"
+        ],
+        "hard": [
+            "Why is replacing a DBMS with a shared JSON file risky for concurrent purchases?",
+            "Read-modify-write races can lose updates; interrupted writes can corrupt the file. A DBMS provides transactions, concurrency control, constraints, and recovery, though inventory conditions still need an appropriate atomic update."
+        ],
+        "source": "https://www.postgresql.org/docs/current/ddl.html"
+    },
+    {
+        "title": "DBMS vs RDBMS",
+        "module": "Database Fundamentals",
+        "summary": "An RDBMS is a database management system organized around relations, commonly represented as tables. DBMS is the broader category that also includes document, graph, and key-value systems.",
+        "mechanism": "Relational systems use rows, columns, keys, constraints, and relational operations such as selection, projection, and joins. SQL implementations differ and can also support JSON or graph-like data.",
+        "tradeoff": "Relational does not mean every relationship is automatically enforced: foreign keys and constraints must be declared. Nonrelational databases can also support transactions.",
+        "example": "An orders table references customers(id); a document store may embed order line items in one order document.",
+        "easy": [
+            "Which statement is accurate?",
+            "Every RDBMS is a DBMS",
+            "Every DBMS stores only tables",
+            "NoSQL systems cannot have transactions"
+        ],
+        "medium": [
+            "What actually enforces an order customer relationship in a relational schema?",
+            "A declared foreign-key constraint",
+            "The table name orders",
+            "Using JSON in a SQL column"
+        ],
+        "hard": [
+            "Should a product choose an RDBMS simply because it needs transactions?",
+            "Transaction needs are one factor, but several nonrelational systems also offer transactions. Compare relationships, query patterns, integrity constraints, scaling, consistency, and operational expertise."
+        ],
+        "source": "https://www.postgresql.org/docs/current/ddl.html"
+    },
+    {
+        "title": "Database Architecture",
+        "module": "Database Fundamentals",
+        "summary": "Database architecture separates how users see data from how it is logically organized and physically stored. This separation helps applications evolve without depending on storage details.",
+        "mechanism": "The three-schema model distinguishes external views, a conceptual schema, and an internal storage schema. Separately, one-tier, two-tier, and three-tier deployment describe where application logic and clients run.",
+        "tradeoff": "Do not confuse schema levels with deployment tiers. A three-tier web application may still expose many external views over one conceptual relational model.",
+        "example": "Browser → Express API → PostgreSQL is a three-tier deployment; a customer-facing view hides internal payment audit columns.",
+        "easy": [
+            "Which schema level describes physical storage?",
+            "Internal",
+            "External",
+            "Browser"
+        ],
+        "medium": [
+            "Does adding a REST API between browser and database define a schema level?",
+            "No, it changes deployment tiers",
+            "Yes, it creates the internal schema",
+            "Yes, it eliminates the conceptual model"
+        ],
+        "hard": [
+            "How can an index change without breaking application queries?",
+            "Indexes belong to physical organization, while queries refer to logical tables and columns. Physical data independence lets the DBMS change an access path while preserving the logical interface."
+        ],
+        "source": "https://www.postgresql.org/docs/current/ddl.html"
+    },
+    {
+        "title": "Database Schemas",
+        "module": "Database Fundamentals",
+        "summary": "A schema defines database structure: tables, columns, types, constraints, and relationships. In PostgreSQL, schema also means a named namespace within a database.",
+        "mechanism": "DDL creates and alters structure. A migration records an ordered structural change so development, testing, and production databases can evolve predictably.",
+        "tradeoff": "Schema changes can lock tables or invalidate application assumptions. Deploy additive changes first, migrate data separately, and remove old fields after all callers move.",
+        "example": "CREATE SCHEMA learning;\nCREATE TABLE learning.topic (id uuid PRIMARY KEY, title text NOT NULL);",
+        "easy": [
+            "What does a relational schema describe?",
+            "The structure and constraints of data",
+            "Only the current row count",
+            "Only a backup archive"
+        ],
+        "medium": [
+            "What is the safer first step when renaming a field used by running clients?",
+            "Add the new field and support both during migration",
+            "Drop the old field immediately",
+            "Disable every constraint permanently"
+        ],
+        "hard": [
+            "Why separate a large data backfill from a schema migration?",
+            "A long backfill can hold locks or exceed deployment time limits. A bounded schema change followed by resumable batches reduces risk and allows progress monitoring."
+        ],
+        "source": "https://www.postgresql.org/docs/current/ddl.html"
+    },
+    {
+        "title": "Primary Key",
+        "module": "Database Fundamentals",
+        "summary": "A primary key uniquely identifies every row and cannot contain NULL. It gives other tables and API records a stable identity.",
+        "mechanism": "A table has at most one primary-key constraint, which can span several columns. PostgreSQL creates a unique B-tree index for the primary key.",
+        "tradeoff": "A surrogate key remains stable when business attributes change. Natural keys can be appropriate when their uniqueness and stability are real domain guarantees.",
+        "example": "CREATE TABLE users (id uuid PRIMARY KEY, email text UNIQUE NOT NULL);",
+        "easy": [
+            "Can a primary-key column contain NULL?",
+            "No",
+            "Yes, for one row",
+            "Only when indexed"
+        ],
+        "medium": [
+            "Why might a generated id be preferable to an email primary key?",
+            "Email may change while row identity must remain stable",
+            "Generated ids automatically validate email",
+            "Email columns cannot be indexed"
+        ],
+        "hard": [
+            "Does choosing a UUID primary key make an email unique?",
+            "No. The primary key constrains only the id. Add a separate UNIQUE constraint for email and define normalization and case-handling rules explicitly."
+        ],
+        "source": "https://www.postgresql.org/docs/current/ddl.html"
+    },
+    {
+        "title": "Foreign Key",
+        "module": "Database Fundamentals",
+        "summary": "A foreign key enforces that a referencing value corresponds to a candidate key in a referenced table. It prevents orphaned relationships.",
+        "mechanism": "A foreign key can reference a primary or suitable unique key. Nullable references permit absence unless NOT NULL is declared; ON DELETE determines how removal is handled.",
+        "tradeoff": "PostgreSQL does not automatically index the referencing column. An index may be needed for joins and efficient checks when parent rows are deleted.",
+        "example": "CREATE TABLE orders (id bigint PRIMARY KEY, customer_id bigint REFERENCES customers(id) ON DELETE RESTRICT);",
+        "easy": [
+            "What does a foreign key prevent?",
+            "An order referencing a nonexistent customer",
+            "Two unrelated rows having equal prices",
+            "Every possible query slowdown"
+        ],
+        "medium": [
+            "Why index orders.customer_id separately in PostgreSQL?",
+            "To speed lookups and parent-row delete checks",
+            "Foreign keys cannot work without such an index",
+            "To allow NULL in the parent key"
+        ],
+        "hard": [
+            "When is ON DELETE CASCADE dangerous?",
+            "Deleting a parent can remove many dependent records, possibly across several relationships. Choose it only when dependent rows have no independent retention requirement; otherwise restrict deletion or model soft deletion."
+        ],
+        "source": "https://www.postgresql.org/docs/current/ddl.html",
+        "hardChoice": {
+            "prompt": "In PostgreSQL, orders.customer_id references customers.id. A parent deletion becomes slow as orders grows. Which targeted change can help without weakening integrity?",
+            "options": [
+                "Add an index on orders.customer_id",
+                "Remove the foreign key and trust every client",
+                "Add an index only on orders.total"
+            ],
+            "answer": "Add an index on orders.customer_id",
+            "explanation": "PostgreSQL does not automatically index the referencing side. An index on orders.customer_id helps locate dependent rows during parent deletion checks; the referenced unique key is already indexed.",
+            "hint": "Distinguish the referencing column from the referenced unique key."
+        }
+    },
+    {
+        "title": "Candidate Key",
+        "module": "Database Fundamentals",
+        "summary": "A candidate key is a minimal set of attributes that uniquely identifies a row. Minimal means no proper subset can still guarantee uniqueness.",
+        "mechanism": "A relation can have several candidate keys. One is selected as the primary key; other candidate keys are commonly enforced using UNIQUE together with NOT NULL.",
+        "tradeoff": "SQL UNIQUE and mathematical candidate keys are not identical when NULL is allowed, because nullable uniqueness semantics depend on the database and constraint configuration.",
+        "example": "For employee(id, national_id, name), both id and national_id may be candidate keys if each is guaranteed unique and non-null.",
+        "easy": [
+            "What makes a unique attribute set a candidate key?",
+            "No attribute can be removed while preserving uniqueness",
+            "It contains every table column",
+            "It always has exactly two columns"
+        ],
+        "medium": [
+            "If email is UNIQUE but nullable, what extra rule better models a mandatory candidate key?",
+            "NOT NULL",
+            "ORDER BY",
+            "ON DELETE CASCADE"
+        ],
+        "hard": [
+            "Are {student_id} and {student_id, name} both candidate keys when student_id is unique?",
+            "Only {student_id} is minimal. The larger set is a super key, because name is unnecessary for unique identification."
+        ],
+        "source": "https://www.postgresql.org/docs/current/ddl.html"
+    },
+    {
+        "title": "Super Key",
+        "module": "Database Fundamentals",
+        "summary": "A super key is any set of attributes sufficient to uniquely identify a row. It can contain redundant attributes.",
+        "mechanism": "Every candidate key and primary key is a super key. Removing redundant attributes from a super key yields a candidate key when uniqueness is retained.",
+        "tradeoff": "Adding columns to an already unique set preserves uniqueness but usually adds no identification value and can make constraints more cumbersome.",
+        "example": "If id is unique, {id}, {id, email}, and {id, name} are super keys; only minimal sets are candidate keys.",
+        "easy": [
+            "Which set is a super key if id is unique?",
+            "The set {id, name}",
+            "Only the set {name}",
+            "Every column individually"
+        ],
+        "medium": [
+            "Why is {id, name} not minimal when id alone is unique?",
+            "Name adds no identifying power",
+            "Name must always be NULL",
+            "Composite attributes cannot be keys"
+        ],
+        "hard": [
+            "Does a super key guarantee that each member attribute is individually unique?",
+            "No. A composite super key may be unique only as a combination. For example, course_id and student_id can repeat individually while their pair identifies one enrollment."
+        ],
+        "source": "https://www.postgresql.org/docs/current/ddl.html"
+    },
+    {
+        "title": "Composite Key",
+        "module": "Database Fundamentals",
+        "summary": "A composite key identifies a row using more than one column. It naturally models identities such as one enrollment per student and course.",
+        "mechanism": "Uniqueness applies to the entire column combination, not to each column separately. Composite foreign keys must reference the corresponding combination in a consistent order.",
+        "tradeoff": "Composite keys encode domain rules directly but increase the size of referencing keys. A surrogate id plus a UNIQUE pair can preserve the rule with simpler references.",
+        "example": "CREATE TABLE enrollment (student_id bigint, course_id bigint, PRIMARY KEY (student_id, course_id));",
+        "easy": [
+            "What is unique in a composite key (student_id, course_id)?",
+            "The combination of both values",
+            "Each student_id alone",
+            "Each course_id alone"
+        ],
+        "medium": [
+            "How can a surrogate enrollment id retain the one-enrollment-per-course rule?",
+            "Add UNIQUE(student_id, course_id)",
+            "Index student_id without uniqueness",
+            "Remove both foreign keys"
+        ],
+        "hard": [
+            "Can a student enroll in two courses when the primary key is (student_id, course_id)?",
+            "Yes, because the pairs differ. The same student-course pair cannot repeat. This is appropriate for enrollment but may require adding term_id if re-enrollment across terms is allowed."
+        ],
+        "source": "https://www.postgresql.org/docs/current/ddl.html"
+    },
+    {
+        "title": "ER Diagrams",
+        "module": "Database Fundamentals",
+        "summary": "An entity-relationship diagram models entities, attributes, and associations before or alongside the relational schema. It makes cardinality and optionality visible.",
+        "mechanism": "One-to-many relationships commonly become a foreign key on the many side. Many-to-many relationships become a junction table with references to both entities.",
+        "tradeoff": "An ER diagram communicates intent but does not enforce integrity. The resulting schema needs keys, nullability rules, uniqueness, and referential constraints.",
+        "example": "Student ─< Enrollment >─ Course\nEnrollment(student_id, course_id, enrolled_at)",
+        "easy": [
+            "How is a many-to-many relationship usually represented in tables?",
+            "A junction table with two foreign keys",
+            "A comma-separated list in each parent row",
+            "A foreign key in neither table"
+        ],
+        "medium": [
+            "Which constraint models at most one profile per user?",
+            "UNIQUE on profile.user_id",
+            "An index on profile.bio",
+            "A nullable profile name"
+        ],
+        "hard": [
+            "How would you model an optional manager for each employee?",
+            "Use a nullable manager_id foreign key referencing employee(id). Add application or database logic to reject cycles if hierarchical acyclicity is required; a foreign key alone does not prevent cycles."
+        ],
+        "source": "https://www.postgresql.org/docs/current/ddl.html"
+    },
+    {
+        "title": "Functional Dependencies",
+        "module": "Normalization",
+        "summary": "A functional dependency X → Y means that any two valid rows agreeing on X must agree on Y. Dependencies describe domain rules, not coincidences in a small sample.",
+        "mechanism": "An attribute closure X+ contains every attribute implied by X using the known dependencies. Closure helps test keys and reason about decomposition.",
+        "tradeoff": "A dependency observed in current data may fail tomorrow unless it is a true business rule. Normalization decisions must start from valid domain dependencies.",
+        "example": "employee_id → employee_name, department_id\ndepartment_id → department_name\nTherefore employee_id → department_name transitively.",
+        "easy": [
+            "What does X → Y mean?",
+            "Equal X values imply equal Y values",
+            "Every X is numerically smaller than Y",
+            "Y is always a foreign key"
+        ],
+        "medium": [
+            "Why is a unique department name in a sample insufficient to prove name → id?",
+            "The domain may allow future duplicate names",
+            "Dependencies apply only to empty tables",
+            "All sampled uniqueness is automatically a constraint"
+        ],
+        "hard": [
+            "Given A → B and B → C, what is A+ and why does it matter?",
+            "A+ includes A, B, and C by transitivity. If those are all relation attributes, A is a super key; minimality must still be checked to call it a candidate key."
+        ],
+        "source": "https://www.postgresql.org/docs/current/ddl.html"
+    },
+    {
+        "title": "1NF",
+        "module": "Normalization",
+        "summary": "First normal form represents each attribute value as a single value from its domain and avoids repeating groups in a relational design. Atomicity depends on the chosen domain and required operations.",
+        "mechanism": "Move repeating values that must be queried independently into related rows. A separate enrollment table represents multiple courses per student more consistently than course1, course2, course3 columns.",
+        "tradeoff": "A text address can be one value when treated as a whole; split its parts when the application needs to query them independently. Normalization is driven by data semantics.",
+        "example": "Instead of student(id, courses=\"OS,DBMS\"), use enrollment(student_id, course_id) with one row per relationship.",
+        "easy": [
+            "Which design best represents independently queryable courses per student?",
+            "One enrollment row per student-course pair",
+            "Columns course1 through course20",
+            "A comma-separated list requiring string parsing"
+        ],
+        "medium": [
+            "Must every string be split into individual characters to reach 1NF?",
+            "No, atomicity depends on the domain",
+            "Yes, strings are never atomic",
+            "Only when a primary key exists"
+        ],
+        "hard": [
+            "Why is a comma-separated foreign-key list problematic?",
+            "Individual elements cannot be constrained or joined as normal foreign keys without parsing. Rows in a junction table allow referential integrity, indexing, and independent updates."
+        ],
+        "source": "https://www.postgresql.org/docs/current/ddl.html"
+    },
+    {
+        "title": "2NF",
+        "module": "Normalization",
+        "summary": "Second normal form requires 1NF and no non-prime attribute depending on only part of a candidate key. It addresses partial dependencies in composite-key designs.",
+        "mechanism": "A non-prime attribute belongs to no candidate key. With enrollment(student_id, course_id, student_name), student_name depends on student_id alone and violates 2NF.",
+        "tradeoff": "A relation with a single-attribute candidate key cannot have a dependency on a proper nonempty subset of that key, but it may still violate higher normal forms.",
+        "example": "Split enrollment(student_id, course_id) from student(student_id, student_name).",
+        "easy": [
+            "Which dependency causes the classic 2NF violation?",
+            "A non-prime attribute depending on part of a composite candidate key",
+            "A primary key determining every attribute",
+            "A foreign key referencing a unique parent"
+        ],
+        "medium": [
+            "Where should student_name go when enrollment has key (student_id, course_id)?",
+            "In student keyed by student_id",
+            "In a separate copy for every course",
+            "In the course table keyed by course_id"
+        ],
+        "hard": [
+            "Why does replacing a composite primary key with a surrogate id not necessarily fix normalization?",
+            "Candidate keys and domain dependencies still exist. If the student-course pair remains a candidate key, student_name still depends on its student_id part; normalization is not determined only by the chosen primary key."
+        ],
+        "source": "https://www.postgresql.org/docs/current/ddl.html"
+    },
+    {
+        "title": "3NF",
+        "module": "Normalization",
+        "summary": "Third normal form reduces problematic transitive dependencies. Formally, for every nontrivial X → A, X must be a super key or A must be a prime attribute.",
+        "mechanism": "An employee table containing department_id and department_name repeats the department name because department_id determines it. Move department attributes into a department relation.",
+        "tradeoff": "The common phrase no transitive dependencies is a useful simplification for straightforward schemas, but the formal prime-attribute exception distinguishes 3NF from BCNF.",
+        "example": "employee(employee_id, department_id)\ndepartment(department_id, department_name)",
+        "easy": [
+            "What is the usual fix for repeating department_name in every employee row?",
+            "Move department details into a department table",
+            "Duplicate the name in another employee column",
+            "Remove employee identity"
+        ],
+        "medium": [
+            "Which determinant is acceptable in every nontrivial dependency under BCNF but not required by all 3NF cases?",
+            "A super key",
+            "A nullable column",
+            "A foreign key by itself"
+        ],
+        "hard": [
+            "Why can the formal definition of 3NF allow a dependency whose determinant is not a super key?",
+            "3NF permits it when the dependent attribute is prime, meaning it belongs to some candidate key. BCNF removes this exception and requires every nontrivial determinant to be a super key."
+        ],
+        "source": "https://www.postgresql.org/docs/current/ddl.html"
+    },
+    {
+        "title": "BCNF",
+        "module": "Normalization",
+        "summary": "Boyce-Codd normal form requires every determinant of a nontrivial functional dependency to be a super key. It is stricter than 3NF.",
+        "mechanism": "Identify every valid functional dependency, then decompose when its left side is not a super key. A correct decomposition must preserve information through a lossless join.",
+        "tradeoff": "BCNF decomposition can lose dependency preservation, requiring joins or additional enforcement for some constraints. A dependency-preserving 3NF design can be a deliberate trade-off.",
+        "example": "In assignment(student, course, instructor), instructor → course can violate BCNF when an instructor teaches one course but serves many students.",
+        "easy": [
+            "What does BCNF require for each nontrivial X → Y?",
+            "X must be a super key",
+            "Y must be nullable",
+            "X must contain all columns"
+        ],
+        "medium": [
+            "What property can be lost during a BCNF decomposition?",
+            "Dependency preservation",
+            "All possible lossless joins",
+            "The ability to store any primary key"
+        ],
+        "hard": [
+            "Why might an engineer choose 3NF over BCNF?",
+            "A lossless 3NF decomposition can preserve dependencies that a BCNF decomposition does not. Enforcing a dependency across joins may be more expensive or operationally difficult than accepting controlled redundancy."
+        ],
+        "source": "https://www.postgresql.org/docs/current/ddl.html",
+        "hardChoice": {
+            "prompt": "A lossless decomposition reaches BCNF but a business dependency can only be checked by joining relations. What trade-off has appeared?",
+            "options": [
+                "Dependency preservation may have been lost",
+                "Lossless joins are impossible in BCNF",
+                "BCNF guarantees all dependencies stay local"
+            ],
+            "answer": "Dependency preservation may have been lost",
+            "explanation": "BCNF requires each nontrivial determinant to be a super key. A lossless BCNF decomposition can fail to preserve every dependency, whereas a suitable 3NF synthesis can preserve dependencies.",
+            "hint": "Losslessness and dependency preservation are separate decomposition properties."
+        }
+    },
+    {
+        "title": "Denormalization",
+        "module": "Normalization",
+        "summary": "Denormalization intentionally duplicates or precomputes data to improve a measured read workload. It trades simpler reads for more complex writes and consistency management.",
+        "mechanism": "Common examples include order totals, materialized aggregates, and copied display attributes. Each duplicated value needs an explicit refresh or transactional update strategy.",
+        "tradeoff": "Measure query plans before duplicating data. Indexes and query improvements may solve the issue without creating synchronization and invalidation problems.",
+        "example": "Store order.total_cents with line items only if the application updates the total transactionally or accepts documented eventual consistency.",
+        "easy": [
+            "What is the main trade-off of denormalization?",
+            "Faster reads with more complex consistency maintenance",
+            "Automatic elimination of update anomalies",
+            "Guaranteed smaller storage"
+        ],
+        "medium": [
+            "When is denormalization justified?",
+            "A measured workload benefits and consistency rules are defined",
+            "Whenever a table has a foreign key",
+            "Before observing any query behavior"
+        ],
+        "hard": [
+            "How would you keep a cached account balance correct?",
+            "Define its source of truth, update balance and ledger entries atomically when strict consistency is required, handle retries idempotently, and reconcile aggregates. An asynchronously refreshed balance needs a stated freshness bound."
+        ],
+        "source": "https://www.postgresql.org/docs/current/ddl.html"
+    },
+    {
+        "title": "Primary Index",
+        "module": "Indexing",
+        "summary": "In textbook file organization, a primary index is built on the ordering key of a data file. In product documentation, primary-key index often means the unique index supporting a primary key.",
+        "mechanism": "An ordered-file primary index can be sparse because file order lets a block pointer lead to a local scan. PostgreSQL primary-key indexes are separate B-trees over heap tuples and are not automatically clustered storage.",
+        "tradeoff": "Always state the storage model. A PostgreSQL PRIMARY KEY does not continuously order table pages, while an InnoDB primary key is the clustered key.",
+        "example": "PostgreSQL: CREATE TABLE item(id bigint PRIMARY KEY); creates a unique B-tree but inserts still live in a heap-organized table.",
+        "easy": [
+            "Does a PostgreSQL primary key automatically keep heap rows physically sorted forever?",
+            "No",
+            "Yes, in every database",
+            "Only if the key is an integer"
+        ],
+        "medium": [
+            "Why can an ordered-file primary index be sparse?",
+            "The data file order permits a short scan inside the located block",
+            "Sparse indexes never require ordering",
+            "Every key must have a separate duplicate pointer"
+        ],
+        "hard": [
+            "Compare primary-key storage in PostgreSQL and InnoDB.",
+            "PostgreSQL typically stores table rows in a heap with a separate primary-key B-tree. InnoDB organizes row data by the clustered primary key, and secondary indexes include that key. Their I/O and key-size trade-offs differ."
+        ],
+        "source": "https://www.postgresql.org/docs/current/indexes-unique.html"
+    },
+    {
+        "title": "Secondary Index",
+        "module": "Indexing",
+        "summary": "A secondary index provides an additional access path on attributes that do not define the underlying file order. It helps selective filters avoid scanning every row.",
+        "mechanism": "Index entries map searchable keys to row locations or primary keys depending on the storage engine. Multiple rows may share one secondary key.",
+        "tradeoff": "Each index consumes storage and adds write work. A low-selectivity predicate may still favor a table scan, especially when many random row fetches would be required.",
+        "example": "CREATE INDEX orders_customer_idx ON orders(customer_id); supports locating orders for a specific customer.",
+        "easy": [
+            "What does a secondary index provide?",
+            "Another searchable access path",
+            "A second independent source of truth",
+            "Guaranteed ordering for every SELECT"
+        ],
+        "medium": [
+            "Why might the optimizer ignore an index on a boolean column?",
+            "The predicate may return too much of the table",
+            "Boolean values cannot be indexed",
+            "All secondary indexes are unique"
+        ],
+        "hard": [
+            "Why do many indexes slow bulk inserts?",
+            "Every inserted row requires maintaining each relevant index, possibly splitting pages and generating additional WAL. Keep indexes that serve measured queries and integrity constraints."
+        ],
+        "source": "https://www.postgresql.org/docs/current/indexes.html"
+    },
+    {
+        "title": "Clustering Index",
+        "module": "Indexing",
+        "summary": "A clustering index relates index order to physical row organization. Its exact meaning depends on the database engine and whether the organization is maintained automatically.",
+        "mechanism": "Range scans benefit when related rows share nearby pages. PostgreSQL CLUSTER rewrites a table using an index once; subsequent writes do not preserve that clustering automatically.",
+        "tradeoff": "A table can have only one physical row order at a time. Choose an order for important locality patterns while considering maintenance cost and competing access paths.",
+        "example": "CLUSTER orders USING orders_created_at_idx; rewrites PostgreSQL order rows in the index order at that time.",
+        "easy": [
+            "What can improve when related rows are physically close?",
+            "Range-scan locality",
+            "Every unrelated lookup equally",
+            "The number of logical table columns"
+        ],
+        "medium": [
+            "Does PostgreSQL CLUSTER continuously maintain physical order?",
+            "No, it is a one-time rewrite",
+            "Yes, after every insert",
+            "Only when SELECT has no ORDER BY"
+        ],
+        "hard": [
+            "Why can a clustered time key help analytics but hurt another access pattern?",
+            "Recent-time ranges can touch fewer neighboring pages, while random customer lookups may still scatter across those pages. Physical locality optimizes one main ordering, so secondary indexes and workload measurements remain necessary."
+        ],
+        "source": "https://www.postgresql.org/docs/current/sql-cluster.html"
+    },
+    {
+        "title": "B-Tree vs B+ Tree",
+        "module": "Indexing",
+        "summary": "Balanced tree indexes keep lookup paths logarithmic. In the usual textbook distinction, B+ trees keep data entries in leaves and connect leaves for efficient ordered traversal.",
+        "mechanism": "Internal separator keys route a search to a child page. High fan-out keeps trees shallow; splits and merges preserve balance as entries change. Product terminology often calls a B+ style structure a B-tree.",
+        "tradeoff": "Ordered trees support equality and range predicates, whereas a hash index primarily supports equality. Page size, key width, and included columns affect fan-out and I/O.",
+        "example": "WHERE score BETWEEN 80 AND 90 can seek to the first matching leaf entry and walk adjacent entries.",
+        "easy": [
+            "Where are data entries stored in the textbook B+ tree model?",
+            "At leaf nodes",
+            "Only at the root",
+            "Only in a separate hash bucket"
+        ],
+        "medium": [
+            "Why are B+ trees well suited to range scans?",
+            "Ordered leaves can be traversed sequentially",
+            "They store no separator keys",
+            "They require every key to be unique"
+        ],
+        "hard": [
+            "How does a wider index key affect a B+ tree?",
+            "Fewer entries fit in each page, reducing fan-out and potentially increasing tree height and cache pressure. Prefix compression or narrower keys can improve space, but the design depends on engine capabilities."
+        ],
+        "source": "https://www.postgresql.org/docs/current/btree.html"
+    },
+    {
+        "title": "Hash Index",
+        "module": "Indexing",
+        "summary": "A hash index maps keys to buckets using a hash function and is designed for equality lookups. It does not preserve key order.",
+        "mechanism": "Hash collisions place different keys into the same bucket or overflow structure. The index must compare actual values to distinguish collisions and may need bucket growth.",
+        "tradeoff": "Hash indexes do not normally accelerate less-than predicates, ordered results, or range scans. PostgreSQL B-tree indexes also support equality, so measure before choosing hash.",
+        "example": "CREATE INDEX session_token_hash_idx ON session_tokens USING hash(token_hash);",
+        "easy": [
+            "Which predicate naturally matches a hash index?",
+            "token_hash = a_specific_value",
+            "created_at BETWEEN two_times",
+            "ORDER BY user_name"
+        ],
+        "medium": [
+            "Why must actual keys be compared after hashing?",
+            "Different keys can share a hash bucket",
+            "Hash functions always produce unique values",
+            "Hash indexes enforce every foreign key"
+        ],
+        "hard": [
+            "Would you use a hash index for a leaderboard score range?",
+            "Usually no. Range and ordered access require an ordered structure such as a B-tree. A hash index can locate equal scores but cannot traverse score order efficiently."
+        ],
+        "source": "https://www.postgresql.org/docs/current/hash-index.html"
+    },
+    {
+        "title": "Composite Index",
+        "module": "Indexing",
+        "summary": "A composite index stores an ordered key made from several columns. Column order should reflect the workload and index access rules.",
+        "mechanism": "A B-tree on (customer_id, created_at) groups entries by customer and then time. Equality on leading columns followed by a range is a common efficient pattern.",
+        "tradeoff": "A query filtering only a later column may be less efficient; some engines can use skip-scan or scan the index. Avoid treating the leftmost-prefix guideline as an absolute prohibition.",
+        "example": "CREATE INDEX orders_customer_time_idx ON orders(customer_id, created_at);\nSELECT * FROM orders WHERE customer_id = 8 AND created_at >= DATE '2026-01-01';",
+        "easy": [
+            "What is the primary ordering of an index on (a, b)?",
+            "First a, then b within each a",
+            "First b, then a",
+            "A random interleaving of both"
+        ],
+        "medium": [
+            "Which filter commonly fits (customer_id, created_at) well?",
+            "customer_id equality plus a created_at range",
+            "Only a function on an unrelated column",
+            "An arbitrary JSON text substring"
+        ],
+        "hard": [
+            "Why might (status, created_at) be less suitable than (customer_id, created_at) for a customer history screen?",
+            "The customer filter does not constrain the leading status column, so finding one customer may scan many entries. Choose leading columns using selectivity, equality predicates, sort needs, and measured execution plans."
+        ],
+        "source": "https://www.postgresql.org/docs/current/indexes-multicolumn.html",
+        "hardChoice": {
+            "prompt": "An index is on (customer_id, created_at). Which query most directly uses a leading equality followed by an ordered range?",
+            "options": [
+                "WHERE customer_id = 7 AND created_at >= DATE '2026-01-01'",
+                "WHERE EXTRACT(YEAR FROM created_at) = 2026 with no customer predicate",
+                "WHERE unrelated_comment LIKE '%urgent%'"
+            ],
+            "answer": "WHERE customer_id = 7 AND created_at >= DATE '2026-01-01'",
+            "explanation": "The index groups entries by customer_id and orders created_at within each customer. Constraining the leading key by equality lets the range scan start and stop within that customer’s section.",
+            "hint": "Read the index key order from left to right."
+        }
+    },
+    {
+        "title": "Advantages and Disadvantages of Indexing",
+        "module": "Indexing",
+        "summary": "Indexes exchange storage and write maintenance for faster selected reads and constraint enforcement. Their value depends on actual queries and data distribution.",
+        "mechanism": "An index can reduce scanned rows, support ordering, or permit an index-only scan when visibility and covered-column requirements are met. The optimizer estimates these costs.",
+        "tradeoff": "Unused or redundant indexes increase insert, update, delete, vacuum, and backup costs. A covering index can improve reads but widens entries and may worsen write amplification.",
+        "example": "Use EXPLAIN (ANALYZE, BUFFERS) SELECT ... in a safe environment to compare actual time and page reads before and after an index.",
+        "easy": [
+            "Which operation commonly becomes more expensive after adding many indexes?",
+            "INSERT",
+            "Reading a cached constant",
+            "Parsing a table alias"
+        ],
+        "medium": [
+            "What evidence best supports adding an index?",
+            "A representative execution plan and measured workload",
+            "The table having a long name",
+            "The frontend using a dark theme"
+        ],
+        "hard": [
+            "Why can an index-only scan still fetch heap pages in PostgreSQL?",
+            "The index does not by itself establish whether a tuple is visible to the transaction. Pages not marked all-visible in the visibility map require heap visibility checks."
+        ],
+        "source": "https://www.postgresql.org/docs/current/indexes-index-only-scans.html"
+    },
+    {
+        "title": "Transactions",
+        "module": "Transactions and Concurrency",
+        "summary": "A transaction groups operations into one unit of work that commits or rolls back together. It keeps related business changes consistent despite errors.",
+        "mechanism": "BEGIN starts an explicit transaction; COMMIT makes its effects durable under the configured durability settings; ROLLBACK discards uncommitted changes. Concurrency control determines which intermediate states are visible.",
+        "tradeoff": "Transactions should be short and avoid slow network calls while holding locks. An HTTP retry also needs idempotency because the client may not know whether a commit succeeded.",
+        "example": "BEGIN;\nUPDATE accounts SET balance = balance - 50 WHERE id = 1;\nUPDATE accounts SET balance = balance + 50 WHERE id = 2;\nCOMMIT;",
+        "easy": [
+            "What does ROLLBACK do?",
+            "Discards the transaction’s uncommitted changes",
+            "Deletes every committed table",
+            "Commits only the first statement"
+        ],
+        "medium": [
+            "Why is a payment idempotency key useful even with transactions?",
+            "A client may retry after an uncertain successful commit",
+            "Transactions cannot update two rows",
+            "It automatically increases the isolation level"
+        ],
+        "hard": [
+            "A client times out just after COMMIT. Should it blindly retry a transfer?",
+            "No. The commit may have succeeded. Use a unique operation or idempotency key and query or safely replay that operation so the same transfer cannot be applied twice."
+        ],
+        "source": "https://www.postgresql.org/docs/current/tutorial-transactions.html"
+    },
+    {
+        "title": "ACID Properties",
+        "module": "Transactions and Concurrency",
+        "summary": "ACID summarizes atomicity, consistency, isolation, and durability. These properties address different failure and concurrency concerns.",
+        "mechanism": "Atomicity prevents partial commits; consistency means enforced invariants hold before and after valid transactions; isolation controls interference; durability preserves acknowledged commits within configured guarantees.",
+        "tradeoff": "ACID consistency is not the same term as CAP consistency. A DBMS can enforce declared constraints but cannot infer all application business rules.",
+        "example": "A transfer must update both balances atomically, preserve the total through correct logic, isolate conflicting transactions, and survive a database restart after commit.",
+        "easy": [
+            "Which ACID property prevents a half-completed transfer?",
+            "Atomicity",
+            "Isolation alone",
+            "CAP availability"
+        ],
+        "medium": [
+            "Does ACID consistency automatically enforce an undeclared business rule?",
+            "No, the rule must be expressed in constraints or correct transaction logic",
+            "Yes, the DBMS infers business intent",
+            "Only if the rule is written in a README"
+        ],
+        "hard": [
+            "Can a transaction be atomic yet permit a lost update?",
+            "Yes. Atomicity concerns all-or-nothing effects within a transaction; insufficient concurrency control can still allow one transaction to overwrite another. Choose atomic updates, locks, versions, or suitable isolation."
+        ],
+        "source": "https://www.postgresql.org/docs/current/transaction-iso.html"
+    },
+    {
+        "title": "Transaction Lifecycle",
+        "module": "Transactions and Concurrency",
+        "summary": "A transaction moves from active execution toward commit or abort, with recovery machinery ensuring that incomplete work is not treated as committed.",
+        "mechanism": "The textbook states are active, partially committed, committed, failed, and aborted. Write-ahead logging records recovery information before corresponding data pages must reach durable storage.",
+        "tradeoff": "A statement finishing is not equivalent to the transaction committing. In PostgreSQL, many statement errors leave the transaction aborted until ROLLBACK or recovery to a savepoint.",
+        "example": "BEGIN; SAVEPOINT before_item;\n-- A recoverable operation may fail.\nROLLBACK TO SAVEPOINT before_item;\nCOMMIT;",
+        "easy": [
+            "Does a successful UPDATE necessarily mean the surrounding transaction committed?",
+            "No",
+            "Yes, in every explicit transaction",
+            "Only if it modifies one row"
+        ],
+        "medium": [
+            "What can recover from a statement error without discarding all earlier transaction work?",
+            "A previously established savepoint where supported",
+            "An ORDER BY clause",
+            "A second primary key"
+        ],
+        "hard": [
+            "Why can committed data survive without every changed table page being flushed immediately?",
+            "A durable write-ahead log contains sufficient redo information. Recovery replays committed changes after a crash; the exact guarantees depend on WAL and synchronous commit configuration."
+        ],
+        "source": "https://www.postgresql.org/docs/current/wal-intro.html"
+    },
+    {
+        "title": "Isolation Levels",
+        "module": "Transactions and Concurrency",
+        "summary": "Isolation levels define which effects of concurrent transactions a transaction may observe. Stronger isolation prevents more anomalies but can require waiting or retries.",
+        "mechanism": "SQL names Read Uncommitted, Read Committed, Repeatable Read, and Serializable. PostgreSQL maps Read Uncommitted to Read Committed; its Repeatable Read uses a stable snapshot but can still permit serialization anomalies.",
+        "tradeoff": "Serializable execution is equivalent to some serial order of committed transactions, not necessarily literal one-at-a-time processing. Applications must retry serialization failures.",
+        "example": "Two doctors must not both go off call based on a snapshot showing the other on call; serializable isolation can reject this write-skew pattern.",
+        "easy": [
+            "What does Serializable aim to guarantee?",
+            "Committed results equivalent to some serial transaction order",
+            "Every transaction executes on one CPU thread",
+            "No transaction ever retries"
+        ],
+        "medium": [
+            "Does PostgreSQL Repeatable Read prevent every serialization anomaly?",
+            "No, write skew can remain",
+            "Yes, it is identical to Serializable",
+            "Only if SELECT has LIMIT"
+        ],
+        "hard": [
+            "How should an application handle a serialization failure?",
+            "Roll back and retry the entire transaction using a bounded retry policy. Recompute all reads because retrying only the final write can preserve the invalid earlier assumptions."
+        ],
+        "source": "https://www.postgresql.org/docs/current/transaction-iso.html",
+        "hardChoice": {
+            "prompt": "Two transactions each see that another doctor is on call, then each updates a different row to go off call. Which PostgreSQL strategy can reject this write-skew anomaly?",
+            "options": [
+                "Serializable transactions with whole-transaction retries",
+                "Repeatable Read alone guarantees this invariant",
+                "Read Committed with two unrelated SELECT statements"
+            ],
+            "answer": "Serializable transactions with whole-transaction retries",
+            "explanation": "A stable snapshot alone can allow both transactions to update different rows. PostgreSQL Serializable detects serialization anomalies and may abort one transaction, so the application must retry the entire transaction.",
+            "hint": "Protect the cross-row invariant rather than only repeating one row read."
+        }
+    },
+    {
+        "title": "Dirty Reads",
+        "module": "Transactions and Concurrency",
+        "summary": "A dirty read observes another transaction’s uncommitted data. The value may later disappear if that transaction rolls back.",
+        "mechanism": "A transaction updates a row but has not committed; a weaker reader sees that value and makes a decision. Rollback leaves the reader relying on data that never became committed.",
+        "tradeoff": "PostgreSQL does not expose dirty reads even when Read Uncommitted is requested. Avoid assuming identical isolation behavior across engines.",
+        "example": "Transaction A changes stock from 10 to 0 then rolls back; a dirty reader would incorrectly report sold out.",
+        "easy": [
+            "What makes a read dirty?",
+            "It sees another transaction’s uncommitted change",
+            "It uses an old committed snapshot",
+            "It reads through an index"
+        ],
+        "medium": [
+            "What does PostgreSQL do for requested Read Uncommitted?",
+            "It uses Read Committed semantics",
+            "It exposes all uncommitted tuples",
+            "It disables WAL"
+        ],
+        "hard": [
+            "Why is an old committed snapshot not a dirty read?",
+            "A snapshot may be stale relative to the latest commit, but its visible data was committed. Dirty reads specifically depend on changes that are still uncommitted and might roll back."
+        ],
+        "source": "https://www.postgresql.org/docs/current/transaction-iso.html"
+    },
+    {
+        "title": "Non-repeatable Reads",
+        "module": "Transactions and Concurrency",
+        "summary": "A non-repeatable read occurs when reading the same row again returns a different committed value because another transaction changed or deleted it.",
+        "mechanism": "At Read Committed, successive statements may use different snapshots. Another transaction can commit a row update between two SELECT statements.",
+        "tradeoff": "A stable transaction snapshot prevents this anomaly, but does not alone prevent every multi-row invariant violation or write-skew anomaly.",
+        "example": "SELECT price FROM products WHERE id=5; returns 20, then returns 25 later in the same Read Committed transaction.",
+        "easy": [
+            "What changes in a non-repeatable read?",
+            "A previously read row’s committed value",
+            "Only the SQL query text",
+            "Only uncommitted data"
+        ],
+        "medium": [
+            "How does PostgreSQL Repeatable Read address repeated row reads?",
+            "It uses a stable transaction snapshot",
+            "It locks the whole database for every SELECT",
+            "It removes all indexes"
+        ],
+        "hard": [
+            "Is locking just one product row enough for a rule involving all products?",
+            "Not necessarily. A row lock protects that row from conflicting changes, but a multi-row invariant may need locking a broader logical resource or serializable isolation with retries."
+        ],
+        "source": "https://www.postgresql.org/docs/current/transaction-iso.html"
+    },
+    {
+        "title": "Phantom Reads",
+        "module": "Transactions and Concurrency",
+        "summary": "A phantom read occurs when rerunning a predicate query returns a changed set of matching rows because another transaction inserted, deleted, or changed rows.",
+        "mechanism": "The anomaly concerns a predicate range rather than just one existing row. Locking currently matched rows may not prevent a new row from entering the range.",
+        "tradeoff": "Behavior is engine-specific: PostgreSQL Repeatable Read prevents phantom reads through a stable snapshot, although its level can still allow other serialization anomalies.",
+        "example": "SELECT COUNT(*) FROM bookings WHERE room_id=1 AND day=DATE '2026-11-17'; changes after another transaction inserts a matching booking.",
+        "easy": [
+            "What distinguishes a phantom read from a changed-row read?",
+            "The set matching a predicate changes",
+            "A column becomes a primary key",
+            "A transaction reads its own write"
+        ],
+        "medium": [
+            "Why may locking all currently matching booking rows be insufficient?",
+            "A new row can be inserted into an uncovered predicate range",
+            "SELECT cannot use predicates",
+            "Locks always permit changes to the exact locked row"
+        ],
+        "hard": [
+            "How can you prevent two transactions from booking an initially empty slot?",
+            "Use a unique or exclusion constraint that represents the invariant, lock a stable parent resource, or use serializable transactions with retries. Locking an empty result set alone does not lock a future row."
+        ],
+        "source": "https://www.postgresql.org/docs/current/transaction-iso.html"
+    },
+    {
+        "title": "Lost Update Problem",
+        "module": "Transactions and Concurrency",
+        "summary": "A lost update occurs when concurrent read-modify-write operations overwrite each other because both were based on an earlier value.",
+        "mechanism": "Two clients read balance 100; one writes 110 and another writes 120. The intended two increments total 130, but one update is lost if both write absolute values without coordination.",
+        "tradeoff": "Use atomic arithmetic, SELECT FOR UPDATE in a transaction, optimistic version checks, or appropriate isolation. The correct choice depends on the business operation and conflict frequency.",
+        "example": "UPDATE counters SET value=value+1 WHERE id=7; avoids a client-side read followed by an absolute replacement for a simple increment.",
+        "easy": [
+            "Which pattern commonly causes a lost update?",
+            "Concurrent reads followed by unchecked absolute writes",
+            "A single atomic increment statement",
+            "A declared NOT NULL constraint"
+        ],
+        "medium": [
+            "How can a version column detect conflicting edits?",
+            "UPDATE ... WHERE id=? AND version=? and check affected rows",
+            "Ignore the update row count",
+            "Use ORDER BY version without a predicate"
+        ],
+        "hard": [
+            "Why is an atomic increment insufficient for a transfer with an insufficient-funds rule?",
+            "The operation must also enforce balance eligibility and coordinate both accounts transactionally. Use a conditional debit and check its result, then credit within the same transaction, with a stable lock order if locking multiple rows."
+        ],
+        "source": "https://www.postgresql.org/docs/current/explicit-locking.html"
+    },
+    {
+        "title": "Two-Phase Locking",
+        "module": "Transactions and Concurrency",
+        "summary": "Two-phase locking separates a transaction into a growing phase that acquires locks and a shrinking phase that releases them without acquiring new locks. It provides conflict serializability under its assumptions.",
+        "mechanism": "Strict two-phase locking holds exclusive locks until commit or abort, avoiding dirty writes and cascading aborts. Transactions can still wait for each other.",
+        "tradeoff": "Two-phase locking can deadlock; deadlock detection or prevention is still required. It is unrelated to the distributed two-phase commit protocol.",
+        "example": "T1 locks account A, then account B; it performs both updates before releasing write locks at commit.",
+        "easy": [
+            "What is forbidden after the shrinking phase begins in basic two-phase locking?",
+            "Acquiring a new lock",
+            "Releasing an existing lock",
+            "Finishing the transaction"
+        ],
+        "medium": [
+            "Does two-phase locking automatically prevent deadlocks?",
+            "No",
+            "Yes, because it has two phases",
+            "Only for transactions with indexes"
+        ],
+        "hard": [
+            "How is two-phase locking different from two-phase commit?",
+            "Two-phase locking is a concurrency-control protocol for serializable schedules. Two-phase commit coordinates a distributed commit decision across participants and can block if the coordinator fails."
+        ],
+        "source": "https://www.postgresql.org/docs/current/explicit-locking.html"
+    },
+    {
+        "title": "Optimistic vs Pessimistic Locking",
+        "module": "Transactions and Concurrency",
+        "summary": "Pessimistic concurrency control acquires locks before conflicting changes. Optimistic control allows work to proceed and detects conflicts before committing the result.",
+        "mechanism": "A version predicate provides optimistic conflict detection; SELECT FOR UPDATE provides a common pessimistic row-locking pattern. Conflicted optimistic updates must be retried or presented for resolution.",
+        "tradeoff": "Optimistic control suits rare conflicts and long user editing periods. Pessimistic locks can reduce wasted work under contention but should not be held while waiting for human input.",
+        "example": "UPDATE documents SET body=?, version=version+1 WHERE id=? AND version=?; zero affected rows means the edit was stale.",
+        "easy": [
+            "What signals an optimistic version conflict?",
+            "An update with the expected version affects zero rows",
+            "The table has a foreign key",
+            "A SELECT returns a string"
+        ],
+        "medium": [
+            "Which approach better fits a user editing a form for ten minutes?",
+            "Version-based optimistic checking",
+            "Holding a database row lock throughout typing",
+            "Disabling all concurrent users"
+        ],
+        "hard": [
+            "When might pessimistic locking outperform optimistic retries?",
+            "Under frequent conflicts with short critical sections, locking early can avoid repeatedly computing work that will be rejected. It still needs a consistent lock order, timeout handling, and short transactions."
+        ],
+        "source": "https://www.postgresql.org/docs/current/explicit-locking.html"
+    },
+    {
+        "title": "Database Deadlocks",
+        "module": "Transactions and Concurrency",
+        "summary": "A database deadlock is a cycle of transactions waiting for locks held by one another. None can proceed until one is aborted or releases its locks.",
+        "mechanism": "A wait-for graph contains an edge when one transaction waits for another. A cycle indicates deadlock in the usual exclusive-lock model; the DBMS selects a victim and rolls it back.",
+        "tradeoff": "Acquire shared resources in a consistent order and keep transactions short. Applications should retry a deadlock victim’s entire transaction safely.",
+        "example": "T1 locks account 1 then requests 2; T2 locks account 2 then requests 1. Lock both accounts in ascending id order to avoid that cycle.",
+        "easy": [
+            "What characterizes a lock deadlock?",
+            "A cycle of transactions waiting on each other",
+            "Any query taking more than one second",
+            "A read-only table with no sessions"
+        ],
+        "medium": [
+            "What practical rule reduces multi-row update deadlocks?",
+            "Acquire row locks in a consistent order",
+            "Randomize the lock order each time",
+            "Keep transactions open while calling external APIs"
+        ],
+        "hard": [
+            "Why does adding a timeout not prove deadlock prevention?",
+            "A timeout limits waiting but can abort a transaction even without a cycle. Deadlock prevention changes acquisition rules; detection recognizes cycles and chooses a victim."
+        ],
+        "source": "https://www.postgresql.org/docs/current/explicit-locking.html#LOCKING-DEADLOCKS"
+    },
+    {
+        "title": "CAP Theorem",
+        "module": "Additional Concepts",
+        "summary": "During a network partition, a distributed read/write system cannot guarantee both linearizable consistency and availability for every request under the theorem’s assumptions.",
+        "mechanism": "Consistency here means operations appear to occur atomically in a single real-time-respecting order. Availability requires every request received by a nonfailed node to eventually receive a successful response; partitions delay or drop communication.",
+        "tradeoff": "CAP is a choice during a partition, not a general pick-any-two menu. Outside partitions, systems still make latency, consistency, and operational trade-offs.",
+        "example": "If replicas cannot communicate, accepting conflicting writes on both sides favors availability; refusing some requests can preserve a single consistent order.",
+        "easy": [
+            "When does the CAP trade-off become unavoidable?",
+            "During a network partition",
+            "Whenever a table has two columns",
+            "Only during a SQL join"
+        ],
+        "medium": [
+            "What does the C in CAP refer to?",
+            "Linearizable consistency",
+            "Every declared business constraint",
+            "Column compression"
+        ],
+        "hard": [
+            "Why is calling an entire database simply CP or AP incomplete?",
+            "Behavior can depend on operation type, configuration, quorum rules, and failure mode. Explain what happens to reads and writes during a partition and what consistency contract remains outside it."
+        ],
+        "source": "https://www.cs.cornell.edu/courses/cs5414/2014fa/papers/Gilbert_Lynch_CAP.pdf",
+        "hardChoice": {
+            "prompt": "Two healthy replicas are partitioned and cannot exchange messages. If both must return successful writes independently, which CAP guarantee cannot also be assured?",
+            "options": [
+                "A single linearizable history respecting real-time order",
+                "Local storage durability under every circumstance",
+                "That the database has a query language"
+            ],
+            "answer": "A single linearizable history respecting real-time order",
+            "explanation": "Without communication, independently successful conflicting writes cannot always preserve the single real-time-respecting order required by linearizability. CAP’s unavoidable choice concerns availability versus linearizability during the partition.",
+            "hint": "CAP consistency means linearizability, not simply valid field types."
+        }
+    },
+    {
+        "title": "Sharding",
+        "module": "Additional Concepts",
+        "summary": "Sharding distributes different subsets of a logical dataset across independent database partitions. It scales capacity by dividing ownership of data.",
+        "mechanism": "A shard key maps a record to a shard using ranges, hashing, or a directory. Routing, resharding, cross-shard queries, and transactions become explicit engineering concerns.",
+        "tradeoff": "A poor key creates hot shards or makes common queries scatter across all shards. Replication copies data; sharding divides data, and systems often use both.",
+        "example": "Shard orders by tenant_id when most requests remain within one tenant, while planning for exceptionally large tenants.",
+        "easy": [
+            "What is the main distinction between sharding and replication?",
+            "Sharding divides data; replication copies data",
+            "Both always copy all data everywhere",
+            "Replication removes all routing needs"
+        ],
+        "medium": [
+            "Which shard key can create a hot shard for append-only traffic?",
+            "A monotonically increasing timestamp with naive range placement",
+            "A well-distributed hash in every workload",
+            "A random key by definition always fails"
+        ],
+        "hard": [
+            "How would you choose a shard key for a multi-tenant application?",
+            "Start with frequent query predicates and tenant isolation, estimate tenant size and write skew, consider cross-tenant analytics, and plan key immutability and rebalancing. Tenant id alone may need an escape strategy for giant tenants."
+        ],
+        "source": "https://www.mongodb.com/docs/manual/sharding/"
+    },
+    {
+        "title": "Replication",
+        "module": "Additional Concepts",
+        "summary": "Replication maintains copies of data on multiple nodes for availability, recovery, or read scaling. It does not automatically increase write capacity or eliminate stale reads.",
+        "mechanism": "A primary can stream changes to replicas synchronously or asynchronously. Synchronous acknowledgment can reduce data-loss windows but adds latency and depends on the selected quorum or replica policy.",
+        "tradeoff": "An asynchronously replicated reader can lag behind a recent write. Read-your-writes guarantees require routing or consistency mechanisms rather than assuming all copies are current.",
+        "example": "Send a user’s post-save confirmation read to the primary, or wait for a replica to reach the write’s log position.",
+        "easy": [
+            "What can happen with asynchronous replication?",
+            "A replica temporarily returns older committed data",
+            "Every replica instantly confirms every write",
+            "The primary has no persistent storage"
+        ],
+        "medium": [
+            "What trade-off often accompanies synchronous replication?",
+            "Higher commit latency for stronger acknowledgment guarantees",
+            "No communication overhead",
+            "Guaranteed availability during every partition"
+        ],
+        "hard": [
+            "Why is failover not just changing a connection string?",
+            "You must determine a safe new primary, prevent the old primary from accepting conflicting writes, account for replication lag, and redirect clients. Fencing and recovery policies prevent split brain."
+        ],
+        "source": "https://www.postgresql.org/docs/current/high-availability.html"
+    },
+    {
+        "title": "Database Partitioning",
+        "module": "Additional Concepts",
+        "summary": "Partitioning splits one logical table into smaller physical pieces, commonly by ranges, lists, or hashes. Queries can skip irrelevant partitions when predicates allow pruning.",
+        "mechanism": "A partition key determines placement. Local indexes cover each partition, and the optimizer prunes partitions that cannot match a query; exact constraints vary by database engine.",
+        "tradeoff": "Partitioning is not the same as distributing shards across independent servers. Too many partitions add planning and maintenance overhead, and cross-partition uniqueness may have restrictions.",
+        "example": "Partition event_log by month so old months can be detached or dropped efficiently and recent queries scan fewer partitions.",
+        "easy": [
+            "What is partition pruning?",
+            "Skipping partitions that cannot satisfy a query",
+            "Deleting every unmatched row",
+            "Copying every partition to every server"
+        ],
+        "medium": [
+            "Why does a monthly time partition not automatically speed a query without a time filter?",
+            "The query may need to inspect all partitions",
+            "The table becomes impossible to query",
+            "Partitioned tables cannot have indexes"
+        ],
+        "hard": [
+            "What should you check before requiring globally unique ids on a partitioned table?",
+            "The engine’s constraint rules: some require the partition key in a unique constraint because uniqueness is enforced by per-partition indexes. Choose the key design or a separate global identity mechanism accordingly."
+        ],
+        "source": "https://www.postgresql.org/docs/current/ddl-partitioning.html"
+    },
+    {
+        "title": "Database Views",
+        "module": "Additional Concepts",
+        "summary": "A view gives a named query the appearance of a table. It can simplify repeated logic and expose a deliberate subset of data.",
+        "mechanism": "A regular view generally stores its query definition rather than a separate result set. A materialized view stores query results and needs an explicit refresh policy.",
+        "tradeoff": "A view is not automatically a performance optimization or a complete security boundary. Understand underlying permissions, security-invoker behavior, and whether updates are supported.",
+        "example": "CREATE VIEW active_students AS SELECT id, name FROM students WHERE active=true;",
+        "easy": [
+            "What does a normal PostgreSQL view primarily store?",
+            "A query definition",
+            "A permanently frozen copy of all rows",
+            "A second independent database server"
+        ],
+        "medium": [
+            "What extra maintenance does a materialized view require?",
+            "Refreshing stored results when freshness is needed",
+            "Dropping every source-table constraint",
+            "Changing all primary keys each hour"
+        ],
+        "hard": [
+            "When would a materialized view help a dashboard?",
+            "When expensive aggregates can be reused and some staleness is acceptable. Define the refresh cadence, concurrent refresh prerequisites, indexes, and the user-visible freshness contract."
+        ],
+        "source": "https://www.postgresql.org/docs/current/sql-createview.html"
+    },
+    {
+        "title": "Stored Procedures",
+        "module": "Additional Concepts",
+        "summary": "Stored procedures package operations that execute inside the database. They can centralize data-intensive workflows and reduce application-to-database round trips.",
+        "mechanism": "PostgreSQL invokes procedures using CALL; functions are invoked in expressions or queries and have different capabilities. Transaction control inside procedures is allowed only in specific calling contexts.",
+        "tradeoff": "Database-side logic can improve locality but increases coupling to database tooling, privileges, and deployment practices. Use explicit permissions and versioned migrations for changes.",
+        "example": "CALL transfer_funds(1, 2, 50); can wrap a reviewed server-side workflow while the schema still enforces invariants.",
+        "easy": [
+            "How is a PostgreSQL procedure invoked?",
+            "CALL procedure_name(...)",
+            "Only with SELECT * FROM",
+            "By adding an index"
+        ],
+        "medium": [
+            "Why distinguish procedures from SQL functions?",
+            "Their invocation and transaction-control capabilities differ",
+            "Functions cannot read tables",
+            "Procedures always bypass permissions"
+        ],
+        "hard": [
+            "What security risk arises in privileged database routines?",
+            "Overbroad privileges or unsafe name resolution can expose unintended operations. Limit grants, validate inputs, use schema-qualified names, and configure a safe search_path for security-definer routines."
+        ],
+        "source": "https://www.postgresql.org/docs/current/sql-createprocedure.html"
+    }
+]

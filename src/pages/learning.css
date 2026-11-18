@@ -1,0 +1,841 @@
+/* Keep learning pages spacious while inheriting the shell's theme colors. */
+.learning-page { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    gap: 24px; /* Keep a consistent space between neighboring items. */
+} /* Finish this style rule. */
+/* Use a responsive three-column curriculum grid on wide screens. */
+.curriculum-grid { /* Apply this rule to the selected elements. */
+    display: grid; /* Choose how this element and its children participate in layout. */
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* Allocate the responsive content columns. */
+    gap: 18px; /* Keep a consistent space between neighboring items. */
+} /* Finish this style rule. */
+/* Make each subject card a balanced vertical stack. */
+.curriculum-card { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    gap: 16px; /* Keep a consistent space between neighboring items. */
+    padding: 24px; /* Create readable inner spacing around content. */
+} /* Finish this style rule. */
+/* Keep subject icons and counts on the same baseline. */
+.subject-card-top, /* Include this selector in the shared rule below. */
+.row-between { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    align-items: center; /* Align child items across the layout axis. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    gap: 12px; /* Keep a consistent space between neighboring items. */
+} /* Finish this style rule. */
+/* Use a readable subject title and an understated summary. */
+.subject-card-title { /* Apply this rule to the selected elements. */
+    font-size: 18px; /* Set the text size for this interface element. */
+    font-weight: 650; /* Give this text its intended visual emphasis. */
+    text-decoration: none; /* Control the visual treatment of links. */
+    color: inherit; /* Apply the theme text color or semantic accent. */
+} /* Finish this style rule. */
+/* Reserve consistent summary space across adjacent cards. */
+.subject-description { /* Apply this rule to the selected elements. */
+    font-size: 13px; /* Set the text size for this interface element. */
+    line-height: 1.7; /* Keep wrapped text comfortably readable. */
+    min-height: 64px; /* Maintain a useful minimum content height. */
+    margin: 0; /* Set the outer spacing around this element. */
+} /* Finish this style rule. */
+/* Reuse compact explanatory text throughout learning cards. */
+.small { /* Apply this rule to the selected elements. */
+    font-size: 12px; /* Set the text size for this interface element. */
+    line-height: 1.6; /* Keep wrapped text comfortably readable. */
+} /* Finish this style rule. */
+/* Let primary card actions fill their available width. */
+.full-width { /* Apply this rule to the selected elements. */
+    width: 100%; /* Control the available horizontal space. */
+    justify-content: center; /* Distribute child items along the layout axis. */
+    box-sizing: border-box; /* Include padding and borders in the declared dimensions. */
+} /* Finish this style rule. */
+/* Group checkpoint counts without relying on color alone. */
+.checkpoint-counts { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    gap: 16px; /* Keep a consistent space between neighboring items. */
+    font-size: 11px; /* Set the text size for this interface element. */
+    color: var(--muted, #9b9ca8); /* Apply the theme text color or semantic accent. */
+    padding-top: 6px; /* Leave extra space above this content. */
+} /* Finish this style rule. */
+/* Align difficulty dots with their written labels. */
+.checkpoint-counts > span { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 5px; /* Keep a consistent space between neighboring items. */
+} /* Finish this style rule. */
+/* Render a small accessible difficulty marker next to text. */
+.difficulty-dot { /* Apply this rule to the selected elements. */
+    width: 5px; /* Control the available horizontal space. */
+    height: 5px; /* Control the vertical size of this element. */
+    border-radius: 50%; /* Use the shared rounded visual language. */
+    display: inline-block; /* Choose how this element and its children participate in layout. */
+    background: #b9a5fb; /* Set the surface color behind this content. */
+} /* Finish this style rule. */
+/* Distinguish easy questions while keeping the label visible. */
+.difficulty-dot.easy { /* Apply this rule to the selected elements. */
+    background: #75d8aa; /* Set the surface color behind this content. */
+} /* Finish this style rule. */
+/* Distinguish medium questions while keeping the label visible. */
+.difficulty-dot.medium { /* Apply this rule to the selected elements. */
+    background: #f0c575; /* Set the surface color behind this content. */
+} /* Finish this style rule. */
+/* Distinguish hard questions while keeping the label visible. */
+.difficulty-dot.hard { /* Apply this rule to the selected elements. */
+    background: #ec969f; /* Set the surface color behind this content. */
+} /* Finish this style rule. */
+/* Make search fields work well inside fluid layouts. */
+.search-field { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 10px; /* Keep a consistent space between neighboring items. */
+    width: min(100%, 440px); /* Control the available horizontal space. */
+    border: 1px solid var(--line, #292a34); /* Separate this element from the surrounding surface. */
+    border-radius: 9px; /* Use the shared rounded visual language. */
+    background: var(--surface, #18191f); /* Set the surface color behind this content. */
+    color: var(--muted, #9b9ca8); /* Apply the theme text color or semantic accent. */
+    padding: 11px 14px; /* Create readable inner spacing around content. */
+    box-sizing: border-box; /* Include padding and borders in the declared dimensions. */
+} /* Finish this style rule. */
+/* Inherit all theme properties inside a search input. */
+.search-field input { /* Apply this rule to the selected elements. */
+    background: transparent; /* Set the surface color behind this content. */
+    color: inherit; /* Apply the theme text color or semantic accent. */
+    border: 0; /* Separate this element from the surrounding surface. */
+    outline: 0; /* Make keyboard focus visibly identifiable. */
+    width: 100%; /* Control the available horizontal space. */
+    min-width: 0; /* Allow content to shrink or maintain a useful minimum width. */
+    font: inherit; /* Inherit the surrounding accessible interface typography. */
+    font-size: 13px; /* Set the text size for this interface element. */
+} /* Finish this style rule. */
+/* Show keyboard focus around the whole search control. */
+.search-field:focus-within { /* Apply this rule to the selected elements. */
+    outline: 2px solid #a49aff; /* Make keyboard focus visibly identifiable. */
+    outline-offset: 2px; /* Separate the focus ring from the element border. */
+} /* Finish this style rule. */
+/* Stack ordered modules and question cards consistently. */
+.module-stack, /* Include this selector in the shared rule below. */
+.question-stack { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    gap: 18px; /* Keep a consistent space between neighboring items. */
+} /* Finish this style rule. */
+/* Keep module content flush with the list separators. */
+.module-panel { /* Apply this rule to the selected elements. */
+    overflow: hidden; /* Keep overflowing content inside its visual container. */
+} /* Finish this style rule. */
+/* Place the module order alongside its title. */
+.module-panel h2 { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 12px; /* Keep a consistent space between neighboring items. */
+    font-size: 15px; /* Set the text size for this interface element. */
+} /* Finish this style rule. */
+/* Give module sequence numbers a quiet visual container. */
+.module-number { /* Apply this rule to the selected elements. */
+    font-family: monospace; /* Select the appropriate reading or code typeface. */
+    color: #b2a3fa; /* Apply the theme text color or semantic accent. */
+    font-size: 12px; /* Set the text size for this interface element. */
+    padding: 5px 7px; /* Create readable inner spacing around content. */
+    background: #a49aff12; /* Set the surface color behind this content. */
+    border-radius: 5px; /* Use the shared rounded visual language. */
+} /* Finish this style rule. */
+/* Make topic links readable as two-line list items. */
+.topic-row-main { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    gap: 5px; /* Keep a consistent space between neighboring items. */
+    min-width: 0; /* Allow content to shrink or maintain a useful minimum width. */
+    flex: 1; /* Allow this item to use the available flexible space. */
+    text-decoration: none; /* Control the visual treatment of links. */
+    color: inherit; /* Apply the theme text color or semantic accent. */
+} /* Finish this style rule. */
+/* Style topic secondary metadata without competing with the title. */
+.topic-row-main small { /* Apply this rule to the selected elements. */
+    color: var(--muted, #9b9ca8); /* Apply the theme text color or semantic accent. */
+    font-size: 11px; /* Set the text size for this interface element. */
+    line-height: 1.5; /* Keep wrapped text comfortably readable. */
+} /* Finish this style rule. */
+/* Use a consistent small icon tile beside saved topics. */
+.topic-row-icon { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    align-items: center; /* Align child items across the layout axis. */
+    justify-content: center; /* Distribute child items along the layout axis. */
+    width: 33px; /* Control the available horizontal space. */
+    height: 33px; /* Control the vertical size of this element. */
+    flex-shrink: 0; /* Keep essential controls and icons from collapsing. */
+    border: 1px solid var(--line, #292a34); /* Separate this element from the surrounding surface. */
+    border-radius: 8px; /* Use the shared rounded visual language. */
+    color: #b6a6ff; /* Apply the theme text color or semantic accent. */
+} /* Finish this style rule. */
+/* Keep navigation breadcrumbs readable and wrap long module names. */
+.breadcrumb { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    align-items: center; /* Align child items across the layout axis. */
+    flex-wrap: wrap; /* Allow controls to wrap when the viewport becomes narrow. */
+    gap: 8px; /* Keep a consistent space between neighboring items. */
+    font-size: 12px; /* Set the text size for this interface element. */
+    color: var(--muted, #9b9ca8); /* Apply the theme text color or semantic accent. */
+} /* Finish this style rule. */
+/* Let breadcrumb links inherit the theme's quiet color. */
+.breadcrumb a { /* Apply this rule to the selected elements. */
+    color: inherit; /* Apply the theme text color or semantic accent. */
+    text-decoration: none; /* Control the visual treatment of links. */
+} /* Finish this style rule. */
+/* Group topic metadata in a compact readable line. */
+.lesson-meta { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    flex-wrap: wrap; /* Allow controls to wrap when the viewport becomes narrow. */
+    gap: 14px; /* Keep a consistent space between neighboring items. */
+    align-items: center; /* Align child items across the layout axis. */
+    color: var(--muted, #9b9ca8); /* Apply the theme text color or semantic accent. */
+    font-size: 12px; /* Set the text size for this interface element. */
+} /* Finish this style rule. */
+/* Align reading-time icons with their labels. */
+.lesson-meta > span { /* Apply this rule to the selected elements. */
+    display: inline-flex; /* Choose how this element and its children participate in layout. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 5px; /* Keep a consistent space between neighboring items. */
+} /* Finish this style rule. */
+/* Divide long lesson content from its quick-reference sidebar. */
+.lesson-layout { /* Apply this rule to the selected elements. */
+    display: grid; /* Choose how this element and its children participate in layout. */
+    grid-template-columns: minmax(0, 1fr) 300px; /* Allocate the responsive content columns. */
+    gap: 20px; /* Keep a consistent space between neighboring items. */
+    align-items: start; /* Align child items across the layout axis. */
+} /* Finish this style rule. */
+/* Stack lesson explanation cards without fixed heights. */
+.lesson-content, /* Include this selector in the shared rule below. */
+.lesson-aside { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    gap: 20px; /* Keep a consistent space between neighboring items. */
+    min-width: 0; /* Allow content to shrink or maintain a useful minimum width. */
+} /* Finish this style rule. */
+/* Give learning material enough whitespace to study comfortably. */
+.lesson-section { /* Apply this rule to the selected elements. */
+    padding: 25px; /* Create readable inner spacing around content. */
+    min-width: 0; /* Allow content to shrink or maintain a useful minimum width. */
+} /* Finish this style rule. */
+/* Keep section titles concise and consistently spaced. */
+.lesson-section h2 { /* Apply this rule to the selected elements. */
+    font-size: 16px; /* Set the text size for this interface element. */
+    margin: 0 0 16px; /* Set the outer spacing around this element. */
+    line-height: 1.5; /* Keep wrapped text comfortably readable. */
+} /* Finish this style rule. */
+/* Leave breathing room between secondary headings and examples. */
+.lesson-section h3 { /* Apply this rule to the selected elements. */
+    font-size: 14px; /* Set the text size for this interface element. */
+    margin: 20px 0 12px; /* Set the outer spacing around this element. */
+} /* Finish this style rule. */
+/* Preserve intentional paragraph breaks in structured curriculum explanations. */
+.lesson-prose { /* Apply this rule to the selected elements. */
+    color: var(--muted, #aaaab6); /* Apply the theme text color or semantic accent. */
+    font-size: 14px; /* Set the text size for this interface element. */
+    line-height: 1.95; /* Keep wrapped text comfortably readable. */
+    white-space: pre-line; /* Preserve useful text formatting while controlling wrapping. */
+    margin: 0; /* Set the outer spacing around this element. */
+} /* Finish this style rule. */
+/* Keep example code readable and horizontally scrollable. */
+.lesson-section pre, /* Include this selector in the shared rule below. */
+.example-code { /* Apply this rule to the selected elements. */
+    padding: 18px; /* Create readable inner spacing around content. */
+    border: 1px solid var(--line, #292a34); /* Separate this element from the surrounding surface. */
+    background: var(--bg, #101114); /* Set the surface color behind this content. */
+    border-radius: 8px; /* Use the shared rounded visual language. */
+    overflow-x: auto; /* Make wide content horizontally accessible. */
+    font-size: 12px; /* Set the text size for this interface element. */
+    line-height: 1.8; /* Keep wrapped text comfortably readable. */
+    color: var(--text, #e5e3ed); /* Apply the theme text color or semantic accent. */
+    white-space: pre-wrap; /* Preserve useful text formatting while controlling wrapping. */
+    overflow-wrap: anywhere; /* Keep long answers and references inside their container. */
+} /* Finish this style rule. */
+/* Separate expandable interview answers with subtle dividers. */
+.interview-question { /* Apply this rule to the selected elements. */
+    border-top: 1px solid var(--line, #292a34); /* Separate stacked learning sections. */
+    padding: 16px 0; /* Create readable inner spacing around content. */
+} /* Finish this style rule. */
+/* Give expandable reference headings an obvious interactive cursor. */
+.interview-question summary { /* Apply this rule to the selected elements. */
+    cursor: pointer; /* Communicate whether the user can interact with this item. */
+    font-size: 13px; /* Set the text size for this interface element. */
+    font-weight: 550; /* Give this text its intended visual emphasis. */
+    line-height: 1.7; /* Keep wrapped text comfortably readable. */
+} /* Finish this style rule. */
+/* Place revealed reference content away from the disclosure title. */
+.interview-question[open] > p { /* Apply this rule to the selected elements. */
+    margin-top: 16px; /* Separate this element from the preceding content. */
+} /* Finish this style rule. */
+/* Highlight useful interviewer follow-up questions subtly. */
+.followup { /* Apply this rule to the selected elements. */
+    margin-top: 18px; /* Separate this element from the preceding content. */
+    border-left: 2px solid #a49aff; /* Draw attention to a supporting explanation. */
+    padding: 4px 0 4px 16px; /* Create readable inner spacing around content. */
+    font-size: 12px; /* Set the text size for this interface element. */
+    color: var(--muted, #aaaab6); /* Apply the theme text color or semantic accent. */
+    line-height: 1.7; /* Keep wrapped text comfortably readable. */
+} /* Finish this style rule. */
+/* Keep quick revision points readable at sidebar width. */
+.revision-points { /* Apply this rule to the selected elements. */
+    padding: 0; /* Create readable inner spacing around content. */
+    list-style: none; /* Choose whether list markers should be visible. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    gap: 15px; /* Keep a consistent space between neighboring items. */
+    margin: 0; /* Set the outer spacing around this element. */
+} /* Finish this style rule. */
+/* Align each revision check icon with the first line of text. */
+.revision-points li { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    align-items: flex-start; /* Align child items across the layout axis. */
+    gap: 10px; /* Keep a consistent space between neighboring items. */
+    font-size: 12px; /* Set the text size for this interface element. */
+    line-height: 1.9; /* Keep wrapped text comfortably readable. */
+    color: var(--muted, #aaaab6); /* Apply the theme text color or semantic accent. */
+} /* Finish this style rule. */
+/* Stop quick-reference icons from shrinking beside long text. */
+.revision-points svg { /* Apply this rule to the selected elements. */
+    flex-shrink: 0; /* Keep essential controls and icons from collapsing. */
+    margin-top: 4px; /* Separate this element from the preceding content. */
+    color: #a49aff; /* Apply the theme text color or semantic accent. */
+} /* Finish this style rule. */
+/* Leave space between stacked study actions. */
+.lesson-aside .button + .button { /* Apply this rule to the selected elements. */
+    margin-top: 10px; /* Separate this element from the preceding content. */
+} /* Finish this style rule. */
+/* Render trusted external resources as a simple link list. */
+.resource-list { /* Apply this rule to the selected elements. */
+    list-style: none; /* Choose whether list markers should be visible. */
+    padding: 0; /* Create readable inner spacing around content. */
+    margin: 16px 0 0; /* Set the outer spacing around this element. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    gap: 14px; /* Keep a consistent space between neighboring items. */
+} /* Finish this style rule. */
+/* Make reference links visibly interactive and easy to scan. */
+.resource-list a { /* Apply this rule to the selected elements. */
+    color: #b7a9ff; /* Apply the theme text color or semantic accent. */
+    text-decoration: none; /* Control the visual treatment of links. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    gap: 8px; /* Keep a consistent space between neighboring items. */
+    align-items: center; /* Align child items across the layout axis. */
+    font-size: 12px; /* Set the text size for this interface element. */
+} /* Finish this style rule. */
+/* Align explicit learning state controls in a flexible footer. */
+.learning-actions { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 20px; /* Keep a consistent space between neighboring items. */
+    padding: 22px 25px; /* Create readable inner spacing around content. */
+} /* Finish this style rule. */
+/* Group related controls while allowing mobile wrapping. */
+.action-buttons { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    gap: 10px; /* Keep a consistent space between neighboring items. */
+    align-items: center; /* Align child items across the layout axis. */
+    flex-wrap: wrap; /* Allow controls to wrap when the viewport becomes narrow. */
+} /* Finish this style rule. */
+/* Keep previous and next links on opposite sides of the lesson. */
+.lesson-pagination { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    gap: 20px; /* Keep a consistent space between neighboring items. */
+} /* Finish this style rule. */
+/* Allow long neighboring topic names to wrap naturally. */
+.lesson-pagination .button { /* Apply this rule to the selected elements. */
+    max-width: 48%; /* Prevent this element from exceeding a readable width. */
+    white-space: normal; /* Preserve useful text formatting while controlling wrapping. */
+    line-height: 1.6; /* Keep wrapped text comfortably readable. */
+} /* Finish this style rule. */
+/* Show small workflows as numbered steps instead of inaccessible drawings. */
+.concept-flow { /* Apply this rule to the selected elements. */
+    list-style: none; /* Choose whether list markers should be visible. */
+    padding: 0; /* Create readable inner spacing around content. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    gap: 10px; /* Keep a consistent space between neighboring items. */
+    margin: 0; /* Set the outer spacing around this element. */
+} /* Finish this style rule. */
+/* Provide a clear visual connection between a sequence number and its step. */
+.concept-flow li { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    gap: 13px; /* Keep a consistent space between neighboring items. */
+    align-items: center; /* Align child items across the layout axis. */
+    padding: 13px; /* Create readable inner spacing around content. */
+    background: #a49aff08; /* Set the surface color behind this content. */
+    border: 1px solid #a49aff22; /* Separate this element from the surrounding surface. */
+    border-radius: 8px; /* Use the shared rounded visual language. */
+    font-size: 12px; /* Set the text size for this interface element. */
+    line-height: 1.7; /* Keep wrapped text comfortably readable. */
+} /* Finish this style rule. */
+/* Use tabular numerals to align workflow numbers. */
+.concept-flow li > span { /* Apply this rule to the selected elements. */
+    color: #b7a9ff; /* Apply the theme text color or semantic accent. */
+    font-family: monospace; /* Select the appropriate reading or code typeface. */
+} /* Finish this style rule. */
+/* Let sample database tables scroll without widening the page. */
+.data-table-wrap { /* Apply this rule to the selected elements. */
+    overflow-x: auto; /* Make wide content horizontally accessible. */
+    margin-bottom: 20px; /* Separate this element from the following content. */
+} /* Finish this style rule. */
+/* Keep SQL sample tables compact and fully readable. */
+.data-table-wrap table { /* Apply this rule to the selected elements. */
+    width: 100%; /* Control the available horizontal space. */
+    border-collapse: collapse; /* Share adjacent sample-table cell borders. */
+    font-size: 12px; /* Set the text size for this interface element. */
+    text-align: left; /* Align readable cell and text content. */
+} /* Finish this style rule. */
+/* Make each database cell boundary easy to track. */
+.data-table-wrap th, /* Include this selector in the shared rule below. */
+.data-table-wrap td { /* Apply this rule to the selected elements. */
+    padding: 11px 13px; /* Create readable inner spacing around content. */
+    border: 1px solid var(--line, #292a34); /* Separate this element from the surrounding surface. */
+    white-space: nowrap; /* Preserve useful text formatting while controlling wrapping. */
+} /* Finish this style rule. */
+/* Distinguish the table header with a subtle background. */
+.data-table-wrap th { /* Apply this rule to the selected elements. */
+    background: #a49aff0a; /* Set the surface color behind this content. */
+    color: var(--muted, #aaaab6); /* Apply the theme text color or semantic accent. */
+    font-weight: 500; /* Give this text its intended visual emphasis. */
+} /* Finish this style rule. */
+/* Align practice introductions with their supporting icon. */
+.practice-intro { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    gap: 20px; /* Keep a consistent space between neighboring items. */
+    padding: 26px; /* Create readable inner spacing around content. */
+} /* Finish this style rule. */
+/* Keep practice headings clear without oversizing them. */
+.practice-intro h2, /* Include this selector in the shared rule below. */
+.quiz-setup h2 { /* Apply this rule to the selected elements. */
+    font-size: 20px; /* Set the text size for this interface element. */
+    margin: 8px 0; /* Set the outer spacing around this element. */
+    letter-spacing: -0.4px; /* Tune the spacing of display-sized text. */
+} /* Finish this style rule. */
+/* Use a restrained violet icon tile for practice features. */
+.practice-orbit { /* Apply this rule to the selected elements. */
+    width: 65px; /* Control the available horizontal space. */
+    height: 65px; /* Control the vertical size of this element. */
+    border: 1px solid #a49aff35; /* Separate this element from the surrounding surface. */
+    background: #a49aff0b; /* Set the surface color behind this content. */
+    color: #b7a9ff; /* Apply the theme text color or semantic accent. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    align-items: center; /* Align child items across the layout axis. */
+    justify-content: center; /* Distribute child items along the layout axis. */
+    border-radius: 17px; /* Use the shared rounded visual language. */
+    flex-shrink: 0; /* Keep essential controls and icons from collapsing. */
+} /* Finish this style rule. */
+/* Add clear separation above practice difficulty tabs. */
+.checkpoint-panel > .tabs { /* Apply this rule to the selected elements. */
+    margin-top: 24px; /* Separate this element from the preceding content. */
+} /* Finish this style rule. */
+/* Keep tab counts visually secondary. */
+.tab-count { /* Apply this rule to the selected elements. */
+    margin-left: 7px; /* Leave space before this inline item. */
+    font-size: 10px; /* Set the text size for this interface element. */
+    opacity: 0.7; /* Make secondary information visually quieter. */
+} /* Finish this style rule. */
+/* Keep performance recommendations concise and readable. */
+.practice-summary { /* Apply this rule to the selected elements. */
+    margin: 16px 0 20px; /* Set the outer spacing around this element. */
+} /* Finish this style rule. */
+/* Give each checkpoint enough space for reasoning and feedback. */
+.checkpoint-question { /* Apply this rule to the selected elements. */
+    padding: 28px; /* Create readable inner spacing around content. */
+} /* Finish this style rule. */
+/* Ensure question headings remain readable above answer options. */
+.checkpoint-question h3, /* Include this selector in the shared rule below. */
+.checkpoint-question h2 { /* Apply this rule to the selected elements. */
+    margin: 24px 0; /* Set the outer spacing around this element. */
+    font-size: 17px; /* Set the text size for this interface element. */
+    line-height: 1.8; /* Keep wrapped text comfortably readable. */
+} /* Finish this style rule. */
+/* Remove browser fieldset borders while retaining semantic grouping. */
+.answer-options { /* Apply this rule to the selected elements. */
+    border: 0; /* Separate this element from the surrounding surface. */
+    padding: 0; /* Create readable inner spacing around content. */
+    margin: 0 0 20px; /* Set the outer spacing around this element. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    gap: 11px; /* Keep a consistent space between neighboring items. */
+    min-width: 0; /* Allow content to shrink or maintain a useful minimum width. */
+} /* Finish this style rule. */
+/* Make the whole answer row a comfortable pointer and keyboard target. */
+.answer-option { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 12px; /* Keep a consistent space between neighboring items. */
+    padding: 15px; /* Create readable inner spacing around content. */
+    border: 1px solid var(--line, #292a34); /* Separate this element from the surrounding surface. */
+    border-radius: 8px; /* Use the shared rounded visual language. */
+    cursor: pointer; /* Communicate whether the user can interact with this item. */
+    font-size: 13px; /* Set the text size for this interface element. */
+    line-height: 1.7; /* Keep wrapped text comfortably readable. */
+    transition: /* Continue this responsive style declaration. */
+        border-color 0.15s, /* Include this selector in the shared rule below. */
+        background 0.15s; /* Continue this responsive style declaration. */
+} /* Finish this style rule. */
+/* Highlight a selected answer without indicating correctness early. */
+.answer-option.selected { /* Apply this rule to the selected elements. */
+    border-color: #a49aff; /* Apply the appropriate selection or feedback state. */
+    background: #a49aff0b; /* Set the surface color behind this content. */
+} /* Finish this style rule. */
+/* Show the actual radio input with the current theme accent. */
+.answer-option input { /* Apply this rule to the selected elements. */
+    accent-color: #a49aff; /* Match native form controls to the theme. */
+    flex-shrink: 0; /* Keep essential controls and icons from collapsing. */
+} /* Finish this style rule. */
+/* Give answer letters a quiet visual identifier. */
+.option-letter { /* Apply this rule to the selected elements. */
+    color: var(--muted, #9b9ca8); /* Apply the theme text color or semantic accent. */
+    font-family: monospace; /* Select the appropriate reading or code typeface. */
+} /* Finish this style rule. */
+/* Keep reference feedback distinct from the original question. */
+.answer-feedback { /* Apply this rule to the selected elements. */
+    margin-top: 22px; /* Separate this element from the preceding content. */
+    padding: 20px; /* Create readable inner spacing around content. */
+    border: 1px solid #a49aff36; /* Separate this element from the surrounding surface. */
+    background: #a49aff08; /* Set the surface color behind this content. */
+    border-radius: 9px; /* Use the shared rounded visual language. */
+    font-size: 13px; /* Set the text size for this interface element. */
+    line-height: 1.9; /* Keep wrapped text comfortably readable. */
+    overflow-wrap: anywhere; /* Keep long answers and references inside their container. */
+} /* Finish this style rule. */
+/* Pair a correct state with its written feedback label. */
+.answer-feedback.correct { /* Apply this rule to the selected elements. */
+    border-color: #75d8aa55; /* Apply the appropriate selection or feedback state. */
+    background: #75d8aa08; /* Set the surface color behind this content. */
+} /* Finish this style rule. */
+/* Pair an incorrect state with its written feedback label. */
+.answer-feedback.incorrect { /* Apply this rule to the selected elements. */
+    border-color: #ec969f55; /* Apply the appropriate selection or feedback state. */
+    background: #ec969f08; /* Set the surface color behind this content. */
+} /* Finish this style rule. */
+/* Align feedback icons with readable headings. */
+.answer-feedback h4 { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    align-items: center; /* Align child items across the layout axis. */
+    gap: 8px; /* Keep a consistent space between neighboring items. */
+    margin: 0 0 12px; /* Set the outer spacing around this element. */
+} /* Finish this style rule. */
+/* Present hints as optional supporting material. */
+.hint-box { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    gap: 8px; /* Keep a consistent space between neighboring items. */
+    font-size: 12px; /* Set the text size for this interface element. */
+    color: #e5c585; /* Apply the theme text color or semantic accent. */
+    line-height: 1.8; /* Keep wrapped text comfortably readable. */
+    padding: 12px; /* Create readable inner spacing around content. */
+    background: #e5c58508; /* Set the surface color behind this content. */
+    border-radius: 7px; /* Use the shared rounded visual language. */
+} /* Finish this style rule. */
+/* Keep hint icons from collapsing beside long text. */
+.hint-box svg { /* Apply this rule to the selected elements. */
+    flex-shrink: 0; /* Keep essential controls and icons from collapsing. */
+    margin-top: 3px; /* Separate this element from the preceding content. */
+} /* Finish this style rule. */
+/* Deemphasize retained attempt history until requested. */
+.attempt-history { /* Apply this rule to the selected elements. */
+    margin-top: 20px; /* Separate this element from the preceding content. */
+    border-top: 1px solid var(--line, #292a34); /* Separate stacked learning sections. */
+    padding-top: 16px; /* Leave extra space above this content. */
+    font-size: 12px; /* Set the text size for this interface element. */
+} /* Finish this style rule. */
+/* Identify attempt history as an expandable control. */
+.attempt-history summary { /* Apply this rule to the selected elements. */
+    color: var(--muted, #aaaab6); /* Apply the theme text color or semantic accent. */
+    cursor: pointer; /* Communicate whether the user can interact with this item. */
+} /* Finish this style rule. */
+/* Separate earlier attempts with light dividers. */
+.history-item { /* Apply this rule to the selected elements. */
+    padding: 14px 0; /* Create readable inner spacing around content. */
+    border-bottom: 1px solid var(--line, #292a34); /* Separate repeated list entries. */
+    overflow-wrap: anywhere; /* Keep long answers and references inside their container. */
+} /* Finish this style rule. */
+/* Let filters wrap gracefully rather than overflowing mobile screens. */
+.filter-bar { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    gap: 16px; /* Keep a consistent space between neighboring items. */
+    align-items: end; /* Align child items across the layout axis. */
+    flex-wrap: wrap; /* Allow controls to wrap when the viewport becomes narrow. */
+    padding: 20px; /* Create readable inner spacing around content. */
+} /* Finish this style rule. */
+/* Stretch selectors and search fields when enough space is available. */
+.grow { /* Apply this rule to the selected elements. */
+    flex: 1; /* Allow this item to use the available flexible space. */
+    min-width: 180px; /* Allow content to shrink or maintain a useful minimum width. */
+} /* Finish this style rule. */
+/* Give related labeled form controls a consistent vertical rhythm. */
+.form-field { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    gap: 8px; /* Keep a consistent space between neighboring items. */
+    font-size: 12px; /* Set the text size for this interface element. */
+} /* Finish this style rule. */
+/* Keep selects readable across browser themes. */
+.select { /* Apply this rule to the selected elements. */
+    background: var(--surface, #18191f); /* Set the surface color behind this content. */
+    border: 1px solid var(--line, #292a34); /* Separate this element from the surrounding surface. */
+    border-radius: 8px; /* Use the shared rounded visual language. */
+    color: var(--text, #e5e3ed); /* Apply the theme text color or semantic accent. */
+    padding: 11px 14px; /* Create readable inner spacing around content. */
+    font: inherit; /* Inherit the surrounding accessible interface typography. */
+    font-size: 12px; /* Set the text size for this interface element. */
+    max-width: 100%; /* Prevent this element from exceeding a readable width. */
+} /* Finish this style rule. */
+/* Make written answers and personal notes comfortably editable. */
+.textarea { /* Apply this rule to the selected elements. */
+    width: 100%; /* Control the available horizontal space. */
+    box-sizing: border-box; /* Include padding and borders in the declared dimensions. */
+    background: var(--bg, #101114); /* Set the surface color behind this content. */
+    border: 1px solid var(--line, #292a34); /* Separate this element from the surrounding surface. */
+    border-radius: 8px; /* Use the shared rounded visual language. */
+    color: var(--text, #e5e3ed); /* Apply the theme text color or semantic accent. */
+    padding: 14px; /* Create readable inner spacing around content. */
+    font: inherit; /* Inherit the surrounding accessible interface typography. */
+    font-size: 13px; /* Set the text size for this interface element. */
+    line-height: 1.8; /* Keep wrapped text comfortably readable. */
+    resize: vertical; /* Apply this presentation property to the current element. */
+    margin-bottom: 14px; /* Separate this element from the following content. */
+} /* Finish this style rule. */
+/* Highlight focused writable controls for keyboard navigation. */
+.textarea:focus, /* Include this selector in the shared rule below. */
+.select:focus { /* Apply this rule to the selected elements. */
+    outline: 2px solid #a49aff; /* Make keyboard focus visibly identifiable. */
+    outline-offset: 2px; /* Separate the focus ring from the element border. */
+} /* Finish this style rule. */
+/* Keep the quiz setup panel focused and well-spaced. */
+.quiz-setup { /* Apply this rule to the selected elements. */
+    padding: 30px; /* Create readable inner spacing around content. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    gap: 14px; /* Keep a consistent space between neighboring items. */
+} /* Finish this style rule. */
+/* Remove nested filter padding inside quiz setup. */
+.quiz-setup .filter-bar { /* Apply this rule to the selected elements. */
+    padding: 5px 0 12px; /* Create readable inner spacing around content. */
+} /* Finish this style rule. */
+/* Allow quiz option controls to share available width. */
+.quiz-setup .form-field { /* Apply this rule to the selected elements. */
+    flex: 1; /* Allow this item to use the available flexible space. */
+    min-width: 170px; /* Allow content to shrink or maintain a useful minimum width. */
+} /* Finish this style rule. */
+/* Center the active assessment inside a readable maximum width. */
+.quiz-workspace { /* Apply this rule to the selected elements. */
+    max-width: 900px; /* Prevent this element from exceeding a readable width. */
+    margin: 0 auto; /* Set the outer spacing around this element. */
+    width: 100%; /* Control the available horizontal space. */
+} /* Finish this style rule. */
+/* Keep previous and next assessment controls separated. */
+.quiz-navigation { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    justify-content: space-between; /* Distribute child items along the layout axis. */
+    gap: 14px; /* Keep a consistent space between neighboring items. */
+    margin-top: 24px; /* Separate this element from the preceding content. */
+} /* Finish this style rule. */
+/* Divide answer explanations in the result review. */
+.result-question { /* Apply this rule to the selected elements. */
+    border-top: 1px solid var(--line, #292a34); /* Separate stacked learning sections. */
+    padding: 24px 0; /* Create readable inner spacing around content. */
+    font-size: 13px; /* Set the text size for this interface element. */
+    line-height: 1.9; /* Keep wrapped text comfortably readable. */
+    overflow-wrap: anywhere; /* Keep long answers and references inside their container. */
+} /* Finish this style rule. */
+/* Keep saved revision recommendations compact. */
+.revision-recommendations .topic-row { /* Apply this rule to the selected elements. */
+    padding-left: 0; /* Align this content with its container. */
+    padding-right: 0; /* Align this content with its container. */
+} /* Finish this style rule. */
+/* Make personal notes feel like an editable notebook grid. */
+.notes-grid { /* Apply this rule to the selected elements. */
+    display: grid; /* Choose how this element and its children participate in layout. */
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* Allocate the responsive content columns. */
+    gap: 20px; /* Keep a consistent space between neighboring items. */
+} /* Finish this style rule. */
+/* Give each note enough whitespace without imposing a fixed height. */
+.note-card { /* Apply this rule to the selected elements. */
+    padding: 24px; /* Create readable inner spacing around content. */
+} /* Finish this style rule. */
+/* Keep note heading size consistent with lesson sections. */
+.note-card h2 { /* Apply this rule to the selected elements. */
+    font-size: 17px; /* Set the text size for this interface element. */
+    margin: 8px 0 20px; /* Set the outer spacing around this element. */
+} /* Finish this style rule. */
+/* Preserve familiar link colors in note titles. */
+.note-card h2 a { /* Apply this rule to the selected elements. */
+    color: inherit; /* Apply the theme text color or semantic accent. */
+    text-decoration: none; /* Control the visual treatment of links. */
+} /* Finish this style rule. */
+/* Stack the written subject chart summary for screen readers and visual comparison. */
+.subject-stat-list { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    gap: 13px; /* Keep a consistent space between neighboring items. */
+    margin-top: 10px; /* Separate this element from the preceding content. */
+} /* Finish this style rule. */
+/* Keep chart containers from collapsing inside responsive grids. */
+.chart-container { /* Apply this rule to the selected elements. */
+    width: 100%; /* Control the available horizontal space. */
+    min-width: 0; /* Allow content to shrink or maintain a useful minimum width. */
+    height: 260px; /* Control the vertical size of this element. */
+} /* Finish this style rule. */
+/* Give the transparent preparation index enough visual emphasis. */
+.readiness-number { /* Apply this rule to the selected elements. */
+    font-size: 68px; /* Set the text size for this interface element. */
+    letter-spacing: -4px; /* Tune the spacing of display-sized text. */
+    color: #b7a9ff; /* Apply the theme text color or semantic accent. */
+    font-weight: 650; /* Give this text its intended visual emphasis. */
+    line-height: 1.4; /* Keep wrapped text comfortably readable. */
+} /* Finish this style rule. */
+/* Keep the readiness denominator secondary to the score. */
+.readiness-number span { /* Apply this rule to the selected elements. */
+    font-size: 20px; /* Set the text size for this interface element. */
+    letter-spacing: 0; /* Tune the spacing of display-sized text. */
+    color: var(--muted, #9b9ca8); /* Apply the theme text color or semantic accent. */
+    margin-left: 6px; /* Leave space before this inline item. */
+    font-weight: 400; /* Give this text its intended visual emphasis. */
+} /* Finish this style rule. */
+/* Make the score formula easy to read line by line. */
+.formula-list { /* Apply this rule to the selected elements. */
+    padding-left: 18px; /* Align this content with its container. */
+    line-height: 2.2; /* Keep wrapped text comfortably readable. */
+    color: var(--muted, #aaaab6); /* Apply the theme text color or semantic accent. */
+    font-size: 12px; /* Set the text size for this interface element. */
+} /* Finish this style rule. */
+/* Space difficulty performance rows consistently. */
+.level-performance { /* Apply this rule to the selected elements. */
+    display: flex; /* Choose how this element and its children participate in layout. */
+    flex-direction: column; /* Set the direction of this flexible content stack. */
+    gap: 22px; /* Keep a consistent space between neighboring items. */
+    margin: 24px 0; /* Set the outer spacing around this element. */
+} /* Finish this style rule. */
+/* Add room between performance labels and their progress bars. */
+.level-performance .progress-track { /* Apply this rule to the selected elements. */
+    margin-top: 11px; /* Separate this element from the preceding content. */
+} /* Finish this style rule. */
+/* Give status badges a textual meaning plus a subtle visual distinction. */
+.difficulty-easy, /* Include this selector in the shared rule below. */
+.status-mastered, /* Include this selector in the shared rule below. */
+.status-completed { /* Apply this rule to the selected elements. */
+    color: #85dcb1 !important; /* Apply the theme text color or semantic accent. */
+    background: #75d8aa10 !important; /* Set the surface color behind this content. */
+} /* Finish this style rule. */
+/* Give medium and in-progress states a shared warm accent. */
+.difficulty-medium, /* Include this selector in the shared rule below. */
+.status-in-progress { /* Apply this rule to the selected elements. */
+    color: #e4c37e !important; /* Apply the theme text color or semantic accent. */
+    background: #e4c37e10 !important; /* Set the surface color behind this content. */
+} /* Finish this style rule. */
+/* Give revision and hard questions a visible warm red accent. */
+.difficulty-hard, /* Include this selector in the shared rule below. */
+.status-needs-revision { /* Apply this rule to the selected elements. */
+    color: #e99ba7 !important; /* Apply the theme text color or semantic accent. */
+    background: #e99ba710 !important; /* Set the surface color behind this content. */
+} /* Finish this style rule. */
+/* Collapse the optional lesson sidebar before reading text becomes narrow. */
+@media (max-width: 1180px) { /* Adapt layout to this viewport or accessibility preference. */
+    .curriculum-grid { /* Apply this rule to the selected elements. */
+        grid-template-columns: repeat(2, minmax(0, 1fr)); /* Allocate the responsive content columns. */
+    } /* Finish this style rule. */
+    .lesson-layout { /* Apply this rule to the selected elements. */
+        grid-template-columns: minmax(0, 1fr) 250px; /* Allocate the responsive content columns. */
+    } /* Finish this style rule. */
+    .learning-actions { /* Apply this rule to the selected elements. */
+        flex-direction: column; /* Set the direction of this flexible content stack. */
+        align-items: flex-start; /* Align child items across the layout axis. */
+    } /* Finish this style rule. */
+} /* Finish this style rule. */
+/* Let cards and learning controls fit tablet-sized screens comfortably. */
+@media (max-width: 900px) { /* Adapt layout to this viewport or accessibility preference. */
+    .lesson-layout { /* Apply this rule to the selected elements. */
+        grid-template-columns: minmax(0, 1fr); /* Allocate the responsive content columns. */
+    } /* Finish this style rule. */
+    .lesson-aside { /* Apply this rule to the selected elements. */
+        display: grid; /* Choose how this element and its children participate in layout. */
+        grid-template-columns: repeat(2, minmax(0, 1fr)); /* Allocate the responsive content columns. */
+    } /* Finish this style rule. */
+    .notes-grid { /* Apply this rule to the selected elements. */
+        grid-template-columns: minmax(0, 1fr); /* Allocate the responsive content columns. */
+    } /* Finish this style rule. */
+    .subject-description { /* Apply this rule to the selected elements. */
+        min-height: 0; /* Maintain a useful minimum content height. */
+    } /* Finish this style rule. */
+} /* Finish this style rule. */
+/* Prefer a single content column and wrap controls on mobile screens. */
+@media (max-width: 620px) { /* Adapt layout to this viewport or accessibility preference. */
+    .curriculum-grid, /* Include this selector in the shared rule below. */
+    .lesson-aside { /* Apply this rule to the selected elements. */
+        grid-template-columns: minmax(0, 1fr); /* Allocate the responsive content columns. */
+    } /* Finish this style rule. */
+    .learning-page { /* Apply this rule to the selected elements. */
+        gap: 18px; /* Keep a consistent space between neighboring items. */
+    } /* Finish this style rule. */
+    .curriculum-card, /* Include this selector in the shared rule below. */
+    .lesson-section, /* Include this selector in the shared rule below. */
+    .checkpoint-question, /* Include this selector in the shared rule below. */
+    .quiz-setup, /* Include this selector in the shared rule below. */
+    .note-card { /* Apply this rule to the selected elements. */
+        padding: 20px; /* Create readable inner spacing around content. */
+    } /* Finish this style rule. */
+    .practice-intro { /* Apply this rule to the selected elements. */
+        padding: 20px; /* Create readable inner spacing around content. */
+    } /* Finish this style rule. */
+    .practice-orbit { /* Apply this rule to the selected elements. */
+        display: none; /* Choose how this element and its children participate in layout. */
+    } /* Finish this style rule. */
+    .filter-bar { /* Apply this rule to the selected elements. */
+        padding: 16px; /* Create readable inner spacing around content. */
+        flex-direction: column; /* Set the direction of this flexible content stack. */
+        align-items: stretch; /* Align child items across the layout axis. */
+    } /* Finish this style rule. */
+    .filter-bar .button { /* Apply this rule to the selected elements. */
+        width: 100%; /* Control the available horizontal space. */
+    } /* Finish this style rule. */
+    .topic-row { /* Apply this rule to the selected elements. */
+        flex-wrap: wrap; /* Allow controls to wrap when the viewport becomes narrow. */
+    } /* Finish this style rule. */
+    .topic-row-main { /* Apply this rule to the selected elements. */
+        min-width: 140px; /* Allow content to shrink or maintain a useful minimum width. */
+    } /* Finish this style rule. */
+    .lesson-tabs .tab { /* Apply this rule to the selected elements. */
+        font-size: 11px; /* Set the text size for this interface element. */
+        padding-left: 10px; /* Align this content with its container. */
+        padding-right: 10px; /* Align this content with its container. */
+    } /* Finish this style rule. */
+    .action-buttons .button { /* Apply this rule to the selected elements. */
+        font-size: 11px; /* Set the text size for this interface element. */
+    } /* Finish this style rule. */
+    .quiz-setup .row-between { /* Apply this rule to the selected elements. */
+        align-items: stretch; /* Align child items across the layout axis. */
+        flex-direction: column; /* Set the direction of this flexible content stack. */
+    } /* Finish this style rule. */
+    .lesson-pagination .button { /* Apply this rule to the selected elements. */
+        font-size: 11px; /* Set the text size for this interface element. */
+    } /* Finish this style rule. */
+} /* Finish this style rule. */
+/* Respect operating-system requests to reduce interface motion. */
+@media (prefers-reduced-motion: reduce) { /* Adapt layout to this viewport or accessibility preference. */
+    .answer-option { /* Apply this rule to the selected elements. */
+        transition: none; /* Animate only the subtle state changes listed here. */
+    } /* Finish this style rule. */
+} /* Finish this style rule. */
+
+/* Keep secondary learning forms compact without changing account forms. */
+.learning-page .form-field { /* Limit this override to learning screens. */
+    margin: 0; /* Keep filter labels aligned without account-form spacing. */
+} /* Finish the scoped form spacing override. */
+/* Keep secondary page statistics readable with the dashboard card foundation. */
+.learning-page .stat-card { /* Apply a consistent vertical flow to summary cards. */
+    display: flex; /* Arrange the label, value, and context together. */
+    flex-direction: column; /* Place the statistic value below its label. */
+    gap: 11px; /* Keep each label and value visually distinct. */
+} /* Finish the secondary statistics layout. */
+.learning-page .stat-card > strong { /* Target only the primary statistic value. */
+    font-size: 27px; /* Make the measured value easy to scan. */
+    font-weight: 600; /* Give the value stronger emphasis than its label. */
+} /* Finish the statistic value rule. */
+.learning-page .stat-card > strong > small { /* Keep denominators quieter than the main count. */
+    font-size: 15px; /* Reduce denominator text without hiding it. */
+    color: var(--muted); /* Use the shared secondary text token. */
+} /* Finish the denominator style. */

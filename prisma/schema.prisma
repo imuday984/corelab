@@ -1,0 +1,368 @@
+// Prisma generates the PostgreSQL client used by the local Express adapter.
+generator client {
+  // Generate the standard Node.js Prisma client.
+  provider = "prisma-client-js"
+}
+// Production Sites uses D1; this datasource configures the requested local PostgreSQL deployment.
+datasource db { // Define the project's database connections.
+  provider = "postgresql" // Use PostgreSQL.
+  url = env("DATABASE_URL") // Read the pooled application connection.
+  directUrl = env("DIRECT_URL") // Read the direct migration connection.
+} // Finish the database configuration.
+// Each user has separate session, progress, assessment, and saved-content records.
+model User {
+  // Use opaque identifiers instead of sequential public user numbers.
+  id String @id
+  // Store the editable display name.
+  name String
+  // Enforce account uniqueness at the database layer.
+  email String @unique
+  // Store only a salted PBKDF2 derived hash.
+  passwordHash String @map("password_hash")
+  // Serialize the configurable learning thresholds.
+  settings String
+  // Keep timestamps portable between PostgreSQL and D1.
+  createdAt String @map("created_at")
+  // Cascade user-owned data on account removal.
+  sessions Session[]
+  // Keep single-use password reset credentials separate from sessions.
+  resets PasswordReset[]
+  // Track one learning state per topic.
+  progress UserTopicProgress[]
+  // Preserve every checkpoint attempt.
+  attempts CheckpointAttempt[]
+  // Own each server-generated assessment.
+  quizzes Quiz[]
+  // Preserve completed quiz results.
+  quizAttempts QuizAttempt[]
+  // Own saved topic bookmarks.
+  bookmarks Bookmark[]
+  // Own private topic notes.
+  notes UserNote[]
+  // Preserve spaced-repetition history.
+  revisions RevisionHistory[]
+  // Own real learning activity events.
+  activity LearningActivity[]
+  // Match the portable SQL table name.
+  @@map("users")
+}
+// Sessions store hashes of bearer credentials and server-managed expirations.
+model Session {
+  // This value is a SHA-256 token hash, never the raw browser token.
+  id String @id
+  // Attach the session to its authenticated user.
+  userId String @map("user_id")
+  // Expire the server session independently of browser state.
+  expiresAt String @map("expires_at")
+  // Remove sessions when their user is removed.
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Accelerate session ownership lookups.
+  @@index([userId], map: "sessions_user_idx")
+  // Match the portable SQL table name.
+  @@map("sessions")
+}
+// Password resets are random, hashed, short-lived, and consumed once.
+model PasswordReset {
+  // Store only the reset token's SHA-256 hash.
+  id String @id
+  // Link the reset credential to its user.
+  userId String @map("user_id")
+  // Reject expired reset links.
+  expiresAt String @map("expires_at")
+  // Remove reset credentials when a user is removed.
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Match the portable SQL table name.
+  @@map("password_resets")
+}
+// Database-backed buckets limit authentication attempts across Worker instances.
+model RateLimit {
+  // Hash the request category and client identifier into an opaque bucket.
+  id String @id
+  // Count attempts in the active window.
+  count Int
+  // Reset the bucket after this timestamp.
+  expiresAt String @map("expires_at")
+  // Accelerate expired bucket cleanup.
+  @@index([expiresAt], map: "rate_limits_expiration_idx")
+  // Match the portable SQL table name.
+  @@map("rate_limits")
+}
+// Shared subject metadata is independent of all user progress.
+model Subject {
+  // Use the stable curriculum slug.
+  id String @id
+  // Store extensible structured subject metadata.
+  data String
+  // Group a subject's related modules.
+  modules Module[]
+  // Relate the subject directly to its topics.
+  topics Topic[]
+  // Match the portable SQL table name.
+  @@map("subjects")
+}
+// Modules group topic records inside a subject.
+model Module {
+  // Use a stable compound curriculum identifier.
+  id String @id
+  // Relate the module to one subject.
+  subjectId String @map("subject_id")
+  // Display its editable module title.
+  title String
+  // Enforce the parent subject relationship.
+  subject Subject @relation(fields: [subjectId], references: [id])
+  // Collect the module's topics.
+  topics Topic[]
+  // Avoid duplicate module names inside a subject.
+  @@unique([subjectId, title])
+  // Match the portable SQL table name.
+  @@map("modules")
+}
+// Topic content can be edited as structured data without changing frontend code.
+model Topic {
+  // Use a stable lesson slug for URLs and private progress references.
+  id String @id
+  // Associate the topic with its subject.
+  subjectId String @map("subject_id")
+  // Associate the topic with its module.
+  moduleId String @map("module_id")
+  // Store the complete structured topic contract.
+  data String
+  // Enforce its subject foreign key.
+  subject Subject @relation(fields: [subjectId], references: [id])
+  // Enforce its module foreign key.
+  module Module @relation(fields: [moduleId], references: [id])
+  // Keep its learning material independently addressable.
+  material LearningMaterial?
+  // Collect difficulty-based checkpoints.
+  checkpoints Checkpoint[]
+  // Connect topic progress across users.
+  progress UserTopicProgress[]
+  // Connect historical checkpoint attempts.
+  attempts CheckpointAttempt[]
+  // Connect saved topic bookmarks.
+  bookmarks Bookmark[]
+  // Connect private study notes.
+  notes UserNote[]
+  // Connect spaced-repetition events.
+  revisions RevisionHistory[]
+  // Connect real learning events.
+  activity LearningActivity[]
+  // Accelerate subject-topic listings.
+  @@index([subjectId], map: "topics_subject_idx")
+  // Match the portable SQL table name.
+  @@map("topics")
+}
+// Materials are stored separately to support a future editorial workflow.
+model LearningMaterial {
+  // Enforce one material record per topic.
+  topicId String @id @map("topic_id")
+  // Store sections, examples, interview answers, and external references.
+  data String
+  // Enforce the topic relationship.
+  topic Topic @relation(fields: [topicId], references: [id])
+  // Match the portable SQL table name.
+  @@map("learning_material")
+}
+// Questions retain stable IDs independently of a learner's attempts.
+model Checkpoint {
+  // Use the curriculum's stable question identifier.
+  id String @id
+  // Associate the question with its topic.
+  topicId String @map("topic_id")
+  // Store question type, reference answer, explanation, and hint.
+  data String
+  // Enforce the parent topic relationship.
+  topic Topic @relation(fields: [topicId], references: [id])
+  // Preserve all attempts on this checkpoint.
+  attempts CheckpointAttempt[]
+  // Match the portable SQL table name.
+  @@map("checkpoints")
+}
+// Topic progress is unique for every user-topic pair.
+model UserTopicProgress {
+  // Scope the record to its owner.
+  userId String @map("user_id")
+  // Scope the record to one lesson.
+  topicId String @map("topic_id")
+  // Distinguish started, completed, revision, and demonstrated mastery.
+  status String
+  // Record a genuine material view.
+  viewed Int @default(0)
+  // Order recent learning.
+  updatedAt String @map("updated_at")
+  // Select the next spaced-repetition interval.
+  reviewStep Int @default(0) @map("review_step")
+  // Store the next scheduled review timestamp.
+  reviewAt String? @map("review_at")
+  // Remove private progress when the owner is removed.
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Enforce its lesson relationship.
+  topic Topic @relation(fields: [topicId], references: [id])
+  // Prevent duplicate progress records for the same learner and lesson.
+  @@id([userId, topicId])
+  // Accelerate the private revision queue.
+  @@index([userId, reviewAt], map: "progress_user_review_idx")
+  // Match the portable SQL table name.
+  @@map("user_topic_progress")
+}
+// Checkpoint history is append-only and stores ungraded descriptive answers as null.
+model CheckpointAttempt {
+  // Identify one individual attempt.
+  id String @id
+  // Scope this attempt to its authenticated owner.
+  userId String @map("user_id")
+  // Associate the attempt with its lesson.
+  topicId String @map("topic_id")
+  // Associate the attempt with the exact checkpoint.
+  questionId String @map("question_id")
+  // Preserve the learner's submitted answer.
+  answer String
+  // Store one for correct, zero for incorrect, and null for awaiting self-review.
+  correct Int?
+  // Preserve the checkpoint difficulty for reporting.
+  difficulty String
+  // Order attempts chronologically.
+  createdAt String @map("created_at")
+  // Remove private attempts with their owner.
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Enforce its topic relationship.
+  topic Topic @relation(fields: [topicId], references: [id])
+  // Enforce its checkpoint relationship.
+  question Checkpoint @relation(fields: [questionId], references: [id])
+  // Accelerate latest-answer and history calculations.
+  @@index([userId, topicId, createdAt], map: "attempts_user_topic_idx")
+  // Match the portable SQL table name.
+  @@map("checkpoint_attempts")
+}
+// Assessments retain their server-selected question lists.
+model Quiz {
+  // Identify the assessment independently of its submitted attempt.
+  id String @id
+  // Scope the assessment to its authenticated owner.
+  userId String @map("user_id")
+  // Use a subject slug or all for a mixed assessment.
+  subjectId String @map("subject_id")
+  // Optionally scope the assessment to one topic.
+  topicId String? @map("topic_id")
+  // Serialize the immutable question identifiers.
+  questions String
+  // Record the assessment start timestamp.
+  createdAt String @map("created_at")
+  // Reject attempts submitted outside the allowed assessment window.
+  expiresAt String @map("expires_at")
+  // Remove private assessments with their owner.
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Relate the submitted result to its definition.
+  attempt QuizAttempt?
+  // Match the portable SQL table name.
+  @@map("quizzes")
+}
+// Completed quizzes retain scores and answer-level feedback.
+model QuizAttempt {
+  // Identify an immutable completed result.
+  id String @id
+  // Scope the result to its authenticated owner.
+  userId String @map("user_id")
+  // Optionally reference its server-created assessment.
+  quizId String? @unique @map("quiz_id")
+  // Preserve the selected subject.
+  subjectId String @map("subject_id")
+  // Preserve an optional topic scope.
+  topicId String? @map("topic_id")
+  // Store the server-calculated percentage.
+  score Int
+  // Store the server-calculated correct count.
+  correct Int
+  // Store the full question count.
+  total Int
+  // Store elapsed seconds for later review.
+  seconds Int
+  // Order result history chronologically.
+  createdAt String @map("created_at")
+  // Preserve the submitted answers and server-calculated correctness.
+  answers String
+  // Remove private results with their owner.
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Link a result to its original assessment where available.
+  quiz Quiz? @relation(fields: [quizId], references: [id])
+  // Accelerate private quiz history.
+  @@index([userId, createdAt], map: "quizzes_user_date_idx")
+  // Match the portable SQL table name.
+  @@map("quiz_attempts")
+}
+// A bookmark is unique for a user-topic pair.
+model Bookmark {
+  // Scope the bookmark to its authenticated owner.
+  userId String @map("user_id")
+  // Identify the saved topic.
+  topicId String @map("topic_id")
+  // Retain when the topic was saved.
+  createdAt String @map("created_at")
+  // Remove private bookmarks with their owner.
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Enforce the topic relationship.
+  topic Topic @relation(fields: [topicId], references: [id])
+  // Make repeated bookmark requests idempotent.
+  @@id([userId, topicId])
+  // Match the portable SQL table name.
+  @@map("bookmarks")
+}
+// Notes are stored durably rather than only in browser storage.
+model UserNote {
+  // Scope the note to its authenticated owner.
+  userId String @map("user_id")
+  // Attach the note to its lesson.
+  topicId String @map("topic_id")
+  // Preserve the learner's private text.
+  text String
+  // Record the most recent edit.
+  updatedAt String @map("updated_at")
+  // Remove private notes with their owner.
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Enforce the lesson relationship.
+  topic Topic @relation(fields: [topicId], references: [id])
+  // Keep one editable note per learner and lesson.
+  @@id([userId, topicId])
+  // Match the portable SQL table name.
+  @@map("user_notes")
+}
+// Revision events retain the spaced-repetition history.
+model RevisionHistory {
+  // Identify one completed revision.
+  id String @id
+  // Scope the revision to its authenticated owner.
+  userId String @map("user_id")
+  // Attach the revision to its topic.
+  topicId String @map("topic_id")
+  // Record when the revision actually happened.
+  createdAt String @map("created_at")
+  // Preserve the completed revision interval number.
+  step Int
+  // Remove private revisions with their owner.
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Enforce the lesson relationship.
+  topic Topic @relation(fields: [topicId], references: [id])
+  // Match the portable SQL table name.
+  @@map("revision_history")
+}
+// Activity events power streaks and daily analytics using real actions.
+model LearningActivity {
+  // Identify one learning event.
+  id String @id
+  // Scope the event to its authenticated owner.
+  userId String @map("user_id")
+  // Optionally attach the event to a lesson.
+  topicId String? @map("topic_id")
+  // Describe a material view, checkpoint, quiz, or revision.
+  kind String
+  // Record the actual event timestamp.
+  createdAt String @map("created_at")
+  // Remove private events with their owner.
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Enforce a topic relationship when present.
+  topic Topic? @relation(fields: [topicId], references: [id])
+  // Accelerate private activity charts.
+  @@index([userId, createdAt], map: "activity_user_date_idx")
+  // Match the portable SQL table name.
+  @@map("learning_activity")
+}

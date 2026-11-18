@@ -1,0 +1,14 @@
+# Keep installed dependencies out of the teaching source archive.
+node_modules/
+# Rebuild deployment files from the versioned source.
+dist/
+# Keep local user data and secret configuration private.
+.env
+.env.local
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+# Ignore temporary verification and packaging state.
+work/
+.sites-runtime/
+.wrangler/

@@ -1,0 +1,2 @@
+# PostgreSQL is the local development database provider.
+provider = "postgresql"
